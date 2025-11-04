@@ -1,4 +1,4 @@
-# Newbridge website clone
+# Newbsridge AI
 
 *Automatically synced with your [v0.app](https://v0.app) deployments*
 
@@ -14,17 +14,10 @@ Any changes you make to your deployed app will be automatically pushed to this r
 
 Your project is live at:
 
-**[https://vercel.com/isaac-adeks-projects/v0-newbridge-website-clone](https://vercel.com/isaac-adeks-projects/v0-newbridge-website-clone)**
+**[https://newsbridgeai.vercel.app](https://newsbridgeai.vercel.app)**
 
 ## Build your app
 
-Continue building your app on:
-
-**[https://v0.app/chat/l6drg6oAyaG](https://v0.app/chat/l6drg6oAyaG)**
-
 ## How It Works
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+1. 
