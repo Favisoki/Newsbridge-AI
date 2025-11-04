@@ -1,21 +1,39 @@
 import { Button } from "@/components/ui/button"
-import { MessageSquare, Mic, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import Image from "next/image"
 
 // --- SVG Icons (to reduce imports) ---
 const MessageSquareIcon = ({ className }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
   </svg>
-);
+)
 
 const MicIcon = ({ className, fill = "none" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill={fill} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill={fill}
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
     <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
     <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
     <line x1="12" x2="12" y1="19" y2="22" />
   </svg>
-);
+)
 
 export default function Home() {
   return (
@@ -110,79 +128,91 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-8 font-sans">
-      <div className="w-full max-w-7xl mx-auto py-12 lg:py-24">
-        {/* --- Layout Container (Desktop Only) --- */}
-        {/* This layout focuses on the desktop view from the image for conciseness */}
-        <div className="relative h-[500px]">
-          
-          {/* 1. The Large Dark Circle Visual (Left Side) */}
-          <div className="absolute top-1/2 left-[10%] -translate-y-1/2 z-10">
-            {/* Dark Circle Element */}
-            <div className="relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] rounded-full bg-indigo-900/80 shadow-2xl flex items-center justify-center">
-              {/* Inner Card Element */}
-              <div className="transform -translate-y-4 translate-x-1 sm:-translate-y-6 sm:translate-x-2">
-                <div className="w-56 h-40 sm:w-64 sm:h-48 rounded-2xl shadow-xl overflow-hidden transform scale-105">
-                  {/* Card Header */}
-                  <div className="flex items-center p-3 bg-emerald-600 text-white">
-                    <MessageSquareIcon className="w-4 h-4 mr-2" />
-                    <span className="text-sm font-medium">Community Reporter</span>
-                  </div>
-                  {/* Card Body */}
-                  <div className="p-4 bg-white">
-                    <div className="bg-gray-100 rounded-xl p-3 shadow-inner border border-gray-200">
-                      <div className="flex items-center text-gray-900 mb-1">
-                        <MicIcon className="w-4 h-4 mr-2 text-red-500" fill="currentColor" />
-                        <span className="font-semibold text-sm sm:text-base">Voice message in Hausa</span>
+      <section className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-8 font-sans">
+        <div className="w-full max-w-7xl mx-auto py-12 lg:py-24">
+          {/* --- Layout Container (Desktop Only) --- */}
+          {/* This layout focuses on the desktop view from the image for conciseness */}
+          <div className="relative h-[500px]">
+            {/* 1. The Large Dark Circle Visual (Left Side) */}
+            <div className="absolute top-1/2 left-[10%] -translate-y-1/2 z-10">
+              {/* Dark Circle Element */}
+              <div className="relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] rounded-full bg-indigo-900/80 shadow-2xl flex items-center justify-center">
+                {/* Inner Card Element */}
+                <div className="transform -translate-y-4 translate-x-1 sm:-translate-y-6 sm:translate-x-2">
+                  <div className="w-56 h-40 sm:w-64 sm:h-48 rounded-2xl shadow-xl overflow-hidden transform scale-105">
+                    {/* Card Header */}
+                    <div className="flex items-center p-3 bg-emerald-600 text-white">
+                      <MessageSquareIcon className="w-4 h-4 mr-2" />
+                      <span className="text-sm font-medium">Community Reporter</span>
+                    </div>
+                    {/* Card Body */}
+                    <div className="p-4 bg-white">
+                      <div className="bg-gray-100 rounded-xl p-3 shadow-inner border border-gray-200">
+                        <div className="flex items-center text-gray-900 mb-1">
+                          <MicIcon className="w-4 h-4 mr-2 text-red-500" fill="currentColor" />
+                          <span className="font-semibold text-sm sm:text-base">Voice message in Hausa</span>
+                        </div>
+                        <p className="text-xs text-gray-500 ml-6">2:34 - Reporting Flood</p>
                       </div>
-                      <p className="text-xs text-gray-500 ml-6">2:34 - Reporting Flood</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* 2. The Arc and Markers */}
-          <div className="absolute top-1/2 left-[32%] transform -translate-y-1/2 w-[350px] h-[450px]">
-            {/* The Arc */}
-            <div className="absolute -top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full border-2 border-dashed border-gray-300 transform rotate-[-45deg] z-0"></div>
-            
-            {/* Markers (Hardcoded) */}
-            <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 top-[30px] right-[100px]">01</div>
-            <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 top-1/2 right-[10px] -translate-y-1/2">02</div>
-            <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 bottom-[30px] right-[100px]">03</div>
-          </div>
-          
-          {/* 3. The Step Descriptions (Right Side) */}
-          <div className="absolute right-0 w-1/2 space-y-[100px]">
-            {/* Step 1 Content */}
-            <div className="pt-2">
-              <div className="flex flex-col flex-1">
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Citizens Report</h2>
-                <p className="text-gray-600 text-base">Citizens share stories via WhatsApp, text, voice, or photos, in their local languages. NewsBridge receives and prepares them for review.</p>
-              </div>
-            </div>
-            {/* Step 2 Content */}
-            <div className="pt-2">
-              <div className="flex flex-col flex-1">
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">AI Translation</h2>
-                <p className="text-gray-600 text-base">AI instantly translates messages while keeping tone and cultural nuance intact. A message like "Majị ya kwashe gonakinmu" becomes "The flood destroyed our farms."</p>
-              </div>
-            </div>
-            {/* Step 3 Content */}
-            <div className="pt-2">
-              <div className="flex flex-col flex-1">
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Journalist Dashboard</h2>
-                <p className="text-gray-600 text-base">Verified journalists review, organize, and follow up on reports, turning firsthand accounts into reliable stories.</p>
-              </div>
-            </div>
-          </div>
+            {/* 2. The Arc and Markers */}
+            <div className="absolute top-1/2 left-[32%] transform -translate-y-1/2 w-[350px] h-[450px]">
+              {/* The Arc */}
+              <div className="absolute -top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full border-2 border-dashed border-gray-300 transform rotate-[-45deg] z-0"></div>
 
+              {/* Markers (Hardcoded) */}
+              <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 top-[30px] right-[100px]">
+                01
+              </div>
+              <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 top-1/2 right-[10px] -translate-y-1/2">
+                02
+              </div>
+              <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 bottom-[30px] right-[100px]">
+                03
+              </div>
+            </div>
+
+            {/* 3. The Step Descriptions (Right Side) */}
+            <div className="absolute right-0 w-1/2 space-y-[100px]">
+              {/* Step 1 Content */}
+              <div className="pt-2">
+                <div className="flex flex-col flex-1">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Citizens Report</h2>
+                  <p className="text-gray-600 text-base">
+                    Citizens share stories via WhatsApp, text, voice, or photos, in their local languages. NewsBridge
+                    receives and prepares them for review.
+                  </p>
+                </div>
+              </div>
+              {/* Step 2 Content */}
+              <div className="pt-2">
+                <div className="flex flex-col flex-1">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">AI Translation</h2>
+                  <p className="text-gray-600 text-base">
+                    AI instantly translates messages while keeping tone and cultural nuance intact. A message like "Majị
+                    ya kwashe gonakinmu" becomes "The flood destroyed our farms."
+                  </p>
+                </div>
+              </div>
+              {/* Step 3 Content */}
+              <div className="pt-2">
+                <div className="flex flex-col flex-1">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Journalist Dashboard</h2>
+                  <p className="text-gray-600 text-base">
+                    Verified journalists review, organize, and follow up on reports, turning firsthand accounts into
+                    reliable stories.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    </section>
+      </section>
 
       {/* Team Section */}
       <section id="team" className="relative py-20 md:py-32 bg-white">

@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Navbar } from "@/components/navbar"
+import { NavbarWrapper } from "@/components/navbar-wrapper"
 import "./globals.css"
 import { Inter } from "next/font/google"
 
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
+        <NavbarWrapper />
         {children}
       </body>
     </html>
