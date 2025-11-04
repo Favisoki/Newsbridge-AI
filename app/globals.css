@@ -1,0 +1,175 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Newbridge Brand Design System
+   Primary: Navy Blue (#4A63B8)
+   Secondary: Vibrant Gold/Yellow (#F4C430)
+   Success: Green (#22C55E)
+   Text: Dark Navy (#1F2937) / White (#FFFFFF)
+   Neutrals: Light gray backgrounds
+*/
+
+:root {
+  /* Brand Primary Colors */
+  --nb-primary: #3754a3;
+  --nb-primary-light: #3754a3;
+  --nb-primary-dark: #3754a3;
+
+  /* Brand Secondary Colors */
+  --nb-secondary: oklch(0.82 0.2 80);
+  --nb-secondary-light: oklch(0.9 0.15 80);
+  --nb-secondary-dark: oklch(0.7 0.25 80);
+
+  /* Functional Colors */
+  --nb-success: oklch(0.7 0.15 142);
+  --nb-success-light: oklch(0.85 0.1 142);
+  --nb-warning: oklch(0.75 0.2 60);
+  --nb-error: oklch(0.58 0.18 25);
+  --nb-error-light: oklch(0.75 0.12 25);
+
+  /* Neutrals */
+  --nb-text-dark: oklch(0.15 0 0);
+  --nb-text-light: oklch(0.98 0 0);
+  --nb-bg-light: oklch(0.98 0 0);
+  --nb-bg-gray: oklch(0.96 0 0);
+  --nb-border: oklch(0.92 0 0);
+  --nb-border-light: oklch(0.95 0 0);
+
+  /* Legacy Design Tokens */
+  --background: var(--nb-bg-light);
+  --foreground: var(--nb-text-dark);
+  --card: var(--nb-bg-light);
+  --card-foreground: var(--nb-text-dark);
+  --popover: var(--nb-bg-light);
+  --popover-foreground: var(--nb-text-dark);
+  --primary: var(--nb-primary);
+  --primary-foreground: var(--nb-text-light);
+  --secondary: var(--nb-secondary);
+  --secondary-foreground: var(--nb-text-dark);
+  --muted: oklch(0.92 0 0);
+  --muted-foreground: oklch(0.56 0 0);
+  --accent: var(--nb-secondary);
+  --accent-foreground: var(--nb-text-dark);
+  --destructive: var(--nb-error);
+  --destructive-foreground: var(--nb-text-light);
+  --border: var(--nb-border);
+  --input: var(--nb-border-light);
+  --ring: var(--nb-primary);
+  --chart-1: var(--nb-primary);
+  --chart-2: var(--nb-secondary);
+  --chart-3: var(--nb-success);
+  --chart-4: var(--nb-warning);
+  --chart-5: var(--nb-primary-light);
+  --radius: 0.625rem;
+  --sidebar: var(--nb-bg-light);
+  --sidebar-foreground: var(--nb-text-dark);
+  --sidebar-primary: var(--nb-primary);
+  --sidebar-primary-foreground: var(--nb-text-light);
+  --sidebar-accent: var(--nb-secondary);
+  --sidebar-accent-foreground: var(--nb-text-dark);
+  --sidebar-border: var(--nb-border);
+  --sidebar-ring: var(--nb-primary);
+}
+
+.dark {
+  --nb-primary: oklch(0.65 0.12 260);
+  --nb-primary-light: oklch(0.75 0.1 260);
+  --nb-primary-dark: oklch(0.5 0.15 260);
+
+  --nb-secondary: oklch(0.8 0.2 80);
+  --nb-secondary-light: oklch(0.88 0.15 80);
+  --nb-secondary-dark: oklch(0.65 0.25 80);
+
+  --nb-text-dark: oklch(0.15 0 0);
+  --nb-text-light: oklch(0.98 0 0);
+  --nb-bg-light: oklch(0.2 0 0);
+  --nb-bg-gray: oklch(0.25 0 0);
+  --nb-border: oklch(0.35 0 0);
+
+  --background: var(--nb-bg-light);
+  --foreground: var(--nb-text-light);
+  --card: oklch(0.25 0 0);
+  --card-foreground: var(--nb-text-light);
+  --popover: oklch(0.25 0 0);
+  --popover-foreground: var(--nb-text-light);
+  --primary: var(--nb-primary);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: var(--nb-secondary);
+  --secondary-foreground: oklch(0.15 0 0);
+  --muted: oklch(0.35 0 0);
+  --muted-foreground: oklch(0.7 0 0);
+  --accent: var(--nb-secondary);
+  --accent-foreground: oklch(0.15 0 0);
+  --destructive: var(--nb-error);
+  --destructive-foreground: var(--nb-text-light);
+  --border: var(--nb-border);
+  --input: oklch(0.3 0 0);
+  --ring: var(--nb-primary-light);
+  --sidebar: oklch(0.2 0 0);
+  --sidebar-foreground: var(--nb-text-light);
+  --sidebar-primary: var(--nb-primary);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: var(--nb-secondary);
+  --sidebar-accent-foreground: oklch(0.15 0 0);
+  --sidebar-border: var(--nb-border);
+  --sidebar-ring: var(--nb-primary-light);
+}
+
+@theme inline {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "Fira Code", monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Add background pattern utility for media house onboarding */
+  .bg-pattern-repeat {
+    background-image: url("/background%202.png");
+    background-repeat: repeat;
+    background-size: auto;
+  }
+}
