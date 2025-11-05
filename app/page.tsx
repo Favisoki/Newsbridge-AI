@@ -1,9 +1,10 @@
-import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
-import Image from "next/image"
+import HowItWorks from "@/components/landing-page/HowItWorks";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 // --- SVG Icons (to reduce imports) ---
-const MessageSquareIcon = ({ className }) => (
+const MessageSquareIcon = ({ className }: { className: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -16,9 +17,15 @@ const MessageSquareIcon = ({ className }) => (
   >
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
   </svg>
-)
+);
 
-const MicIcon = ({ className, fill = "none" }) => (
+const MicIcon = ({
+  className,
+  fill = "none",
+}: {
+  className: string;
+  fill: string;
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -33,26 +40,42 @@ const MicIcon = ({ className, fill = "none" }) => (
     <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
     <line x1="12" x2="12" y1="19" y2="22" />
   </svg>
-)
+);
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white pt-24">
+    <div className="">
       {/* Hero Section */}
       <main className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/background.png" alt="Hero background" fill className="object-cover" priority />
+          <Image
+            src="/images/background.png"
+            alt="Hero background"
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
 
-        <div className="absolute left-0 top-1/4 transform -translate-y-1/2 w-48 h-96 opacity-40 pointer-events-none">
-          <Image src="/images/africa_left.png" alt="African map" fill className="object-contain" />
+        <div className="absolute left-20 top-48 w-48 h-96 scale-190 opacity-40 pointer-events-none">
+          <Image
+            src="/images/africa_left.png"
+            alt="African map"
+            fill
+            className="object-contain"
+          />
         </div>
 
-        <div className="absolute right-0 top-1/4 transform -translate-y-1/2 w-48 h-96 opacity-40 pointer-events-none">
-          <Image src="/images/africa_right.png" alt="African map" fill className="object-contain" />
+        <div className="absolute top-40 right-26 scale-180 w-48 h-96 opacity-40 pointer-events-none">
+          <Image
+            src="/images/africa_right.png"
+            alt="African map"
+            fill
+            className="object-contain opacity-"
+          />
         </div>
 
-        <div className="relative max-w-4xl mx-auto px-6 py-20 md:py-32 text-center">
+        <div className="relative max-w-5xl mx-auto px-6 pt-20 md:pt-56 text-center">
           <div className="mb-0 flex justify-center relative h-64">
             <div className="absolute inset-0 flex items-center justify-center opacity-100 pointer-events-none">
               <Image
@@ -65,62 +88,95 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Main Headline */}
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight relative z-10">
-            Bridging Voices & Building Trust
-          </h1>
+          <div className="-translate-y-24 relative z-10 bg-background opacity-90">
+            {/* Main Headline */}
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight relative z-10 ">
+              Every Community Has a Story.
+            </h1>
 
-          {/* Subheadline */}
-          <h2 className="text-4xl md:text-5xl font-bold text-blue-600 mb-8 relative z-10">In African Journalism</h2>
+            {/* Subheadline */}
+            <h2 className="text-4xl md:text-5xl font-bold text-[#3754A3] mb-8 relative z-10">
+              Not Every Voice Is Heard.
+            </h2>
 
-          {/* Description */}
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-12 leading-relaxed relative z-10">
-            Connect with authentic citizen voices from underserved African communities through AI-powered multilingual
-            reporting. Break barriers, tell untold stories, build community trust.
-          </p>
+            {/* Description */}
+            <p className="text-[#00000099] text-lg max-w-2xl mx-auto mb-12 leading-relaxed relative z-10">
+              NewsBridge connects journalists with underserved African
+              communities through AI-powered multilingual reporting secure,
+              anonymous, and authentic.
+            </p>
 
-          {/* CTA Button */}
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-base rounded-2xl inline-flex items-center gap-2 relative z-10">
-            Become a reporter
-            <ArrowRight className="w-5 h-5" />
-          </Button>
+            {/* CTA Button */}
+            <Button
+              className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] hover:[#3754A3] w-56 h-11 text-white px-8 py-7 text-base rounded-2xl inline-flex items-center gap-2 relative z-10"
+              style={{
+                borderImageSource:
+                  "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
+                boxShadow: "0px 0px 0px 1px #8078FF",
+              }}
+            >
+              Become a reporter
+              <div className="outline-2 outline-white rounded-full p-0.5">
+                <ArrowRight className="w-6 h-6" strokeWidth={3} />
+              </div>
+            </Button>
+          </div>
         </div>
       </main>
 
       {/* Stories Section */}
-      <section className="relative py-20 md:py-32 bg-gray-50">
-        <div className="absolute opacity-20">
-          <Image src="/images/background_2.png" alt="Background" className="object-cover" />
+      <section className="relative pt-20 bg-[#F7F7F7] overflow-hidden">
+        <div className="absolute -right-45 min-[1800px]:-right-85 h-full w-9/11 top-0 z-0 overflow-hidden pointer-events-none">
+          <Image
+            src="/background.svg"
+            alt="Background"
+            fill
+            className="object-contain min-[1800px]:object-cover z-0"
+          />
         </div>
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <h2 className="text-4xl md:text-4xl text-center font-semibold text-[#1E1E1E] mb-4">
+            The Stories that Never Get Told
+          </h2>
+          <div className="grid sm:flex items-start gap-12 py-20">
             {/* Left Content */}
-            <div className="space-y-6">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900">The Stories that Never Get Told</h2>
-              <div className="space-y-4 text-gray-600 leading-relaxed">
+            <div className="space-y-6 basis-[55%]">
+              <div className="text-[#00000099] leading-loose text-lg">
                 <p>
-                  A health crisis unfolds in silence, not because it isn't newsworthy, but because the journalist and
-                  the community don't speak the same language.
+                  A health crisis unfolds in silence, not because it isn't
+                  newsworthy, but because the journalist and the community don't
+                  speak the same language.
                 </p>
-                <p>A whistleblower stays quiet, afraid their story won't be heard safely.</p>
-                <p className="font-semibold text-gray-900">Across Nigeria, this is the reality.</p>
-                <p>NewsBridge changes it.</p>
                 <p>
-                  Through AI translation across Igbo, Hausa, Yoruba, and English, NewsBridge creates a direct, secure
-                  bridge between citizens and journalists.
+                  A whistleblower stays quiet, afraid their story won't be heard
+                  safely.
+                </p>
+                <p className="mt-6">Across Nigeria, this is the reality.</p>
+                <p>NewsBridge changes it.</p>
+                <p className="mt-6">
+                  Through AI translation across Igbo, Hausa, Yoruba, and
+                  English, NewsBridge creates a direct, secure bridge between
+                  citizens and journalists.
                 </p>
                 <p>No barriers. No middlemen. No voices ignored.</p>
-                <p>
-                  Starting in Nigeria — and expanding across Africa — we're building the future of inclusive journalism.
+                <p className="mt-6 z-40!">
+                  Starting in Nigeria — and expanding across Africa — we're
+                  building the future of inclusive journalism.
                 </p>
               </div>
             </div>
 
             {/* Right - Nigeria Map with Images */}
-            <div className="relative h-96 flex items-center justify-center">
+            <div className="relative h-96 flex -translate-y-11 items-center justify-center basis-[45%]">
               {/* Nigeria Map */}
               <div className="relative opacity-90">
-                <Image src="/images/nigeria.png" alt="Nigerian map" className="object-cover" />
+                <Image
+                  src="/images/nigeria.png"
+                  width={500}
+                  height={400}
+                  alt="Nigerian map"
+                  className="object-cover"
+                />
               </div>
             </div>
           </div>
@@ -128,8 +184,11 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-8 font-sans">
-        <div className="w-full max-w-7xl mx-auto py-12 lg:py-24">
+      <section className="min-h-screen bg-[#0E1B3E] flex items-center justify-center p-4 sm:p-8 font-sans">
+        <div
+          className="w-full max-w-7xl mx-auto py-12 lg:py-24"
+          id="how-it-works"
+        >
           {/* --- Layout Container (Desktop Only) --- */}
           {/* This layout focuses on the desktop view from the image for conciseness */}
           <div className="relative h-[500px]">
@@ -143,16 +202,25 @@ export default function Home() {
                     {/* Card Header */}
                     <div className="flex items-center p-3 bg-emerald-600 text-white">
                       <MessageSquareIcon className="w-4 h-4 mr-2" />
-                      <span className="text-sm font-medium">Community Reporter</span>
+                      <span className="text-sm font-medium">
+                        Community Reporter
+                      </span>
                     </div>
                     {/* Card Body */}
                     <div className="p-4 bg-white">
                       <div className="bg-gray-100 rounded-xl p-3 shadow-inner border border-gray-200">
                         <div className="flex items-center text-gray-900 mb-1">
-                          <MicIcon className="w-4 h-4 mr-2 text-red-500" fill="currentColor" />
-                          <span className="font-semibold text-sm sm:text-base">Voice message in Hausa</span>
+                          <MicIcon
+                            className="w-4 h-4 mr-2 text-red-500"
+                            fill="currentColor"
+                          />
+                          <span className="font-semibold text-sm sm:text-base">
+                            Voice message in Hausa
+                          </span>
                         </div>
-                        <p className="text-xs text-gray-500 ml-6">2:34 - Reporting Flood</p>
+                        <p className="text-xs text-gray-500 ml-6">
+                          2:34 - Reporting Flood
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -163,13 +231,13 @@ export default function Home() {
             {/* 2. The Arc and Markers */}
             <div className="absolute top-1/2 left-[32%] transform -translate-y-1/2 w-[350px] h-[450px]">
               {/* The Arc */}
-              <div className="absolute -top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full border-2 border-dashed border-gray-300 transform rotate-[-45deg] z-0"></div>
+              {/* <div className="absolute -top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full border-2 border-dashed border-gray-300 transform rotate[-45deg] z-0"></div> */}
 
               {/* Markers (Hardcoded) */}
               <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 top-[30px] right-[100px]">
                 01
               </div>
-              <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 top-1/2 right-[10px] -translate-y-1/2">
+              <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 top-1/2 right-2.5 -translate-y-1/2">
                 02
               </div>
               <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 bottom-[30px] right-[100px]">
@@ -180,33 +248,276 @@ export default function Home() {
             {/* 3. The Step Descriptions (Right Side) */}
             <div className="absolute right-0 w-1/2 space-y-[100px]">
               {/* Step 1 Content */}
-              <div className="pt-2">
+              <div className="pt-2 ml-[100px]!">
                 <div className="flex flex-col flex-1">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Citizens Report</h2>
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">
+                    Citizens Report
+                  </h2>
                   <p className="text-gray-600 text-base">
-                    Citizens share stories via WhatsApp, text, voice, or photos, in their local languages. NewsBridge
-                    receives and prepares them for review.
+                    Citizens share stories via WhatsApp, text, voice, or photos,
+                    in their local languages. NewsBridge receives and prepares
+                    them for review.
                   </p>
                 </div>
               </div>
               {/* Step 2 Content */}
               <div className="pt-2">
                 <div className="flex flex-col flex-1">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">AI Translation</h2>
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">
+                    AI Translation
+                  </h2>
                   <p className="text-gray-600 text-base">
-                    AI instantly translates messages while keeping tone and cultural nuance intact. A message like "Majị
-                    ya kwashe gonakinmu" becomes "The flood destroyed our farms."
+                    AI instantly translates messages while keeping tone and
+                    cultural nuance intact. A message like "Majị ya kwashe
+                    gonakinmu" becomes "The flood destroyed our farms."
                   </p>
                 </div>
               </div>
               {/* Step 3 Content */}
               <div className="pt-2">
                 <div className="flex flex-col flex-1">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Journalist Dashboard</h2>
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">
+                    Journalist Dashboard
+                  </h2>
                   <p className="text-gray-600 text-base">
-                    Verified journalists review, organize, and follow up on reports, turning firsthand accounts into
-                    reliable stories.
+                    Verified journalists review, organize, and follow up on
+                    reports, turning firsthand accounts into reliable stories.
                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="relative py-20 md:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Our Core Features
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Newsbridge was built to close that gap. We connect local voices to
+              journalists and media houses using accessible, language-aware
+              technology.
+            </p>
+          </div>
+
+          {/* Feature Cards */}
+          <div className="grid md:grid-cols-3 gap-8 mb-20">
+            {/* Feature 1 */}
+            <div
+              className="bg-white rounded-2xl p-8"
+              style={{
+                boxShadow: "0px 20px 40px 0px #E8EEFF",
+                border: "1px solid #F1F1F1",
+              }}
+            >
+              <div>
+                <div>
+                  <h1 className="text-[#1E1E1E] text-xl font-semibold mb-3">
+                    WhatsApp and voice reporting
+                  </h1>
+                  <p className="text-[#1E1E1E99] text-base leading-relaxed">
+                    Organized workspace for managing reports.
+                  </p>
+                </div>
+
+                <div className="mt-6 h-[254px] w-[351px">
+                  <div className="bg-[#F6F6F6] relative inset-0 h-full w-full rounded-lg overflow-hidden">
+                    <div className="absolute inset-x-0 translate-y-[50%]">
+                      <Image
+                        src="/Vector.png"
+                        alt="Feature 1"
+                        width={300}
+                        height={300}
+                        className="object-cover translate-x-[3%]"
+                      />
+                    </div>
+                    <div className="absolute inset-0 translate-x-[10%] translate-y-[10%]">
+                      <Image
+                        src="/Frame.png"
+                        alt="Feature "
+                        width={250}
+                        height={300}
+                        className="object-cover z-30"
+                      />
+                    </div>
+                    <div className="absolute inset-0 translate-x-[7%] translate-y-[4%]">
+                      <Image
+                        src="/Vector-2.png"
+                        alt="Feature "
+                        width={40}
+                        height={30}
+                        className="object-cover z-30"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Feature 2 */}
+            <div
+              className="bg-white p-5 rounded-2xl"
+              style={{
+                boxShadow: "0px 20px 40px 0px #E8EEFF",
+                border: "1px solid #F1F1F1",
+              }}
+            >
+              <div className="bg-[#F6F6F6] w-full h-[246px] rounded-2xl flex justify-center items-center">
+                <Image
+                  src="/Frame129.png"
+                  width={550}
+                  height={550}
+                  alt=""
+                  className=" translate-y-[9%] scale-110"
+                />
+              </div>
+              <div
+                className="w-full mt-4"
+                style={{ border: "1px solid #F1F1F1" }}
+              ></div>
+              <div className="mt-6 font-semibold w-full">
+                <h1 className="text-xl text-[#1E1E1E] mb-2">
+                  AI-Powered Translation
+                </h1>
+                <p className="text-[#1E1E1E99] text-md font-normal">
+                  Advanced AI preserves cultural nuances while translating
+                  across 47 African languages
+                </p>
+              </div>
+            </div>
+
+            {/* Feature 3 */}
+            <div
+              className="bg-white p-5 rounded-2xl"
+              style={{
+                boxShadow: "0px 20px 40px 0px #E8EEFF",
+                border: "1px solid #F1F1F1",
+              }}
+            >
+              <div className="bg-[#F6F6F6] w-full h-[246px] rounded-2xl flex justify-center items-center">
+                <Image
+                  src="/Frame98.png"
+                  width={250}
+                  height={250}
+                  alt=""
+                  className=" translate-y-[9%]"
+                />
+              </div>
+              <div
+                className="w-full mt-4"
+                style={{ border: "1px solid #F1F1F1" }}
+              ></div>
+              <div className="mt-6 font-semibold w-full">
+                <h1 className="text-xl text-[#1E1E1E] mb-2">
+                  Cultural Context
+                </h1>
+                <p className="text-[#1E1E1E99] text-md font-normal">
+                  AI understands local customs, traditions, and sensitive topics
+                  to maintain story authenticity
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Who It's For Section */}
+      <section
+        id="who-its-for"
+        className="relative w-full py-20 md:py-32 text-white bg-no-repeat bg-full"
+        style={{
+          background: "url('/background3.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              Who it is for
+            </h2>
+            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+              Whether you're an independent journalist or part of a major media
+              house, Newbridge adapts to your workflow and amplifies your
+              impact.
+            </p>
+          </div>
+
+          {/* Two Option Cards */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Independent Journalists */}
+            <div className="rounded-3xl p-8 bg-[#111E42]"
+            style={{borderTop: "4px solid #3754A3"}}>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="relative w-14 h-14 rounded-full flex items-center justify-center text-white font-bold">
+                  <Image
+                    src="/Frame5.png"
+                    fill
+                    alt=""
+                    className="object-cover scale-75"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold">
+                  For Independent Journalists
+                </h3>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center gap-3">
+                  <span className="text-white">•</span>
+                  <span>Discover real community stories</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-white">•</span>
+                  <span>Collaborate securely with contributors</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="text-white">•</span>
+                  <span>Stay connected across regions</span>
+                </li>
+              </ul>
+              <div className="inline-flex items-center gap-2 underline underline-offset-3 bg-transparent outline-none! text-white rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
+                Request Access
+                <div className="rounded-full border-2 p-0.5 border-white">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
+
+            {/* Media Houses */}
+            <div className="rounded-lg p-8 bg-[#111E42]" style={{borderTop: "4px solid #FCC527"}} >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="relative w-14 h-14 rounded-full flex items-center justify-center text-white font-bold">
+                  <Image
+                    src="/Frame4.png"
+                    fill
+                    alt=""
+                    className="object-cover scale-75"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold">For Media Houses</h3>
+              </div>
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-start gap-3">
+                  <span className="text-white">•</span>
+                  <span>Discover real community stories</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white">•</span>
+                  <span>Collaborate securely with contributors</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-white">•</span>
+                  <span>Stay connected across regions</span>
+                </li>
+              </ul>
+              <div className="inline-flex items-center gap-2 underline underline-offset-3 bg-transparent outline-none! text-[#FEE00F] rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
+                Request Access
+                <div className="rounded-full border-2 p-0.5 border-[#FEE00F]">
+                  <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
             </div>
@@ -218,142 +529,40 @@ export default function Home() {
       <section id="team" className="relative py-20 md:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Meet the team behind News Bridge</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Meet the team behind News Bridge
+            </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Protecting journalists and citizen reporters is our top priority. Our platform meets international
-              standards for sensitive reporting.
+              Protecting journalists and citizen reporters is our top priority.
+              Our platform meets international standards for sensitive
+              reporting.
             </p>
           </div>
 
           {/* Team Members */}
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { name: "Lois Dagana", role: "Product Designer" },
-              { name: "Gbadegesin Adeyanju", role: "Backend Engineer" },
-              { name: "Isaac Adedokun", role: "Data & ML Scientist" },
-              { name: "Davida Spaine-Solomon", role: "Journalist" },
+              { name: "Lois Dagana", role: "Product Designer", image: "/Frame11.png" },
+              { name: "Gbadegesin Adeyanju", role: "Backend Engineer", image: "/Frame10.png" },
+              { name: "Isaac Adedokun", role: "Data & ML Scientist", image: "/Frame9.png" },
+              { name: "Davida Spaine-Solomon", role: "Journalist", image: "/Frame8.png" },
             ].map((member) => (
-              <div key={member.name} className="text-center">
-                <div className="w-full aspect-square bg-slate-900 rounded-lg mb-4" />
-                <h3 className="font-semibold text-gray-900 mb-1">{member.name}</h3>
+              <div key={member.name} className="text-center shadow-lg py-10 px-4 rounded-2xl">
+                <div className="relative w-full aspect-square bg-[#192c65] rounded-lg mb-4" >
+                  <Image
+                    src={member.image}
+                    alt=""
+                    fill
+                    className="object-cover rounded-lg"
+                  />
+                  
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-1">
+                  {member.name}
+                </h3>
                 <p className="text-gray-600 text-sm">{member.role}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="relative py-20 md:py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Our Core Features</h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Newsbridge was built to close that gap. We connect local voices to journalists and media houses using
-              accessible, language-aware technology.
-            </p>
-          </div>
-
-          {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mb-20">
-            {/* Feature 1 */}
-            <div className="bg-gray-50 rounded-lg p-8">
-              <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center mb-6 mx-auto">
-                <div className="text-3xl">🎙️</div>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">WhatsApp and voice reporting</h3>
-              <p className="text-gray-600 text-center">Organized workspace for managing reports.</p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="bg-gray-50 rounded-lg p-8">
-              <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center mb-6 mx-auto">
-                <div className="text-3xl">🌐</div>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">AI-Powered Translation</h3>
-              <p className="text-gray-600 text-center">
-                Advanced AI preserves cultural nuances while translating across 47 African languages.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="bg-gray-50 rounded-lg p-8">
-              <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center mb-6 mx-auto">
-                <div className="text-3xl">🎯</div>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3 text-center">Cultural Context</h3>
-              <p className="text-gray-600 text-center">
-                AI understands local customs, traditions, and sensitive topics to maintain story authenticity.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Who It's For Section */}
-      <section id="who-its-for" className="relative py-20 md:py-32 bg-slate-900 text-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Who it is for</h2>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-              Whether you're an independent journalist or part of a major media house, Newbridge adapts to your workflow
-              and amplifies your impact.
-            </p>
-          </div>
-
-          {/* Two Option Cards */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-            {/* Independent Journalists */}
-            <div className="border-2 border-blue-400 rounded-lg p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-                  👤
-                </div>
-                <h3 className="text-xl font-semibold">For Independent Journalists</h3>
-              </div>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-3">
-                  <span className="text-yellow-400 mt-1">•</span>
-                  <span>Discover real community stories</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-yellow-400 mt-1">•</span>
-                  <span>Collaborate securely with contributors</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-yellow-400 mt-1">•</span>
-                  <span>Stay connected across regions</span>
-                </li>
-              </ul>
-              <Button className="w-full bg-transparent border-2 border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-slate-900">
-                Request Access
-              </Button>
-            </div>
-
-            {/* Media Houses */}
-            <div className="border-2 border-yellow-400 rounded-lg p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-slate-900 font-bold">
-                  🏢
-                </div>
-                <h3 className="text-xl font-semibold">For Media Houses</h3>
-              </div>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-3">
-                  <span className="text-yellow-400 mt-1">•</span>
-                  <span>Discover real community stories</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-yellow-400 mt-1">•</span>
-                  <span>Collaborate securely with contributors</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-yellow-400 mt-1">•</span>
-                  <span>Stay connected across regions</span>
-                </li>
-              </ul>
-              <Button className="w-full bg-yellow-400 text-slate-900 hover:bg-yellow-500">Request Access</Button>
-            </div>
           </div>
         </div>
       </section>
@@ -362,7 +571,7 @@ export default function Home() {
       <section className="relative py-20 md:py-32 bg-gray-900 text-white overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-transparent to-gray-900" />
+          <div className="absolute inset-0 bg-linear-to-r from-gray-900 via-transparent to-gray-900" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-6">
@@ -380,12 +589,17 @@ export default function Home() {
 
             {/* Right - CTA */}
             <div className="bg-blue-600 rounded-lg p-12">
-              <h3 className="text-3xl font-bold mb-6">A Future of Inclusive Journalism</h3>
+              <h3 className="text-3xl font-bold mb-6">
+                A Future of Inclusive Journalism
+              </h3>
               <p className="text-lg mb-8 leading-relaxed">
-                We believe in an Africa where every citizen — regardless of language, literacy, or location — can
-                contribute to trustworthy, community-driven news.
+                We believe in an Africa where every citizen — regardless of
+                language, literacy, or location — can contribute to trustworthy,
+                community-driven news.
               </p>
-              <p className="text-lg font-semibold mb-8 italic">"When stories connect, societies strengthen"</p>
+              <p className="text-lg font-semibold mb-8 italic">
+                "When stories connect, societies strengthen"
+              </p>
               <Button className="bg-yellow-400 text-slate-900 hover:bg-yellow-500 px-8 py-3 rounded-lg font-semibold">
                 Request Access
               </Button>
@@ -404,11 +618,14 @@ export default function Home() {
                 <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-bold">NB</span>
                 </div>
-                <span className="text-lg font-semibold text-gray-900">Newbridge</span>
+                <span className="text-lg font-semibold text-gray-900">
+                  Newbridge
+                </span>
               </div>
               <p className="text-gray-600 leading-relaxed max-w-sm">
-                Connect with authentic citizen voices from underserved African communities through AI-powered
-                multilingual reporting. Break barriers, tell untold stories, build community trust.
+                Connect with authentic citizen voices from underserved African
+                communities through AI-powered multilingual reporting. Break
+                barriers, tell untold stories, build community trust.
               </p>
             </div>
 
@@ -469,5 +686,5 @@ export default function Home() {
         </div>
       </footer>
     </div>
-  )
+  );
 }
