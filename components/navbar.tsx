@@ -1,36 +1,85 @@
-"use client"
+"use client";
 
-import { usePathname } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export function Navbar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const [activeHash, setActiveHash] = useState("");
+
+  useEffect(() => {
+    // Helper: updates hash from current URL
+    const updateHash = () => {
+      const hash = window.location.hash;
+      setActiveHash(hash);
+    };
+
+    // Update on load
+    updateHash();
+
+    // Handle scroll-based detection too
+    const handleScroll = () => {
+      const sections = document.querySelectorAll("section[id]");
+      let current = "";
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 120 && rect.bottom >= 120) {
+          current = "#" + section.id;
+        }
+      });
+      if (current && current !== activeHash) {
+        setActiveHash(current);
+      }
+    };
+
+    // Event listeners
+    window.addEventListener("hashchange", updateHash);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("hashchange", updateHash);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [pathname, activeHash]);
 
   const navItems = [
     { href: "/#features", label: "Features" },
     { href: "/#how-it-works", label: "How it works" },
-    { href: "/#who-its-for", label: "Who it's For" },
+    { href: "/#who-its-for", label: "Who it’s For" },
     { href: "/#team", label: "The Team" },
     { href: "/#guide", label: "User Guide" },
-  ]
+  ];
 
   const isActive = (href: string) => {
-    if (href === "/") return pathname === "/"
-    return pathname.startsWith(href.split("#")[0])
-  }
+    if (href.startsWith("/#")) {
+      const hash = href.substring(1);
+      return pathname === "/" && activeHash === hash;
+    }
+    return pathname === href;
+  };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg">
+    <nav className="absolute top-8 left-0 right-0 z-50 px-6 max-w-7xl mx-auto bg-transparent">
+      <div className="">
+        <div className="bg-white rounded-3xl border border-[#E1E1E1] shadow-[0px_20px_40px_0px_#C3C3C340]">
           <div className="px-8 py-4 flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-bold">NB</span>
-              </div>
-              <span className="text-sm font-semibold text-gray-900">Newsbridge</span>
+            <Link
+              href="/"
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
+              <Image
+                src={"/images/logo.png"}
+                width={28}
+                height={25}
+                alt={"Logo"}
+              />
+              <span className="text-lg font-semibold text-[#3C60AF]">
+                NewsBridge
+              </span>
             </Link>
 
             {/* Navigation Links */}
@@ -39,10 +88,10 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-medium transition-colors duration-200 ${
+                  className={`font-normal hover:text-[#3C60AF] transition-colors duration-300 ${
                     isActive(item.href)
-                      ? "text-blue-600  border-blue-600 pb-1"
-                      : "text-gray-700 hover:text-gray-900"
+                      ? "text-[#3C60AF]!  border-[#3C60AF]! pb-1"
+                      : "text-[#1E1E1E] hover:text-[#1E1E1E]"
                   }`}
                 >
                   {item.label}
@@ -53,17 +102,29 @@ export function Navbar() {
             {/* Auth Buttons */}
             <div className="flex items-center gap-3">
               <Link href="/auth/login">
-                <Button variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 bg-blue-100">
+                <Button
+                  variant="outline"
+                  className="text-[#3754A3] border-none rounded-2xl bg-[#E8EEFF] h-14 w-36"
+                >
                   Sign in
                 </Button>
               </Link>
               <Link href="/auth/signup">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">Request Access</Button>
+                <Button
+                  className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] text-white h-14 w-36 rounded-2xl"
+                  style={{
+                    borderImageSource:
+                      "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
+                    boxShadow: "0px 0px 0px 1px #8078FF"
+                  }}
+                >
+                  Request Access
+                </Button>
               </Link>
             </div>
           </div>
         </div>
       </div>
     </nav>
-  )
+  );
 }
