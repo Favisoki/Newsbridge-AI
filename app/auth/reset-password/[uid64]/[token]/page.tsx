@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from "lucide-react"
-import { apiClient } from "@/lib/former-api-client"
+import { apiClient } from "@/lib/api-client"
 
 export default function ResetPasswordPage() {
   const params = useParams()

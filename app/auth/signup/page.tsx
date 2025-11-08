@@ -56,7 +56,7 @@ export default function SignupPage() {
                 <span>Stay connected across regions</span>
               </li>
             </ul>
-            <Link href="/onboarding/independent-journalists">
+            <Link href="/onboarding/independent-journalist">
               <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
             </Link>
           </div>

@@ -6,7 +6,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { apiClient } from "@/lib/former-api-client"
+import { apiClient } from "@/lib/api-client"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
