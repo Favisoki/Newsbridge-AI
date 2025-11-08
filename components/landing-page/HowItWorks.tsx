@@ -74,7 +74,7 @@ const HowItWorks = () => {
   const StepComponent = stepInfo[activeStep as activeType];
 
   return (
-    <section className=" bg-[#0E1B3E] flex items-center justify-center p-4 sm:p-8 font-sans relative z-10">
+    <section className=" bg-[#0E1B3E] flex items-center justify-center p-4 sm:p-8 font-sans relative z-10 overflow-hidden">
       <div className="absolute h-full w-full inset-0">
         <Image
           src={"/how-it-works-bg.png"}
