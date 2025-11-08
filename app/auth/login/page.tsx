@@ -1,13 +1,45 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from "lucide-react"
+import { apiClient } from "@/lib/api-client"
 
 export default function LoginPage() {
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError("")
+    setLoading(true)
+
+    try {
+      const response = await apiClient.login(formData.email, formData.password)
+      if (response.success) {
+        // Tokens are now stored automatically in apiClient.login()
+        // access_token and refresh_token are saved to localStorage
+        router.push("/dashboard")
+      } else {
+        setError(response.error || "Login failed. Please try again.")
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="w-full max-w-md">
@@ -26,11 +58,23 @@ export default function LoginPage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">Welcome Back</h1>
         <p className="text-gray-600 text-center mb-8">Sign in to continue to Newbridge</p>
 
-        <form className="space-y-6">
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">{error}</div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-900 mb-2">Email Address</label>
-            <Input type="email" placeholder="your.email@example.com" className="w-full" />
+            <Input
+              type="email"
+              placeholder="your.email@example.com"
+              className="w-full"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+              disabled={loading}
+            />
           </div>
 
           {/* Password */}
@@ -41,6 +85,10 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 className="w-full pr-10"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+                disabled={loading}
               />
               <button
                 type="button"
@@ -60,7 +108,9 @@ export default function LoginPage() {
           </div>
 
           {/* Submit Button */}
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2">Log in</Button>
+          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2" disabled={loading}>
+            {loading ? "Signing in..." : "Log in"}
+          </Button>
         </form>
 
         {/* Sign Up Link */}
@@ -75,7 +125,7 @@ export default function LoginPage() {
       {/* Support Link */}
       <div className="text-center mt-6 text-sm text-gray-600">
         Need help?{" "}
-        <a href="#" className="text-blue-600 hover:text-blue-700">
+        <a href="mailto:info@newsbridge.com" className="text-blue-600 hover:text-blue-700">
           Contact support
         </a>
       </div>
