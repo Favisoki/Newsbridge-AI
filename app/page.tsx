@@ -3,48 +3,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
-// --- SVG Icons (to reduce imports) ---
-const MessageSquareIcon = ({ className }: { className: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-  </svg>
-);
-
-const MicIcon = ({
-  className,
-  fill = "none",
-}: {
-  className: string;
-  fill: string;
-}) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill={fill}
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-    <line x1="12" x2="12" y1="19" y2="22" />
-  </svg>
-);
 
 export default function Home() {
   return (
-    <div className="">
+    <div className="overflow-hidden">
       {/* Hero Section */}
       <main className="relative overflow-hidden">
         <div className="absolute inset-0">
@@ -184,111 +146,7 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section className="min-h-screen bg-[#0E1B3E] flex items-center justify-center p-4 sm:p-8 font-sans">
-        <div
-          className="w-full max-w-7xl mx-auto py-12 lg:py-24"
-          id="how-it-works"
-        >
-          {/* --- Layout Container (Desktop Only) --- */}
-          {/* This layout focuses on the desktop view from the image for conciseness */}
-          <div className="relative h-[500px]">
-            {/* 1. The Large Dark Circle Visual (Left Side) */}
-            <div className="absolute top-1/2 left-[10%] -translate-y-1/2 z-10">
-              {/* Dark Circle Element */}
-              <div className="relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] rounded-full bg-indigo-900/80 shadow-2xl flex items-center justify-center">
-                {/* Inner Card Element */}
-                <div className="transform -translate-y-4 translate-x-1 sm:-translate-y-6 sm:translate-x-2">
-                  <div className="w-56 h-40 sm:w-64 sm:h-48 rounded-2xl shadow-xl overflow-hidden transform scale-105">
-                    {/* Card Header */}
-                    <div className="flex items-center p-3 bg-emerald-600 text-white">
-                      <MessageSquareIcon className="w-4 h-4 mr-2" />
-                      <span className="text-sm font-medium">
-                        Community Reporter
-                      </span>
-                    </div>
-                    {/* Card Body */}
-                    <div className="p-4 bg-white">
-                      <div className="bg-gray-100 rounded-xl p-3 shadow-inner border border-gray-200">
-                        <div className="flex items-center text-gray-900 mb-1">
-                          <MicIcon
-                            className="w-4 h-4 mr-2 text-red-500"
-                            fill="currentColor"
-                          />
-                          <span className="font-semibold text-sm sm:text-base">
-                            Voice message in Hausa
-                          </span>
-                        </div>
-                        <p className="text-xs text-gray-500 ml-6">
-                          2:34 - Reporting Flood
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 2. The Arc and Markers */}
-            <div className="absolute top-1/2 left-[32%] transform -translate-y-1/2 w-[350px] h-[450px]">
-              {/* The Arc */}
-              {/* <div className="absolute -top-1/4 -right-1/4 w-[600px] h-[600px] rounded-full border-2 border-dashed border-gray-300 transform rotate[-45deg] z-0"></div> */}
-
-              {/* Markers (Hardcoded) */}
-              <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 top-[30px] right-[100px]">
-                01
-              </div>
-              <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 top-1/2 right-2.5 -translate-y-1/2">
-                02
-              </div>
-              <div className="absolute w-12 h-12 rounded-full bg-amber-400 flex items-center justify-center text-xl font-extrabold text-gray-900 shadow-lg z-20 bottom-[30px] right-[100px]">
-                03
-              </div>
-            </div>
-
-            {/* 3. The Step Descriptions (Right Side) */}
-            <div className="absolute right-0 w-1/2 space-y-[100px]">
-              {/* Step 1 Content */}
-              <div className="pt-2 ml-[100px]!">
-                <div className="flex flex-col flex-1">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">
-                    Citizens Report
-                  </h2>
-                  <p className="text-gray-600 text-base">
-                    Citizens share stories via WhatsApp, text, voice, or photos,
-                    in their local languages. NewsBridge receives and prepares
-                    them for review.
-                  </p>
-                </div>
-              </div>
-              {/* Step 2 Content */}
-              <div className="pt-2">
-                <div className="flex flex-col flex-1">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">
-                    AI Translation
-                  </h2>
-                  <p className="text-gray-600 text-base">
-                    AI instantly translates messages while keeping tone and
-                    cultural nuance intact. A message like "Majị ya kwashe
-                    gonakinmu" becomes "The flood destroyed our farms."
-                  </p>
-                </div>
-              </div>
-              {/* Step 3 Content */}
-              <div className="pt-2">
-                <div className="flex flex-col flex-1">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">
-                    Journalist Dashboard
-                  </h2>
-                  <p className="text-gray-600 text-base">
-                    Verified journalists review, organize, and follow up on
-                    reports, turning firsthand accounts into reliable stories.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HowItWorks />
 
       {/* Features Section */}
       <section id="features" className="relative py-20 md:py-32 bg-white">
@@ -450,8 +308,10 @@ export default function Home() {
           {/* Two Option Cards */}
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Independent Journalists */}
-            <div className="rounded-3xl p-8 bg-[#111E42]"
-            style={{borderTop: "4px solid #3754A3"}}>
+            <div
+              className="rounded-3xl p-8 bg-[#111E42]"
+              style={{ borderTop: "4px solid #3754A3" }}
+            >
               <div className="flex items-center gap-3 mb-6">
                 <div className="relative w-14 h-14 rounded-full flex items-center justify-center text-white font-bold">
                   <Image
@@ -488,7 +348,10 @@ export default function Home() {
             </div>
 
             {/* Media Houses */}
-            <div className="rounded-lg p-8 bg-[#111E42]" style={{borderTop: "4px solid #FCC527"}} >
+            <div
+              className="rounded-3xl p-8 bg-[#111E42]"
+              style={{ borderTop: "4px solid #FCC527" }}
+            >
               <div className="flex items-center gap-3 mb-6">
                 <div className="relative w-14 h-14 rounded-full flex items-center justify-center text-white font-bold">
                   <Image
@@ -542,20 +405,38 @@ export default function Home() {
           {/* Team Members */}
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { name: "Lois Dagana", role: "Product Designer", image: "/Frame11.png" },
-              { name: "Gbadegesin Adeyanju", role: "Backend Engineer", image: "/Frame10.png" },
-              { name: "Isaac Adedokun", role: "Data & ML Scientist", image: "/Frame9.png" },
-              { name: "Davida Spaine-Solomon", role: "Journalist", image: "/Frame8.png" },
+              {
+                name: "Lois Dagana",
+                role: "Product Designer",
+                image: "/Frame11.png",
+              },
+              {
+                name: "Gbadegesin Adeyanju",
+                role: "Backend Engineer",
+                image: "/Frame10.png",
+              },
+              {
+                name: "Isaac Adedokun",
+                role: "Data & ML Scientist",
+                image: "/Frame9.png",
+              },
+              {
+                name: "Davida Spaine-Solomon",
+                role: "Journalist",
+                image: "/Frame8.png",
+              },
             ].map((member) => (
-              <div key={member.name} className="text-center shadow-lg py-10 px-4 rounded-2xl">
-                <div className="relative w-full aspect-square bg-[#192c65] rounded-lg mb-4" >
+              <div
+                key={member.name}
+                className="text-center shadow-lg py-10 px-4 rounded-2xl"
+              >
+                <div className="relative w-full aspect-square bg-[#192c65] rounded-lg mb-4">
                   <Image
                     src={member.image}
                     alt=""
                     fill
                     className="object-cover rounded-lg"
                   />
-                  
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-1">
                   {member.name}
@@ -568,52 +449,95 @@ export default function Home() {
       </section>
 
       {/* Contact & CTA Section */}
-      <section className="relative py-20 md:py-32 bg-gray-900 text-white overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 bg-linear-to-r from-gray-900 via-transparent to-gray-900" />
-        </div>
+      <section
+        className="relative py-20 md:py-32 bg-gray-900 text-white overflow-hidden"
+        style={{
+          background: "url('/contact-background.png')",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div className="h-[391px]">
+          {/* Background Image */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute inset-0 bg-linear-to-r from-gray-900 via-transparent to-gray-900" />
+          </div>
 
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left - Contact */}
-            <div className="bg-gray-800 bg-opacity-60 backdrop-blur rounded-lg p-12">
-              <h3 className="text-3xl font-bold mb-6">Contact us</h3>
-              <a
-                href="mailto:info@newsbridge.com"
-                className="text-2xl font-semibold text-yellow-400 hover:text-yellow-300 underline"
-              >
-                info@newsbridge.com
-              </a>
-            </div>
+          <div className="absolute bottom-0.5 left-0 w-full mx-auto px-6">
+            <div className="flex justify-center max-w-7xl mx-auto">
+              <div className="flex gap-12 items-center">
+                {/* Left - Contact */}
+                <div className="bg-[#F7F9FF33] bg-opacity-60 backdrop-blur-xl text-center rounded-2xl py-9 translate-y-31 translate-x-7 z-10 basis-[43%] border border-gray-300/60">
+                  <h3 className="text-[32px] text-white font-semibold mb-2">
+                    Contact us
+                  </h3>
+                  <a
+                    href="mailto:info@newsbridge.com"
+                    className="text-[45px] font-semibold underline"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, #FFFFFF -29.78%, #FDCD20 88.65%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      color: "transparent",
+                      textDecoration: "underline",
+                      textDecorationColor: "#FDCD20",
+                    }}
+                  >
+                    info@newsbridge.com
+                  </a>
+                </div>
 
-            {/* Right - CTA */}
-            <div className="bg-blue-600 rounded-lg p-12">
-              <h3 className="text-3xl font-bold mb-6">
-                A Future of Inclusive Journalism
-              </h3>
-              <p className="text-lg mb-8 leading-relaxed">
-                We believe in an Africa where every citizen — regardless of
-                language, literacy, or location — can contribute to trustworthy,
-                community-driven news.
-              </p>
-              <p className="text-lg font-semibold mb-8 italic">
-                "When stories connect, societies strengthen"
-              </p>
-              <Button className="bg-yellow-400 text-slate-900 hover:bg-yellow-500 px-8 py-3 rounded-lg font-semibold">
-                Request Access
-              </Button>
+                {/* Right - CTA */}
+                <div className="relative basis-[52%]">
+                  {/* Yellow stripes - behind the card */}
+                  <div className="absolute inset-0 z-0">
+                    <div className="absolute -left-[39%] bottom-0 h-40 w-[600px] bg-[#FCC527] -rotate-55" />
+                    <div className="absolute -right-[39%] bottom-0 h-40 w-[600px] bg-[#FCC527] rotate-55" />
+                  </div>
+
+                  {/* Blue card - in front */}
+                  <div className="relative bg-[#3754A3] h-[527px] rounded-b-2xl rounded-t-[50px] p-14 z-10 text-center">
+                    <div className="absolute w-full max-w-2xl mx-auto h-full top-0 left-0 translate-x-8 translate-y-4 -z-10">
+                      <Image
+                        src={"/contact-card-bg.png"}
+                        alt=""
+                        fill
+                        className="bg-contain"
+                      />
+                    </div>
+                    <h3 className="text-5xl font-semibold text-white mb-6 leading-[150%]">
+                      A Future of Inclusive Journalism
+                    </h3>
+                    <p className="text-lg font-normal mb-8 leading-relaxed">
+                      We believe in an Africa where every citizen — regardless
+                      of language, literacy, or location — can contribute to
+                      trustworthy, community-driven news.
+                    </p>
+                    <p className="text-lg font-normal mb-8 ">
+                      "When stories connect, societies strengthen"
+                    </p>
+                    <Button className="inline-flex items-center gap-2 bg-[#FCC527] outline-none! text-black rounded-2xl px-6 py-7 font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
+                      Request Access
+                      <div className="rounded-full border-2 p-0.5 border-black">
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-12">
+      <footer className=" bg-white border-t border-gray-200 py-12">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 mb-12">
-            {/* Left - Logo & Description */}
+          <div className="grid md:grid-cols-1 gap-12 mb-12 relative">
             <div>
+              {/*  Logo & Description */}
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-bold">NB</span>
@@ -622,60 +546,55 @@ export default function Home() {
                   Newbridge
                 </span>
               </div>
-              <p className="text-gray-600 leading-relaxed max-w-sm">
+              <p className="text-gray-600 leading-relaxed max-w-md">
                 Connect with authentic citizen voices from underserved African
                 communities through AI-powered multilingual reporting. Break
                 barriers, tell untold stories, build community trust.
               </p>
             </div>
 
-            {/* Right - Links */}
-            <div className="grid grid-cols-2 gap-8">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-4">Product</h4>
-                <ul className="space-y-2 text-gray-600 text-sm">
-                  <li>
-                    <a href="#how-it-works" className="hover:text-gray-900">
-                      How it Works
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#team" className="hover:text-gray-900">
-                      Meet the Team
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#who-its-for" className="hover:text-gray-900">
-                      Who it's For
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#features" className="hover:text-gray-900">
-                      Core Features
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-4">Resources</h4>
-                <ul className="space-y-2 text-gray-600 text-sm">
-                  <li>
-                    <a href="#" className="hover:text-gray-900">
-                      Contact Us
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-gray-900">
-                      User Guide
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-gray-900">
-                      Privacy Policy
-                    </a>
-                  </li>
-                </ul>
-              </div>
+            <div>
+              <ul className="space-y-2 flex gap-4 text-gray-600 text-sm">
+                <li>
+                  <a href="#how-it-works" className="hover:text-gray-900">
+                    How it Works
+                  </a>
+                </li>
+                <li>
+                  <a href="#team" className="hover:text-gray-900">
+                    Meet the Team
+                  </a>
+                </li>
+                <li>
+                  <a href="#who-its-for" className="hover:text-gray-900">
+                    Who it's For
+                  </a>
+                </li>
+                <li>
+                  <a href="#features" className="hover:text-gray-900">
+                    Core Features
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900">
+                    Contact Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-gray-900">
+                    User Guide
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div className="absolute top-10 scale-x-110 -right-31 min-[1550px]:-translate-x-28">
+              <Image
+                src="/images/microphone.png"
+                alt="Microphones background"
+                width={500}
+                height={400}
+                className="object-contain scale-100 opacity-70"
+              />
             </div>
           </div>
 
