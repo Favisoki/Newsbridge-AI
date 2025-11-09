@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 // import { Cookies } from "react-cookie";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://newsbridge-backend.onrender.com";
 
 const client = axios.create({
   timeout: 300000,
