@@ -8,6 +8,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import useToast from "@/app/hooks/useToast"
+import { useCreateIndependentJournalistAccount } from "@/app/apis/auth/mutations"
 
 export default function TellUsAboutYourself() {
   const [formData, setFormData] = useState({
@@ -22,7 +23,18 @@ export default function TellUsAboutYourself() {
     agreeToTerms: false,
   })
 
-  const {errorToastHandler} = useToast()
+  const { errorToastHandler, successToastHandler } = useToast()
+  const { mutate: createJournalist, isPending } = useCreateIndependentJournalistAccount(
+  (errMsg) => {
+    // Error callback
+    errorToastHandler(errMsg);
+  },
+  (successMsg, data) => {
+    console.log("Success:", successMsg, data);
+    successToastHandler(successMsg);
+  }
+);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
@@ -36,10 +48,18 @@ export default function TellUsAboutYourself() {
     e.preventDefault()
 
         if (!formData.firstName || !formData.lastName || !formData.email || !formData.agreeToTerms) {
-      errorToastHandler("Please fill in all required fields and agree to the terms")
+          errorToastHandler("Please fill in all required fields and agree to the terms")
+          console.log("Please fill in all required fields and agree to the terms")
       return
     }
 
+    createJournalist({
+    firstName: formData.firstName,
+    lastName: formData.lastName,
+    email: formData.email,
+    agreeToTerms: formData.agreeToTerms,
+    // include any other fields your API requires
+  });
     // Handle form submission
   }
 
@@ -174,7 +194,7 @@ export default function TellUsAboutYourself() {
             <label className="text-sm text-gray-600">I agree to NewsBridge's Terms of Use and Privacy Policy</label>
           </div>
 
-          <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium">
+          <Button type="submit" disabled={isPending} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium">
             Submit request
           </Button>
         </form>
