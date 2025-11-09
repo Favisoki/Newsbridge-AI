@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import useToast from "@/app/hooks/useToast"
 
 export default function TellUsAboutYourself() {
   const [formData, setFormData] = useState({
@@ -21,6 +22,8 @@ export default function TellUsAboutYourself() {
     agreeToTerms: false,
   })
 
+  const {errorToastHandler} = useToast()
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target
     setFormData((prev) => ({
@@ -31,6 +34,12 @@ export default function TellUsAboutYourself() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+        if (!formData.firstName || !formData.lastName || !formData.email || !formData.agreeToTerms) {
+      errorToastHandler("Please fill in all required fields and agree to the terms")
+      return
+    }
+
     // Handle form submission
   }
 

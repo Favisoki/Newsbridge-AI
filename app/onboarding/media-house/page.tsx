@@ -4,6 +4,8 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { apiClient } from "@/lib/api-client"
 
 interface SuccessModalProps {
   isOpen: boolean
@@ -43,7 +45,10 @@ function SuccessModal({ isOpen, onClose }: SuccessModalProps) {
 }
 
 export default function MediaHouseOnboarding() {
+  const router = useRouter()
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [submitError, setSubmitError] = useState("")
   const [formData, setFormData] = useState({
     organizationName: "",
     workEmail: "",
@@ -105,11 +110,36 @@ export default function MediaHouseOnboarding() {
     return newErrors
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const newErrors = validateForm()
     if (Object.keys(newErrors).length === 0) {
-      setShowSuccessModal(true)
+      setLoading(true)
+      setSubmitError("")
+      try {
+        const response = await apiClient.mediaSignup({
+          organisation_name: formData.organizationName, // Note: British spelling in API
+          email: formData.workEmail,
+          coverages: [{ name: formData.focusArea }], // Required field per API docs
+          coverage_ids: [],
+          organisation_type: formData.organizationType,
+          country: formData.country,
+          city: formData.city,
+          website: formData.website || undefined,
+          agree_terms: formData.termsAccepted,
+          agree_request_access: formData.authorizationAccepted,
+        })
+
+        if (response.success) {
+          setShowSuccessModal(true)
+        } else {
+          setSubmitError(response.error || "Failed to submit. Please try again.")
+        }
+      } catch (err) {
+        setSubmitError("An error occurred. Please try again.")
+      } finally {
+        setLoading(false)
+      }
     } else {
       setErrors(newErrors)
     }
@@ -117,19 +147,7 @@ export default function MediaHouseOnboarding() {
 
   const handleCloseModal = () => {
     setShowSuccessModal(false)
-    // Reset form
-    setFormData({
-      organizationName: "",
-      workEmail: "",
-      focusArea: "",
-      organizationType: "",
-      focusArea2: "",
-      country: "",
-      city: "",
-      website: "",
-      termsAccepted: false,
-      authorizationAccepted: false,
-    })
+    router.push("/")
   }
 
   return (
@@ -156,6 +174,12 @@ export default function MediaHouseOnboarding() {
             <p className="text-muted-foreground text-lg">We need some basic information to get started</p>
           </div>
 
+          {submitError && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
+              {submitError}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Organization Info Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -173,6 +197,7 @@ export default function MediaHouseOnboarding() {
                       ? "border-destructive bg-red-50"
                       : "border-input bg-background hover:border-primary/50 focus:border-primary"
                   }`}
+                  disabled={loading}
                 />
                 {errors.organizationName && <p className="text-destructive text-xs mt-1">{errors.organizationName}</p>}
               </div>
@@ -191,6 +216,7 @@ export default function MediaHouseOnboarding() {
                       ? "border-destructive bg-red-50"
                       : "border-input bg-background hover:border-primary/50 focus:border-primary"
                   }`}
+                  disabled={loading}
                 />
                 {errors.workEmail && <p className="text-destructive text-xs mt-1">{errors.workEmail}</p>}
               </div>
@@ -209,6 +235,7 @@ export default function MediaHouseOnboarding() {
                       ? "border-destructive bg-red-50"
                       : "border-input bg-background hover:border-primary/50 focus:border-primary"
                   }`}
+                  disabled={loading}
                 >
                   <option value="">Select</option>
                   {focusAreaOptions.map((option) => (
@@ -231,6 +258,7 @@ export default function MediaHouseOnboarding() {
                       ? "border-destructive bg-red-50"
                       : "border-input bg-background hover:border-primary/50 focus:border-primary"
                   }`}
+                  disabled={loading}
                 >
                   <option value="">Select</option>
                   {organizationTypeOptions.map((option) => (
@@ -250,7 +278,8 @@ export default function MediaHouseOnboarding() {
                 name="focusArea2"
                 value={formData.focusArea2}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg border-2 border-input bg-background hover:border-primary/50 focus:border-primary transition-colors focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg border-2 border-input bg-background hover:border-primary/50 focus:border-primary transition-colors focus:outline-none disabled:opacity-50"
+                disabled={loading}
               >
                 <option value="">Select</option>
                 {focusAreaOptions.map((option) => (
@@ -274,6 +303,7 @@ export default function MediaHouseOnboarding() {
                       ? "border-destructive bg-red-50"
                       : "border-input bg-background hover:border-primary/50 focus:border-primary"
                   }`}
+                  disabled={loading}
                 >
                   <option value="">Select</option>
                   {countries.map((country) => (
@@ -296,6 +326,7 @@ export default function MediaHouseOnboarding() {
                       ? "border-destructive bg-red-50"
                       : "border-input bg-background hover:border-primary/50 focus:border-primary"
                   }`}
+                  disabled={loading}
                 >
                   <option value="">Select</option>
                   {formData.country &&
@@ -318,7 +349,8 @@ export default function MediaHouseOnboarding() {
                 value={formData.website}
                 onChange={handleChange}
                 placeholder="https://yourwebsite.com"
-                className="w-full px-4 py-3 rounded-lg border-2 border-input bg-background hover:border-primary/50 focus:border-primary transition-colors focus:outline-none"
+                className="w-full px-4 py-3 rounded-lg border-2 border-input bg-background hover:border-primary/50 focus:border-primary transition-colors focus:outline-none disabled:opacity-50"
+                disabled={loading}
               />
             </div>
 
@@ -332,6 +364,7 @@ export default function MediaHouseOnboarding() {
                   checked={formData.termsAccepted}
                   onChange={handleChange}
                   className="mt-1 w-4 h-4 accent-primary"
+                  disabled={loading}
                 />
                 <label htmlFor="terms" className="text-sm text-foreground">
                   I agree to NewsBridge's Terms of Use and Privacy Policy
@@ -347,6 +380,7 @@ export default function MediaHouseOnboarding() {
                   checked={formData.authorizationAccepted}
                   onChange={handleChange}
                   className="mt-1 w-4 h-4 accent-primary"
+                  disabled={loading}
                 />
                 <label htmlFor="authorization" className="text-sm text-foreground">
                   I confirm that I am authorized to request access on behalf of this media organization
@@ -361,9 +395,10 @@ export default function MediaHouseOnboarding() {
             <div className="flex justify-center pt-4">
               <button
                 type="submit"
-                className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/90 transition-colors"
+                disabled={loading}
+                className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Submit request
+                {loading ? "Submitting..." : "Submit request"}
               </button>
             </div>
           </form>
