@@ -8,11 +8,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import useToast from "@/app/hooks/useToast";
-import {
-  ObjectLiteral,
-  useCreateIndependentJournalistAccount,
-} from "@/app/apis/auth/mutations";
+import { useCreateIndependentJournalistAccount } from "@/app/api/auth/mutations";
 import { CheckCircle2 } from "lucide-react";
+import { saveSignupData } from "@/lib/utils";
+import { useAuth } from "@/app/context/auth-context";
 
 interface SuccessModalProps {
   firstName: string;
@@ -67,16 +66,26 @@ export default function TellUsAboutYourself() {
   const { errorToastHandler } = useToast();
   const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { setSignupData} = useAuth()
 
-  const { mutate: createJournalist, isPending, data } =
-    useCreateIndependentJournalistAccount(
-      (errMsg) => {
-        errorToastHandler(errMsg);
-      },
-      (_, data) => {
+  const {
+    mutate: createJournalist,
+    isPending,
+    data: dataInfo,
+  } = useCreateIndependentJournalistAccount(
+    (errMsg) => {
+      errorToastHandler(dataInfo?.data.detail || errMsg);
+    },
+    (_, data) => {
+      if (data) {
+        console.log(data?.data)
+        saveSignupData(data?.data as Partial<unknown>)
+        setSignupData(data?.data as Partial<unknown>);
         setIsModalOpen(true);
       }
+    }
     );
+  
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -89,10 +98,10 @@ export default function TellUsAboutYourself() {
       [name]:
         type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
-    
+
     // Clear error for this field when user starts typing
     if (errors[name]) {
-      setErrors(prev => {
+      setErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors[name];
         return newErrors;
@@ -102,33 +111,33 @@ export default function TellUsAboutYourself() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.firstName.trim()) {
       newErrors.firstName = "First name is required";
     }
-    
+
     if (!formData.lastName.trim()) {
       newErrors.lastName = "Last name is required";
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Invalid email format";
     }
-    
+
     if (!formData.country) {
       newErrors.country = "Country is required";
     }
-    
+
     if (!formData.city) {
       newErrors.city = "City is required";
     }
-    
+
     if (!formData.agreeToTerms) {
       newErrors.agreeToTerms = "You must accept the terms";
     }
-    
+
     return newErrors;
   };
 
@@ -136,7 +145,7 @@ export default function TellUsAboutYourself() {
     e.preventDefault();
 
     const validationErrors = validateForm();
-    
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
@@ -167,12 +176,7 @@ export default function TellUsAboutYourself() {
           href="/"
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
-          <Image
-            src={"/images/logo.png"}
-            width={28}
-            height={25}
-            alt={"Logo"}
-          />
+          <Image src={"/images/logo.png"} width={28} height={25} alt={"Logo"} />
           <span className="text-lg font-semibold text-[#3C60AF]">
             NewsBridge
           </span>
@@ -397,7 +401,7 @@ export default function TellUsAboutYourself() {
 
       {isModalOpen && (
         <SuccessModal
-          firstName={data?.data.first_name ?? ""}
+          firstName={dataInfo?.data.first_name ?? ""}
           onClose={() => setIsModalOpen(false)}
         />
       )}
