@@ -1,239 +1,228 @@
-'use client'
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Button } from '../ui/button';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useState, useEffect, useRef } from "react";
+import {
+  ArrowRight,
+} from "lucide-react";
+import Image from "next/image";
+import { Step1, stepInfo } from "./StepComponents";
+
+type activeType = 0 | 1 | 2;
 
 const HowItWorks = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState<number>(0);
+
+  const textDescription = {
+    0: [
+      "Citizens share stories via WhatsApp, text, voice, or photos, in their local languages. NewsBridge receives and prepares them for review.",
+      "AI instantly translates messages while keeping tone and cultural nuance intact. A message like “Maji ya kwashe gonakinmu” becomes “The flood destroyed our farms.",
+      "Verified journalists review, organize, and follow up on reports, turning firsthand accounts into reliable stories.",
+    ],
+    1: [
+      "Community members share stories via WhatsApp using voice messages, photos, or text in their local language.",
+      "Advanced Al preserves cultural context while translating reports into journalist's preferred language.",
+      "Verified jouralists access organized reports, verify sources, and collaborate with communities.",
+    ],
+    2: [
+      "Community members share stories via WhatsApp using voice messages, photos, or text in their local language.",
+      "Advanced Al preserves cultural context while translating reports into journalist's preferred language.",
+      "Verified jouralists access organized reports, verify sources, and collaborate with communities.",
+    ],
+  };
 
   const steps = [
     {
-      number: '01',
-      title: 'Citizens Report',
-      description: 'Community members share stories via WhatsApp using voice messages, photos, or text in their local language.',
-      circleContent: {
-        title: 'Active Reports',
-        badge: '23 New',
-        reports: [
-          { priority: 'High Priority', detail: 'Banditry - Plateau State', color: 'red' },
-          { priority: 'Medium Priority', detail: 'Flooding - Bayelsa state', color: 'yellow' }
-        ]
-      }
+      marker: "01",
+      heading: "Citizens Report",
+      text: textDescription[activeStep as activeType],
+      classes: "top-0 -translate-y-2 -translate-x-9",
+      textPosition: "-translate-y-4 translate-x-13",
     },
     {
-      number: '02',
-      title: 'AI Translation',
-      description: "Advanced AI preserves cultural context while translating reports into journalist's preferred language.",
-      circleContent: {
-        title: 'Translation Hub',
-        badge: '15 Active',
-        reports: [
-          { priority: 'Translating...', detail: 'Hausa → English', color: 'blue' },
-          { priority: 'Completed', detail: 'Yoruba → English', color: 'green' }
-        ]
-      }
+      marker: "02",
+      heading: "AI Translation",
+      text: textDescription[activeStep as activeType],
+      classes: "top-1/2 left-0  translate-x-24 -translate-y-12",
+      textPosition: "-translate-y-4 translate-x-0",
     },
     {
-      number: '03',
-      title: 'Journalist Dashboard',
-      description: 'Verified journalists access organized reports, verify sources, and collaborate with communities.',
-      circleContent: {
-        title: 'Dashboard',
-        badge: '8 Verified',
-        reports: [
-          { priority: 'Ready to Publish', detail: 'Story #147', color: 'green' },
-          { priority: 'Under Review', detail: 'Story #148', color: 'yellow' }
-        ]
-      }
-    }
+      marker: "03",
+      heading: "Journalist Dashboard",
+      text: textDescription[activeStep as activeType],
+      classes: "bottom-0 -translate-y-7 translate-x-2",
+      textPosition: "translate-y-2 translate-x-10",
+    },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % steps.length);
-    }, 6000);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    return () => clearInterval(interval);
+  useEffect(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    intervalRef.current = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % 3);
+    }, 2000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, []);
 
-  const currentStep = steps[activeStep];
-
-  const getPriorityColor = (color: string) => {
-    switch (color) {
-      case 'red':
-        return 'bg-red-50 border-red-200';
-      case 'yellow':
-        return 'bg-yellow-50 border-yellow-200';
-      case 'blue':
-        return 'bg-blue-50 border-blue-200';
-      case 'green':
-        return 'bg-green-50 border-green-200';
-      default:
-        return 'bg-gray-50 border-gray-200';
-    }
-  };
-
-  const getTextColor = (color: string) => {
-    switch (color) {
-      case 'red':
-        return 'text-red-600';
-      case 'yellow':
-        return 'text-yellow-700';
-      case 'blue':
-        return 'text-blue-600';
-      case 'green':
-        return 'text-green-600';
-      default:
-        return 'text-gray-600';
-    }
-  };
+  const StepComponent = stepInfo[activeStep as activeType];
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#0a1628] via-[#162744] to-[#0a1628] text-white p-8 md:p-16 relative overflow-hidden">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl"></div>
+    <section className=" bg-[#0E1B3E] flex items-center justify-center p-4 sm:p-8 font-sans relative z-10 overflow-hidden">
+      <div className="absolute h-full w-full inset-0">
+        <Image
+          src={"/how-it-works-bg.png"}
+          alt=""
+          fill
+          className="object-contain"
+        />
       </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left side - Text content */}
-          <div className="space-y-8 max-w-md">
-            <h1 className="text-5xl md:text-[40px] font-bold mb-6">How it Works</h1>
-            
-            <p className="text-lg text-gray-300 leading-relaxed">
-              From a single voice note to a verified story here's how NewsBridge connects communities and journalists in three simple steps.
+      <div className="absolute bottom-0 left-0 w-full">
+        <div className="grid grid-cols-4 items-end gap-8 max-w-7xl mx-auto">
+          <Image
+            src={"/ellipse.png"}
+            alt=""
+            width={400}
+            height={400}
+            className="object-contain scale-110"
+          />
+          <Image
+            src={"/ellipse.png"}
+            alt=""
+            width={350}
+            height={350}
+            className="object-contain translate-y-3 scale-110"
+          />
+          <Image
+            src={"/ellipse.png"}
+            alt=""
+            width={300}
+            height={300}
+            className="object-contain translate-y-5 scale-110"
+          />
+          <Image
+            src={"/ellipse.png"}
+            alt=""
+            width={250}
+            height={250}
+            className="object-contain translate-y-6 scale-110"
+          />
+        </div>
+      </div>
+      <div className="w-full max-w-7xl mx-auto px-8" id="how-it-works">
+        <div className="flex justify-between gap-12 h-[550px] mt-6">
+          <div className="max-w-md basis-[35%] mt-14">
+            <h1 className="text-[40px] font-semibold text-white mb-4">
+              How it Works
+            </h1>
+            <p className="text-lg text-white font-normal">
+              From a single voice note to a verified story here’s how NewsBridge
+              connects communities and journalists in three simple steps.
             </p>
-
-            <div className="">
-              <p className="text-lg italic font-normal text-[#FFFFFF] mb-4">Ready to amplify unheard voices?</p>
+            <div className="mt-7">
+              <p className="text-lg italic font-normal text-[#FFFFFF] mb-4">
+                Ready to amplify unheard voices?
+              </p>
               <div className="inline-flex items-center gap-2 underline underline-offset-3 bg-transparent outline-none! text-[#FEE00F] rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
                 Request Access
-                <div className='rounded-full border-2 p-0.5 border-[#FEE00F]'>
-                <ArrowRight className='w-4 h-4'/>
+                <div className="rounded-full border-2 p-0.5 border-[#FEE00F]">
+                  <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Right side - Interactive circle and steps */}
-          <div className="relative">
-            {/* Central circle */}
-            <div className="relative w-full max-w-md mx-auto">
-              {/* Main circle */}
-              <div className="relative bg-linear-to-br from-slate-700 to-slate-800 rounded-full w-80 h-80 mx-auto shadow-2xl flex items-center justify-center p-8">
-                <div className="w-full">
-                  <div className="bg-[#1e3a5f] rounded-2xl p-4 shadow-lg">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-white font-semibold">{currentStep.circleContent.title}</h3>
-                      <span className="bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold">
-                        {currentStep.circleContent.badge}
-                      </span>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      {currentStep.circleContent.reports.map((report, idx) => (
-                        <div 
-                          key={idx}
-                          className={`${getPriorityColor(report.color)} border rounded-lg p-3 transition-all duration-300`}
-                        >
-                          <div className={`font-semibold text-sm ${getTextColor(report.color)}`}>
-                            {report.priority}
-                          </div>
-                          <div className="text-xs text-gray-600 mt-1">
-                            {report.detail}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+          <div className="basis-[65%]">
+            {/* --- Layout Container (Desktop Only) --- */}
+            {/* This layout focuses on the desktop view from the image for conciseness */}
+            <div className="relative w-full mt-34">
+              <div className="z-10 w-full">
+                {/* Dark Circle Element */}
+                <div
+                  className="relative w-[287px] h-[287px] sm:w-[287px] sm:h-[287px] rounded-full bg-[#5A698B] flex items-center justify-center"
+                  style={{ border: "1px solid #000000" }}
+                >
+                  {/* Inner Card Element */}
+                  <div
+                    key={activeStep}
+                    style={{
+                      animation: "fadeInUp 1.3s ease-out",
+                      animationDelay: "0.2s",
+                      animationFillMode: "both",
+                    }}
+                  >
+                    <StepComponent />
                   </div>
                 </div>
               </div>
 
-              {/* Step indicators around the circle */}
-              {steps.map((step, index) => {
-                const angle = (index * 120) - 90;
-                const radius = 200;
-                const x = Math.cos((angle * Math.PI) / 180) * radius;
-                const y = Math.sin((angle * Math.PI) / 180) * radius;
-
-                return (
-                  <div
-                    key={index}
-                    className="absolute"
-                    style={{
-                      left: '50%',
-                      top: '50%',
-                      transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`
-                    }}
+              {/* 2. The Arc and Markers */}
+              <div className=" top-1/2 left-[32%] transform -translate-y-1/2 w-[350px] h-[450px]">
+                {/* The Arc */}
+                <div className="absolute left-0 top-0 translate-x-60 -translate-y-38 h-full">
+                  <svg
+                    width="288"
+                    height="100"
+                    viewBox="0 0 288 100"
+                    className="overflow-visible -rotate-14"
                   >
-                    {/* Dotted line connector */}
-                    <svg className="absolute" style={{ 
-                      left: '50%', 
-                      top: '50%',
-                      width: Math.abs(x),
-                      height: Math.abs(y),
-                      transform: `translate(${x > 0 ? '-100%' : '0'}, ${y > 0 ? '-100%' : '0'})`
-                    }}>
-                      <line 
-                        x1={x > 0 ? '100%' : '0'} 
-                        y1={y > 0 ? '100%' : '0'} 
-                        x2={x > 0 ? '0' : '100%'} 
-                        y2={y > 0 ? '0' : '100%'} 
-                        stroke="white" 
-                        strokeWidth="2" 
-                        strokeDasharray="5,5"
-                        opacity="0.3"
-                      />
-                    </svg>
+                    <path
+                      d="M 0 0 A 200 200 0 0 1 0 348"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="5"
+                      strokeDasharray="10,10"
+                    />
+                  </svg>
+                  {/* Markers (Hardcoded) */}
+                  {steps.map((data, index) => {
+                    const isActive = index === activeStep;
 
-                    {/* Step circle */}
-                    <div className="relative">
-                      <div 
-                        className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-500 ${
-                          activeStep === index 
-                            ? 'bg-yellow-400 text-gray-900 shadow-lg shadow-yellow-400/50 scale-110' 
-                            : 'bg-white text-gray-900'
-                        }`}
-                      >
-                        {step.number}
-                      </div>
+                    return (
+                      <div key={index} className={`absolute ${data.classes}`}>
+                        {/* Marker */}
+                        <div
+                          className={`w-[71px] ${
+                            isActive
+                              ? "bg-[#FDCD20] text-white"
+                              : "bg-[#FFFDEC] text-[#FCC527]"
+                          } h-[71px] rounded-full flex items-center justify-center text-lg font-bold z-20`}
+                        >
+                          {data.marker}
+                        </div>
 
-                      {/* Step info */}
-                      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-64 text-center">
-                        <h3 className={`font-bold text-lg mb-2 transition-colors duration-500 ${
-                          activeStep === index ? 'text-yellow-400' : 'text-white'
-                        }`}>
-                          {step.title}
-                        </h3>
-                        <p className="text-sm text-gray-300">
-                          {step.description}
-                        </p>
+                        {/* Text beside marker */}
+                        <div
+                          key={activeStep}
+                          className={`absolute top-0 left-24 w-96 ${data.textPosition} transition-all duration-700 ease-out`}
+                          style={{
+                            animation: "fadeInUp 0.7s ease-out",
+                            animationFillMode: "both",
+                            animationDelay: `${index * 0.15}s`,
+                          }}
+                        >
+                          <h1 className="text-lg font-bold text-white mb-2">
+                            {data.heading}
+                          </h1>
+                          <p className="text-sm text-white font-normal leading-[180%]">
+                            {data.text[index]}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })}
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Progress indicator */}
-      <div className="fixed bottom-8 right-8 flex gap-2">
-        {steps.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setActiveStep(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              activeStep === index ? 'bg-yellow-400 w-8' : 'bg-gray-600'
-            }`}
-          />
-        ))}
-      </div>
-    </div>
+    </section>
   );
 };
 
