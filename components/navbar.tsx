@@ -104,18 +104,18 @@ export function Navbar() {
               <Link href="/auth/login">
                 <Button
                   variant="outline"
-                  className="text-[#3754A3] border-none rounded-2xl bg-[#E8EEFF] h-14 w-36"
+                  className="text-[#3754A3] border-none rounded-2xl hover:scale-105 bg-[#E8EEFF] h-14 w-36"
                 >
                   Sign in
                 </Button>
               </Link>
               <Link href="/auth/signup">
                 <Button
-                  className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] text-white h-14 w-36 rounded-2xl"
+                  className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] text-white h-14 w-36 hover:scale-105 rounded-2xl"
                   style={{
                     borderImageSource:
                       "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
-                    boxShadow: "0px 0px 0px 1px #8078FF"
+                    boxShadow: "0px 0px 0px 1px #8078FF",
                   }}
                 >
                   Request Access

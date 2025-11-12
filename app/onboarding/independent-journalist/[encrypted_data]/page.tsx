@@ -8,48 +8,12 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import useToast from "@/app/hooks/useToast";
-import { useCreateIndependentJournalistAccount } from "@/app/api/auth/mutations";
-import { CheckCircle2 } from "lucide-react";
+import { useMediaJournalistSignup } from "@/app/api/auth/mutations";
 import { saveSignupData } from "@/lib/utils";
 import { useAuth } from "@/app/context/auth-context";
+import { useParams, useRouter } from "next/navigation";
 
-interface SuccessModalProps {
-  firstName: string;
-  onClose: () => void;
-}
-
-function SuccessModal({ firstName, onClose }: SuccessModalProps) {
-  return (
-    <div className="fixed inset-0 bg-black/60 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl p-8 max-w-md mx-4">
-        <div className="flex justify-center mb-6">
-          <div className="relative">
-            <div className="absolute inset-0 bg-green-100 rounded-full animate-pulse" />
-            <CheckCircle2 className="w-16 h-16 text-green-500 relative z-10" />
-          </div>
-        </div>
-
-        <h2 className="text-center text-xl font-bold text-gray-900 mb-2">
-          Thank you, {firstName}
-        </h2>
-
-        <p className="text-center text-gray-600 mb-8">
-          Your request has been submitted for review. You'll receive an email
-          once your access is approved
-        </p>
-
-        <Button
-          onClick={onClose}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium"
-        >
-          Back to Homepage
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-export default function TellUsAboutYourself() {
+export default function TellUsAboutYourselfNow() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -62,30 +26,30 @@ export default function TellUsAboutYourself() {
     agreeToTerms: false,
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { errorToastHandler } = useToast();
-  const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const { setSignupData} = useAuth()
+  const { setSignupData } = useAuth();
+  const params = useParams();
+  const router = useRouter();
+  const encrypted_data = params?.encrypted_data as string;
 
   const {
-    mutate: createJournalist,
+    mutate: createMediaHouseJournalist,
     isPending,
     data: dataInfo,
-  } = useCreateIndependentJournalistAccount(
+  } = useMediaJournalistSignup(
     (errMsg) => {
       errorToastHandler(dataInfo?.data.detail || errMsg);
     },
     (_, data) => {
       if (data) {
-        console.log(data?.data)
-        saveSignupData(data?.data as Partial<unknown>)
+        console.log(data?.data);
+        saveSignupData(data?.data as Partial<unknown>);
         setSignupData(data?.data as Partial<unknown>);
-        setIsModalOpen(true);
+        router.push("/onboarding/create-password");
       }
     }
-    );
-  
+  );
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -154,7 +118,7 @@ export default function TellUsAboutYourself() {
     // Clear any previous errors
     setErrors({});
 
-    createJournalist({
+    const payload = {
       first_name: formData.firstName,
       last_name: formData.lastName,
       email: formData.email,
@@ -166,7 +130,9 @@ export default function TellUsAboutYourself() {
       agree_terms: formData.agreeToTerms,
       languages: [{ name: "English" }],
       coverages: [{ name: "General" }],
-    });
+    };
+
+    createMediaHouseJournalist({ data: payload, encrypted_data });
   };
 
   return (
@@ -398,13 +364,6 @@ export default function TellUsAboutYourself() {
           </Button>
         </form>
       </div>
-
-      {isModalOpen && (
-        <SuccessModal
-          firstName={dataInfo?.data.first_name ?? ""}
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
 
       <div className="text-center mt-6 text-sm text-gray-600">
         <span>Need help? </span>

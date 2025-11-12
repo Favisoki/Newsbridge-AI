@@ -2,6 +2,7 @@ import HowItWorks from "@/components/landing-page/HowItWorks";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -69,8 +70,9 @@ export default function Home() {
             </p>
 
             {/* CTA Button */}
+            <Link href={"/auth/signup"}>
             <Button
-              className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] hover:[#3754A3] w-56 h-11 text-white px-8 py-7 text-base rounded-2xl inline-flex items-center gap-2 relative z-10"
+              className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] hover:[#3754A3] hover:scale-105 w-56 h-11 text-white px-8 py-7 text-base rounded-2xl inline-flex items-center gap-2 relative z-10"
               style={{
                 borderImageSource:
                   "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
@@ -82,6 +84,7 @@ export default function Home() {
                 <ArrowRight className="w-6 h-6" strokeWidth={3} />
               </div>
             </Button>
+              </Link>
           </div>
         </div>
       </main>

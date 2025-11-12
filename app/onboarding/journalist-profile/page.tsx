@@ -12,59 +12,73 @@ import { useUpdateUser } from "@/app/api/auth/mutations";
 import useToast from "@/app/hooks/useToast";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth-context";
+import { useDraft } from "@/app/hooks/useSaveDraft";
 
 export default function JournalistProfile() {
-  const { signupData, user } = useAuth()
-  const localStorageBackup = getSignupData()
+  const { signupData, user } = useAuth();
+  const localStorageBackup = getSignupData();
   const existingData = user || signupData || localStorageBackup;
   const router = useRouter();
-
-  console.log(existingData);
 
   // Helper function to normalize data from array of objects to array of strings
   const normalizeToArray = (data: any): string[] => {
     if (!data) return [];
     if (Array.isArray(data)) {
-      return data.map(item => typeof item === 'string' ? item : item.name);
+      return data.map((item) => (typeof item === "string" ? item : item.name));
     }
-    if (typeof data === 'object' && data.name) {
+    if (typeof data === "object" && data.name) {
       return [data.name];
     }
     return [];
   };
 
+  const hasFreshUserData = Boolean(user || signupData);
+
   const initialData = useRef({
-    firstName: existingData?.first_name || existingData?.firstName || "Trump",
-    lastName: existingData?.last_name || existingData?.lastName || "Alex",
-    email: existingData?.email || "example@gbail.noc",
-    phone: existingData?.phone_number || existingData?.phone || "123456687",
+    firstName: existingData?.first_name || existingData?.firstName || "",
+    lastName: existingData?.last_name || existingData?.lastName || "",
+    email: existingData?.email || "",
+    phone: existingData?.phone_number || existingData?.phone || "",
     country: existingData?.country || "Nigeria",
-    city: existingData?.city || "Abuja",
-    coverages: normalizeToArray(existingData?.coverages),
+    city: existingData?.city || "Lagos",
+    coverages: normalizeToArray(existingData?.coverages), // General, Politics, Economics
+    regions: normalizeToArray(existingData?.regions), // ✅ NEW: North, West, East, South
     languages: normalizeToArray(existingData?.languages),
   });
 
-  const [formData, setFormData] = useState(initialData.current);
+  // ✅ Use the draft hook - always enabled for saving
+  const {
+    data: formData,
+    setData: setFormData,
+    clearDraft,
+    hasDraft,
+    isLoading: isDraftLoading,
+  } = useDraft({
+    key: "journalist-profile-draft",
+    initialData: initialData.current,
+    enabled: true,
+    onSave: (data) => {
+      console.log("✅ Draft saved successfully:", data);
+    },
+    onLoad: (data) => {
+      console.log("✅ Draft loaded successfully:", data);
+    },
+  });
+
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { errorToastHandler, successToastHandler } = useToast();
 
-  // once backend logic is fixed, we'll tackle this
   const {
     mutate: updateUser,
     isPending,
     data: dataInfo,
   } = useUpdateUser(
     (errMsg) => {
-      // errorToastHandler(dataInfo?.data.detail || errMsg)
-      console.log(
-        "Failed to update user info plus endpoint failed with status of 500"
-      );
-      router.push("/dashboard");
-      successToastHandler("Welcome to your Dashboard")
+      errorToastHandler(dataInfo?.data.detail || errMsg);
     },
     (_, data) => {
-      successToastHandler("Welcome to your Dashboard")
-      router.push("/dashboard");
+      clearDraft();
+      router.push("/dashboard?msg=firsttime-signup");
     }
   );
 
@@ -72,23 +86,34 @@ export default function JournalistProfile() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData((prev: typeof formData) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const toggleRegion = (region: string) => {
-    setFormData((prev) => ({
+  // For coverages (General, Politics, Economics)
+  const toggleCoverage = (coverage: string) => {
+    setFormData((prev: typeof formData) => ({
       ...prev,
-      coverages: (prev.coverages || []).includes(region)
-        ? (prev.coverages || []).filter((r: string) => r !== region)
-        : [...(prev.coverages || []), region],
+      coverages: (prev.coverages || []).includes(coverage)
+        ? (prev.coverages || []).filter((c: string) => c !== coverage)
+        : [...(prev.coverages || []), coverage],
+    }));
+  };
+
+  //  For regions (North, West, East, South)
+  const toggleRegion = (region: string) => {
+    setFormData((prev: typeof formData) => ({
+      ...prev,
+      regions: (prev.regions || []).includes(region)
+        ? (prev.regions || []).filter((r: string) => r !== region)
+        : [...(prev.regions || []), region],
     }));
   };
 
   const toggleLanguage = (language: string) => {
-    setFormData((prev) => ({
+    setFormData((prev: typeof formData) => ({
       ...prev,
       languages: (prev.languages || []).includes(language)
         ? (prev.languages || []).filter((l: string) => l !== language)
@@ -101,7 +126,6 @@ export default function JournalistProfile() {
 
     const changedFields: any = {};
 
-    // Simple comparison
     for (const key in formData) {
       const current = formData[key as keyof typeof formData];
       const initial = initialData.current[key as keyof typeof formData];
@@ -110,11 +134,6 @@ export default function JournalistProfile() {
         changedFields[key] = current;
       }
     }
-
-    // if (Object.keys(changedFields).length === 0) {
-    //   errorToastHandler("No changes detected")
-    //   return
-    // }
 
     // Transform arrays into objects for backend
     if (changedFields.languages) {
@@ -129,9 +148,27 @@ export default function JournalistProfile() {
       );
     }
 
-    console.log("Changed fields (transformed):", changedFields);
-    updateUser({ data: changedFields });
+    //  Transform regions into objects for backend
+    if (changedFields.regions) {
+      changedFields.regions = changedFields.regions.map(
+        (region: string, index: number) => ({ id: index, name: region })
+      );
+    }
+
+    console.log("📤 Submitting changed fields:", changedFields);
+    updateUser({ data: changedFields, id: existingData?.id });
   };
+
+  if (isDraftLoading) {
+    return (
+      <div className="w-full max-w-2xl flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your profile...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-2xl">
@@ -145,9 +182,17 @@ export default function JournalistProfile() {
       </div>
 
       <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Welcome to NewsBridge {formData.firstName}
-        </h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-3xl font-bold text-gray-900">
+            Welcome to NewsBridge {formData.firstName}
+          </h1>
+          {hasDraft && (
+            <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full flex items-center gap-1">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              Draft saved
+            </span>
+          )}
+        </div>
         <p className="text-gray-600 mb-8">
           Let's set up your journalist profile.
         </p>
@@ -240,18 +285,42 @@ export default function JournalistProfile() {
             </div>
           </div>
 
+          {/* ✅ Preferred coverages (General, Politics, Economics) */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              Preferred coverages
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {["General", "Politics", "Economics"].map((coverage) => (
+                <button
+                  key={coverage}
+                  type="button"
+                  onClick={() => toggleCoverage(coverage)}
+                  className={`px-4 py-2 rounded-lg border-2 transition-colors ${
+                    (formData.coverages || []).includes(coverage)
+                      ? "border-blue-600 bg-blue-50 text-blue-600"
+                      : "border-gray-300 text-gray-600 hover:border-gray-400"
+                  }`}
+                >
+                  {coverage}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* ✅ Preferred reporting region (North, West, East, South) */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">
               Preferred reporting region
             </label>
             <div className="flex flex-wrap gap-2">
-              {["General", "Politics", "Economics"].map((region) => (
+              {["North", "West", "East", "South"].map((region) => (
                 <button
                   key={region}
                   type="button"
                   onClick={() => toggleRegion(region)}
                   className={`px-4 py-2 rounded-lg border-2 transition-colors ${
-                    (formData.coverages || []).includes(region)
+                    (formData.regions || []).includes(region)
                       ? "border-blue-600 bg-blue-50 text-blue-600"
                       : "border-gray-300 text-gray-600 hover:border-gray-400"
                   }`}
@@ -262,6 +331,7 @@ export default function JournalistProfile() {
             </div>
           </div>
 
+          {/* ✅ Preferred reporting language */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">
               Preferred reporting language
@@ -301,7 +371,6 @@ export default function JournalistProfile() {
         </a>
       </div>
 
-      {/* Success Modal */}
       {showSuccessModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center relative">

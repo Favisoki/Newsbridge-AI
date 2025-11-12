@@ -19,6 +19,7 @@ export function middleware(req: NextRequest) {
   const specialRoutes = [
     "/onboarding/password-created",
     "/onboarding/journalist-profile",
+    "/onboarding/setup-mediahouse-profile"
   ];
 
   const matchesRoute = (routes: string[]) =>

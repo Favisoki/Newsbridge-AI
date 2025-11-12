@@ -62,7 +62,7 @@ const HowItWorks = () => {
     }
     intervalRef.current = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % 3);
-    }, 2000);
+    }, 4000);
 
     return () => {
       if (intervalRef.current) {

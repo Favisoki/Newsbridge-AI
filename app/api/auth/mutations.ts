@@ -3,11 +3,44 @@ import { ObjectLiteral } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 
-
-const retrieveJournalistInfo = async (data: ObjectLiteral) => {
+const logout = async (data: ObjectLiteral) => {
   const response = request({
-    url: "/retieveJournalistInfo/",
-    method: "GET",
+    url: "/logout/",
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
+const MediaHouseJournalistSignup = async (
+  data: ObjectLiteral,
+  encrypted_data: string
+) => {
+  const response = request({
+    url: `/MediaHouseJournalistSignup/${encrypted_data}`,
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
+const sendResetEmail = async (data: ObjectLiteral) => {
+  const response = request({
+    url: "/reset/",
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
+const resetEmail = async (
+  data: ObjectLiteral,
+  uid64: string,
+  token: string
+) => {
+  const response = request({
+    url: `/reset-password/${uid64}/${token}/`,
+    method: "POST",
     data,
   });
   return response;
@@ -40,7 +73,11 @@ const login = async (data: ObjectLiteral) => {
   return response;
 };
 
-const createPassword = async (data: ObjectLiteral, uid64: string, token: string) => {
+const createPassword = async (
+  data: ObjectLiteral,
+  uid64: string,
+  token: string
+) => {
   const response = request({
     url: `/create-password/${uid64}/${token}/`,
     method: "POST",
@@ -50,9 +87,9 @@ const createPassword = async (data: ObjectLiteral, uid64: string, token: string)
   return response;
 };
 
-const updateUser = async (data: ObjectLiteral) => {
+const updateUser = async (data: ObjectLiteral, id: number) => {
   const response = request({
-    url: `/user-update/`,
+    url: `/user-update/${id}/`,
     method: "PATCH",
     data,
   });
@@ -107,9 +144,13 @@ export const useCreatePassword = (
   cb: (message: string, data?: ObjectLiteral) => void
 ) => {
   return useMutation({
-    mutationFn: ({ data, uid64, token }: { 
-      data: ObjectLiteral; 
-      uid64: string; 
+    mutationFn: ({
+      data,
+      uid64,
+      token,
+    }: {
+      data: ObjectLiteral;
+      uid64: string;
       token: string;
     }) => createPassword(data, uid64, token),
     mutationKey: ["create-password"],
@@ -117,7 +158,7 @@ export const useCreatePassword = (
       const message = response?.data?.message;
       const data = response;
       cb(message, data);
-      return data
+      return data;
     },
     onError(error: AxiosError) {
       const message =
@@ -130,26 +171,15 @@ export const useCreatePassword = (
   });
 };
 
-export const useSetToken = (
-  errorCb?: (err: string) => void,
-  cb?: (message: string, data?: ObjectLiteral) => void
-) => {
+export const useSetToken = (onError?: (error: string) => void) => {
   return useMutation({
-    mutationFn: setToken,
-    mutationKey: ["set-token"],
-    onSuccess(response: AxiosResponse) {
-      const message = response?.data?.message;
-      const data = response;
-      cb?.(message, data);
-      return data
-    },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        (Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message);
-      errorCb?.(message || error.message);
+    mutationFn: async (payload: {
+      token: string;
+      user: any;
+      refresh?: string;
+    }) => setToken(payload),
+    onError: (error: any) => {
+      onError?.(error.message || "Failed to set authentication");
     },
   });
 };
@@ -159,11 +189,12 @@ export const useUpdateUser = (
   cb: (message: string, data?: ObjectLiteral) => void
 ) => {
   return useMutation({
-     mutationFn: updateUser,
+    mutationFn: ({ data, id }: { data: ObjectLiteral; id: number }) =>
+      updateUser(data, id),
     mutationKey: ["update-user"],
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.message;
-      const data = response?.data?.data;
+      const data = response;
 
       cb(message, data);
     },
@@ -183,7 +214,7 @@ export const useLogin = (
   cb: (message: string, data?: ObjectLiteral) => void
 ) => {
   return useMutation({
-     mutationFn: login,
+    mutationFn: login,
     mutationKey: ["login"],
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.message;
@@ -202,13 +233,36 @@ export const useLogin = (
   });
 };
 
+export const useLogout = (
+  errorCb?: (err: string) => void,
+  cb?: (message: string, data?: ObjectLiteral) => void
+) => {
+  return useMutation({
+    mutationFn: logout,
+    mutationKey: ["logout"],
+    onSuccess(response: AxiosResponse) {
+      const message = response?.data?.message;
+      const data = response;
+
+      cb?.(message, data);
+    },
+    onError(error: AxiosError) {
+      const message =
+        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
+        Array.isArray((error.response?.data as { message: string[] })?.message)
+          ? (error.response?.data as { message: string[] })?.message.join(", ")
+          : (error.response?.data as { message: string })?.message;
+      errorCb?.(message || error.message);
+    },
+  });
+};
 
 export const useMediaSignup = (
   errorCb: (err: string) => void,
   cb: (message: string, data?: ObjectLiteral) => void
 ) => {
   return useMutation({
-     mutationFn: mediaSignup,
+    mutationFn: mediaSignup,
     mutationKey: ["media-signup"],
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.message;
@@ -227,3 +281,87 @@ export const useMediaSignup = (
   });
 };
 
+export const useSendResetEmail = (
+  errorCb: (err: string) => void,
+  cb: (message: string, data?: ObjectLiteral) => void
+) => {
+  return useMutation({
+    mutationFn: sendResetEmail,
+    mutationKey: ["send-reset-email"],
+    onSuccess(response: AxiosResponse) {
+      const message = response?.data?.message;
+      const data = response;
+
+      cb(message, data);
+    },
+    onError(error: AxiosError) {
+      const message =
+        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
+        Array.isArray((error.response?.data as { message: string[] })?.message)
+          ? (error.response?.data as { message: string[] })?.message.join(", ")
+          : (error.response?.data as { message: string })?.message;
+      errorCb(message || error.message);
+    },
+  });
+};
+export const useMediaJournalistSignup = (
+  errorCb: (err: string) => void,
+  cb: (message: string, data?: ObjectLiteral) => void
+) => {
+  return useMutation({
+    mutationFn: ({
+      data,
+      encrypted_data,
+    }: {
+      data: ObjectLiteral;
+      encrypted_data: string;
+    }) => MediaHouseJournalistSignup(data, encrypted_data),
+    mutationKey: ["media-journalist-invite-signup"],
+    onSuccess(response: AxiosResponse) {
+      const message = response?.data?.message;
+      const data = response;
+
+      cb(message, data);
+    },
+    onError(error: AxiosError) {
+      const message =
+        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
+        Array.isArray((error.response?.data as { message: string[] })?.message)
+          ? (error.response?.data as { message: string[] })?.message.join(", ")
+          : (error.response?.data as { message: string })?.message;
+      errorCb(message || error.message);
+    },
+  });
+};
+
+export const useResetEmail = (
+  errorCb: (err: string) => void,
+  cb: (message: string, data?: ObjectLiteral) => void
+) => {
+  return useMutation({
+    mutationFn: ({
+      data,
+      uid64,
+      token,
+    }: {
+      data: ObjectLiteral;
+      uid64: string;
+      token: string;
+    }) => resetEmail(data, uid64, token),
+    mutationKey: ["reset-email"],
+    onSuccess(response: AxiosResponse) {
+      const message = response?.data?.message;
+      const data = response;
+
+      cb(message, data);
+    },
+    onError(error: AxiosError) {
+      const message =
+        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
+        Array.isArray((error.response?.data as { message: string[] })?.message)
+          ? (error.response?.data as { message: string[] })?.message.join(", ")
+          : (error.response?.data as { message: string })?.message;
+      errorCb(message || error.message);
+    },
+  });
+};

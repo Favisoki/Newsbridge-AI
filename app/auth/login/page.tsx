@@ -46,16 +46,32 @@ export default function LoginPage() {
       errorToastHandler(errMsg);
       setError(errMsg);
     },
-    (success, data) => {
-      if (data?.status === 200 && data?.data?.access && data?.data?.user)
-        setUser(data?.data.user)
-        setToken({
-          token: data?.data.access,
-          user: data?.data.user,
-        });
-      successToastHandler("Login Successful");
-      router.refresh()
-      setTimeout(() => router.push("/dashboard"), 100);
+    (_, data) => {
+      if (data?.status === 200 && data?.data?.access && data?.data?.user) {
+        // Set the user in context
+        setUser(data?.data.user);
+        
+        // Set the token in cookies via API route
+        setToken(
+          {
+            token: data?.data.access,
+            refresh: data?.data.refresh,
+            user: data?.data.user,
+          },
+          {
+            onSuccess: () => {
+              console.log(" Cookies set successfully");
+              router.refresh();
+              // Small delay to ensure cookies are set
+              setTimeout(() => router.push("/dashboard?msg=login-success"), 200);
+            },
+            onError: (error) => {
+              console.error("Failed to set cookies:", error);
+              errorToastHandler("Authentication setup failed. Please try logging in again.");
+            },
+          }
+        );
+      }
     }
   );
 
