@@ -262,4 +262,71 @@ class ApiClient {
 
 export const apiClient = new ApiClient()
 
-export default apiClient
+export const superadminApi = {
+  // Dashboard metrics
+  async getDashboardMetrics() {
+    return apiClient.request("/superadmin/metrics/", {
+      method: "GET",
+    })
+  },
+
+  // User management
+  async getAllUsers(params?: {
+    status?: "all" | "pending" | "approved" | "rejected"
+    search?: string
+    page?: number
+  }) {
+    const queryParams = new URLSearchParams()
+    if (params?.status && params.status !== "all") queryParams.append("status", params.status)
+    if (params?.search) queryParams.append("search", params.search)
+    if (params?.page) queryParams.append("page", params.page.toString())
+
+    return apiClient.request(`/superadmin/users/?${queryParams.toString()}`, {
+      method: "GET",
+    })
+  },
+
+  async approveUser(userId: string) {
+    return apiClient.request(`/approveuser/${userId}`, {
+      method: "POST",
+    })
+  },
+
+  async rejectUser(userId: string) {
+    return apiClient.request(`/superadmin/users/${userId}/reject/`, {
+      method: "POST",
+    })
+  },
+
+  async revokeUserAccess(userId: string) {
+    return apiClient.request(`/superadmin/users/${userId}/revoke/`, {
+      method: "POST",
+    })
+  },
+
+  async getUserDetails(userId: string) {
+    return apiClient.request(`/superadmin/users/${userId}/`, {
+      method: "GET",
+    })
+  },
+
+  // Reports management
+  async getAllReports(params?: { search?: string; page?: number; filter?: string }) {
+    const queryParams = new URLSearchParams()
+    if (params?.search) queryParams.append("search", params.search)
+    if (params?.page) queryParams.append("page", params.page.toString())
+    if (params?.filter) queryParams.append("filter", params.filter)
+
+    return apiClient.request(`/reports/?${queryParams.toString()}`, {
+      method: "GET",
+    })
+  },
+
+  // Invite users
+  async inviteUsers(emails: string[]) {
+    return apiClient.request("/superadmin/invite/", {
+      method: "POST",
+      body: JSON.stringify({ emails }),
+    })
+  },
+}
