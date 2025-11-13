@@ -15,6 +15,7 @@ import Logo from "@/components/Common/Logo";
 import GoBack from "@/components/Common/go-back";
 import GradientButton from "@/components/ui/gradient-button";
 import AuthWrapper from "@/components/Layouts/auth-wrapper";
+import CustomInput from "@/components/ui/custom-input";
 
 const style = {
   input:
@@ -141,62 +142,35 @@ export default function LoginPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email */}
-            <div>
-              <label className="block text-base font-medium text-[#27272A] mb-2">
-                Email Address
-              </label>
-              <div className="flex items-center rounded-2xl py-2 px-4 border border-[#e5e7eb]">
-                <Mail className="size-6 text-[#39474F]/65" />
-                <Input
-                  type="email"
-                  placeholder="your.email@example.com"
-                  className={style.input}
-                  value={formData.email}
-                  onChange={(e) =>
+          {/* Email */}
+          <CustomInput
+              type={"text"}
+              label="New Password"
+              placeholder="your.email@example.com"
+              value={formData.email}
+               onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  required
-                  disabled={isPending}
-                />
-              </div>
-            </div>
+            error={undefined}
+            disabled={isPending}
+              name={"email"}
+            />
 
-            {/* Password */}
-            <div>
-              <label className="block text-base font-medium text-[#27272A] mb-2">
-                Password
-              </label>
-              <div className="relative flex items-center rounded-2xl py-2 px-1 border border-[#e5e7eb]">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  className={`${style.input}`}
-                  value={formData.password}
-                  onChange={(e) =>
+          {/* Password */}
+          <CustomInput
+              type={"password"}
+              label="New Password"
+              placeholder="Enter your password"
+              value={formData.password}
+               onChange={(e) =>
                     setFormData({ ...formData, password: e.target.value })
                   }
-                  required
-                  disabled={isPending}
-                />
-                <div
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showPassword ? (
-                    <EyeOff
-                      strokeWidth={1.5}
-                      className="w-7 h-7 text-[#192D65]/60"
-                    />
-                  ) : (
-                    <Eye
-                      strokeWidth={1.5}
-                      className="w-7 h-7 text-[#192D65]/60"
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
+              showPassword={showPassword}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+            error={undefined}
+            disabled={isPending}
+              name={"password"}
+            />
 
             {/* Forgot Password Link */}
             <div className="text-left w-full">

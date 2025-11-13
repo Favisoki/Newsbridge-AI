@@ -14,6 +14,7 @@ const signUpDetails: {
   bulletins: string[];
   borderColor: string;
   variant?: "default" | "primary" | "secondary";
+  href: string
 }[] = [
   {
     Icon: "/Frame5.png",
@@ -24,7 +25,8 @@ const signUpDetails: {
       "Stay connected across regions",
     ],
     borderColor: "#3754A3",
-    variant: "primary"
+    variant: "primary",
+    href: "/onboarding/independent-journalist"
   },
   {
     Icon: "/Frame4.png",
@@ -35,7 +37,8 @@ const signUpDetails: {
       "Stay connected across regions",
     ],
     borderColor: "#FCC527",
-    variant: "secondary"
+    variant: "secondary",
+    href: "/onboarding/media-house"
   },
 ];
 
@@ -88,7 +91,7 @@ export default function SignupPage() {
                     );
                   })}
                 </ul>
-                <Link href="/onboarding/independent-journalist">
+                <Link href={data.href}>
                   <GradientButton
                     btnText="Get Started"
                     variant={data?.variant}
