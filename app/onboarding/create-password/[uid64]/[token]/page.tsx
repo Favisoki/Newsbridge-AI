@@ -12,6 +12,7 @@ import useToast from "@/app/hooks/useToast";
 import { useAuth } from "@/app/context/auth-context";
 import AuthWrapper from "@/components/Layouts/auth-wrapper";
 import GradientButton from "@/components/ui/gradient-button";
+import CustomInput from "@/components/ui/custom-input";
 
 export default function CreatePasswordPage() {
   const params = useParams();
@@ -26,21 +27,20 @@ export default function CreatePasswordPage() {
   });
   const { setUser } = useAuth();
 
-  
   const { errorToastHandler, successToastHandler } = useToast();
   const { mutate: setToken } = useSetToken((err) =>
     errorToastHandler("failed to set access token!")
   );
-  
+
   const uid64 = params.uid64 as string;
   const token = params.token as string;
   const userType = searchParams.get("user_type") as string;
 
   const routeHandler = () => {
     const link =
-    userType === "mediaHouse"
-    ? "/onboarding/password-created?type=mediaHouse"
-    : "/onboarding/password-created?type=journalist";
+      userType === "mediaHouse"
+        ? "/onboarding/password-created?type=mediaHouse"
+        : "/onboarding/password-created?type=journalist";
     return link;
   };
 
@@ -59,10 +59,10 @@ export default function CreatePasswordPage() {
     async (_, data) => {
       if (data?.status === 200 && data?.data?.access && data?.data?.user) {
         successToastHandler("Password created successfully!");
-        
+
         // Set the user in context
         setUser(data?.data.user);
-        
+
         // Set the token in cookies via API route
         setToken(
           {
@@ -88,8 +88,7 @@ export default function CreatePasswordPage() {
       }
     }
   );
-  
-  
+
   const criteria = [
     {
       label: "Lowercase character e.g a,b,c",
@@ -109,13 +108,13 @@ export default function CreatePasswordPage() {
     },
   ];
 
-
-    const allCriteriaMet = criteria.every((condition) => condition.met);
+  const allCriteriaMet = criteria.every((condition) => condition.met);
   const isDisabled =
-    !allCriteriaMet || !passwords.password1 || !passwords.password2 || isPending;
-  
-  
-  
+    !allCriteriaMet ||
+    !passwords.password1 ||
+    !passwords.password2 ||
+    isPending;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -147,40 +146,20 @@ export default function CreatePasswordPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Password */}
-            <div>
-              <label className="block text-base font-medium text-[#27272A] mb-2">
-                Password
-              </label>
-              <div className="relative flex items-center rounded-2xl py-2 px-1 border transition-all duration-300 border-[#e5e7eb] focus-within:ring-1 focus-within:ring-[#3754A3]/50 focus-within:border-[#3754A3]/50">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter new password"
-                  className={`w-full border-none shadow-none font-[poppins] !ring-0 placeholder:text-[#ADADAD]/70 placeholder:font-normal placeholder:text-base`}
-                  value={passwords.password1}
-                  onChange={(e) => {
-                    setPasswords({ ...passwords, password1: e.target.value });
-                    setError("");
-                  }}
-                  disabled={isPending}
-                />
-                <div
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showPassword ? (
-                    <EyeOff
-                      strokeWidth={1.5}
-                      className="w-7 h-7 text-[#192D65]/60"
-                    />
-                  ) : (
-                    <Eye
-                      strokeWidth={1.5}
-                      className="w-7 h-7 text-[#192D65]/60"
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
+            <CustomInput
+              type={"password"}
+              label="New Password"
+              placeholder="Enter new password"
+              value={passwords.password1}
+              onChange={(e) => {
+                setPasswords({ ...passwords, password1: e.target.value });
+                setError("");
+              }}
+              showPassword={showPassword}
+              onTogglePassword={() => setShowPassword(!showPassword)}
+              error={undefined}
+              name={"password1"}
+            />
 
             <div className="space-y-2">
               <p className="text-base tracking-[-1] font-medium text-gray-900">
@@ -203,61 +182,28 @@ export default function CreatePasswordPage() {
             </div>
 
             {/* Confirm Password */}
-            <div>
-              <label className="block text-base font-medium text-[#27272A] mb-2">
-                Confirm Password
-              </label>
-              <div
-                className={`relative flex items-center rounded-2xl py-2 px-1 border transition-all duration-300 border-[#e5e7eb] mb-2 ${
-                  passwords.password2 && error
-                    ? `focus-within:ring-1
-             focus-within:ring-red-600/50 focus-within:border-red-600/50 bg-red-50 border-red-600/50`
-                    : `focus-within:ring-1
-             focus-within:ring-[#3754A3]/50 focus-within:border-[#3754A3]/50`
-                }`}
-              >
-                <Input
-                  type={showConfirm ? "text" : "password"}
-                  placeholder="Confirm password"
-                  className={`w-full border-none shadow-none font-[poppins] !ring-0 placeholder:text-[#ADADAD]/70 placeholder:font-normal placeholder:text-base`}
-                  value={passwords.password2}
-                  onChange={(e) => {
+            <CustomInput
+              type={"password"}
+              label="Confirm Password"
+              placeholder="Enter new password"
+              value={passwords.password2}
+              onChange={(e) => {
                     setPasswords({ ...passwords, password2: e.target.value });
                     setError("");
                   }}
-                  disabled={isPending}
-                />
-                <div
-                  onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showConfirm ? (
-                    <EyeOff
-                      strokeWidth={1.5}
-                      className="w-7 h-7 text-[#192D65]/60"
-                    />
-                  ) : (
-                    <Eye
-                      strokeWidth={1.5}
-                      className="w-7 h-7 text-[#192D65]/60"
-                    />
-                  )}
-                </div>
-              </div>
-              {passwords.password2 && error && (
-                <div className="flex gap-2 items-center text-red-600">
-                  <CircleX className="w-5 h-5" />
-                  <span className="text-sm">{error}</span>
-                </div>
-              )}
-            </div>
-
+              showPassword={showConfirm}
+              onTogglePassword={() => setShowConfirm(!showConfirm)}
+              error={error}
+              name={"password2"}
+              disabled={isPending}
+            />
+           
             {/* Submit Button */}
-             <GradientButton
-            disabled={isDisabled}
-            type="submit"
-            btnText={isPending ? "Resetting..." : "Reset Password"}
-          />
+            <GradientButton
+              disabled={isDisabled}
+              type="submit"
+              btnText={isPending ? "Resetting..." : "Reset Password"}
+            />
           </form>
         </AuthWrapper>
       </div>
