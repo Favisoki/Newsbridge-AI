@@ -1,64 +1,50 @@
 "use client"
 
-import React from "react";
-import { CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Logo from "@/components/Common/Logo";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import Image from "next/image"
+import { useRouter, useSearchParams } from "next/navigation";
+import GradientButton from "@/components/ui/gradient-button";
+import AuthWrapper from "@/components/Layouts/auth-wrapper";
 
-export default function PasswordCreated() {
+function PasswordCreatedContent() {
+  const router = useRouter()
   const searchParams = useSearchParams();
   const userType = searchParams.get("type");
   const routeLink =
     userType === "mediaHouse"
       ? "/onboarding/setup-mediahouse-profile"
       : "/onboarding/journalist-profile";
+
   return (
-    <div className="bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="flex justify-center mb-8">
-          <Logo />
-        </div>
-
-        {/* Success Card */}
-        <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-          {/* Success Icon */}
-          <div className="flex justify-center mb-6">
-            <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center">
-              <CheckCircle className="w-16 h-16 text-white" strokeWidth={2.5} />
-            </div>
+    <div className="min-h-screen w-full max-w-lg place-content-center place- p-4">
+      <AuthWrapper>
+        {/* Success Icon */}
+        <div className="flex justify-center mb-6">
+          <div className=" relative w-22 h-22 rounded-full flex items-center justify-center">
+            <Image src={"/success-check.png"} alt="success" fill/>
           </div>
-
-          {/* Success Message */}
-          <h1 className="text-2xl font-bold text-gray-900 mb-3">
-            Password Created Successfully
-          </h1>
-
-          <p className="text-gray-600 mb-8">
-            Let's continue setting up your account
-          </p>
-
-          {/* Continue Button */}
-          <Link href={routeLink}>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium">
-              Continue Setup
-            </Button>
-          </Link>
         </div>
 
-        {/* Help Links */}
-        <div className="text-center mt-6 text-sm text-gray-600">
-          <a href="#" className="hover:text-blue-600 transition-colors">
-            Need help?
-          </a>
-          <span className="mx-2">•</span>
-          <a href="#" className="hover:text-blue-600 transition-colors">
-            Contact support
-          </a>
+         <h1 className="text-2xl font-semibold text-[#1E1E1E] tracking-[-2] mb-4 text-center">
+         Password Created Successfully
+        </h1>
+        <p className="text-[#00000099] font-normal tracking-[-1.2] text-center mb-8">
+          Let's continue setting up your account
+        </p>
+
+        {/* Login Button */}
+        <div className="flex justify-center">
+        <GradientButton btnText={"Continue"} onClick={() => router.push(routeLink)} classes="w-[189px]" />
         </div>
-      </div>
+        </AuthWrapper>
     </div>
+  );
+}
+
+export default function PasswordCreated() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>}>
+      <PasswordCreatedContent />
+    </Suspense>
   );
 }
