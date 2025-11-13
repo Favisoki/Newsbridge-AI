@@ -103,7 +103,7 @@ const CustomSelect = ({
             w-full px-4 py-3 rounded-2xl
             border transition-all duration-300
             font-[poppins] text-base text-left
-            flex items-center justify-between
+            flex items-center tracking-[-1] justify-between
             focus:outline-none
             disabled:opacity-50 disabled:cursor-not-allowed
             ${getBorderClasses()}

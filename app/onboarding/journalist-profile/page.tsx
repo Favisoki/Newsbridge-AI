@@ -3,16 +3,20 @@
 import type React from "react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useState, useRef } from "react";
 import Image from "next/image";
-import { X, CheckCircle } from "lucide-react";
+import { X, CheckCircle, User, PhoneCall } from "lucide-react";
 import { getSignupData } from "@/lib/utils";
 import { useUpdateUser } from "@/app/api/auth/mutations";
 import useToast from "@/app/hooks/useToast";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/auth-context";
 import { useDraft } from "@/app/hooks/useSaveDraft";
+import CustomInput from "@/components/ui/custom-input";
+import CustomSelect, { SelectOption } from "@/components/ui/custom-select";
+import AuthWrapper from "@/components/Layouts/auth-wrapper";
+import GoBack from "@/components/Common/go-back";
+import GradientButton from "@/components/ui/gradient-button";
 
 export default function JournalistProfile() {
   const { signupData, user } = useAuth();
@@ -41,12 +45,11 @@ export default function JournalistProfile() {
     phone: existingData?.phone_number || existingData?.phone || "",
     country: existingData?.country || "Nigeria",
     city: existingData?.city || "Lagos",
-    coverages: normalizeToArray(existingData?.coverages), // General, Politics, Economics
-    regions: normalizeToArray(existingData?.regions), // ✅ NEW: North, West, East, South
+    coverages: normalizeToArray(existingData?.coverages),
+    regions: normalizeToArray(existingData?.regions),
     languages: normalizeToArray(existingData?.languages),
   });
 
-  // ✅ Use the draft hook - always enabled for saving
   const {
     data: formData,
     setData: setFormData,
@@ -92,7 +95,14 @@ export default function JournalistProfile() {
     }));
   };
 
-  // For coverages (General, Politics, Economics)
+  // For dropdowns - returns a function that updates formData
+  const handleDropdownChange = (name: string) => (value: string) => {
+    setFormData((prev: typeof formData) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   const toggleCoverage = (coverage: string) => {
     setFormData((prev: typeof formData) => ({
       ...prev,
@@ -102,7 +112,6 @@ export default function JournalistProfile() {
     }));
   };
 
-  //  For regions (North, West, East, South)
   const toggleRegion = (region: string) => {
     setFormData((prev: typeof formData) => ({
       ...prev,
@@ -135,7 +144,6 @@ export default function JournalistProfile() {
       }
     }
 
-    // Transform arrays into objects for backend
     if (changedFields.languages) {
       changedFields.languages = changedFields.languages.map(
         (lang: string, index: number) => ({ id: index, name: lang })
@@ -148,7 +156,6 @@ export default function JournalistProfile() {
       );
     }
 
-    //  Transform regions into objects for backend
     if (changedFields.regions) {
       changedFields.regions = changedFields.regions.map(
         (region: string, index: number) => ({ id: index, name: region })
@@ -157,6 +164,27 @@ export default function JournalistProfile() {
 
     console.log("📤 Submitting changed fields:", changedFields);
     updateUser({ data: changedFields, id: existingData?.id });
+  };
+
+  // Dropdown options
+  const countryOptions: SelectOption[] = [
+    { value: "Nigeria", label: "Nigeria" },
+    { value: "Ghana", label: "Ghana" },
+    { value: "Kenya", label: "Kenya" },
+  ];
+
+  const cityOptions: SelectOption[] = [
+    { value: "Abuja", label: "Abuja" },
+    { value: "Lagos", label: "Lagos" },
+    { value: "Accra", label: "Accra" },
+  ];
+
+  const getPrefferedStyles = (formData: any[], data: string) => {
+    return `px-4 py-2 rounded-lg border transition-colors ${
+      (formData || []).includes(data)
+        ? "border-[#3754A3]/50 bg-[#3754A3]/5 text-[#3754A3]"
+        : "border-[#e5e7eb] text-gray-600 hover:border-[#3754A3]/30"
+    } disabled:opacity-50 disabled:cursor-not-allowed`;
   };
 
   if (isDraftLoading) {
@@ -171,21 +199,12 @@ export default function JournalistProfile() {
   }
 
   return (
-    <div className="w-full max-w-2xl">
-      <div className="flex justify-center mb-8">
-        <Image
-          src="/images/newbridge-logo.png"
-          alt="Newbridge"
-          width={40}
-          height={40}
-        />
+    <div className="relative w-full max-w-5xl my-24">
+      <div className="mb-8">
+        <GoBack iconSize={18} to="/" />
       </div>
-
-      <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Welcome to NewsBridge {formData.firstName}
-          </h1>
+      <AuthWrapper>
+        <div className="absolute top-14 right-7">
           {hasDraft && (
             <span className="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full flex items-center gap-1">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -193,183 +212,159 @@ export default function JournalistProfile() {
             </span>
           )}
         </div>
-        <p className="text-gray-600 mb-8">
-          Let's set up your journalist profile.
-        </p>
+        <div className="w-full text-center my-4">
+          <h1 className="text-2xl font-semibold text-black tracking-[-1.5] mb-4">
+            Welcome to NewsBridge {formData.firstName}
+          </h1>
+          <p className="text-[#00000099] font-normal tracking-[-1.3] mb-8">
+            Let's set up your journalist profile.
+          </p>
+        </div>
+        <div className="absolute left-1 w-[99%] mx-auto border-b border-[#F1F1F1]" />
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* First Name & Last Name */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+            <CustomInput
+              Icon={User}
+              name="firstName"
+              type="text"
+              label="First Name"
+              placeholder="John"
+              value={formData.firstName}
+              onChange={handleChange}
+              disabled={isPending}
+            />
+
+            <CustomInput
+              Icon={User}
+              name="lastName"
+              type="text"
+              label="Last Name"
+              placeholder="Doe"
+              value={formData.lastName}
+              onChange={handleChange}
+              disabled={isPending}
+            />
+          </div>
+
+          {/* Email & Phone */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                First Name
-              </label>
-              <Input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Last Name
-              </label>
-              <Input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="w-full"
-              />
-            </div>
+            <CustomInput
+              name="email"
+              type="email"
+              label="Email Address"
+              placeholder="your.email@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={isPending}
+            />
+
+            <CustomInput
+              Icon={PhoneCall}
+              name="phone"
+              type="tel"
+              label="Phone Number"
+              placeholder="+234"
+              value={formData.phone}
+              onChange={handleChange}
+              disabled={isPending}
+            />
           </div>
 
+          {/* Country & City */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <CustomSelect
+              name="country"
+              label="Country"
+              placeholder="Select Country"
+              value={formData.country}
+              onChange={handleDropdownChange("country")}
+              options={countryOptions}
+              disabled={isPending}
+            />
+
+            <CustomSelect
+              name="city"
+              label="City"
+              placeholder="Select City"
+              value={formData.city}
+              onChange={handleDropdownChange("city")}
+              options={cityOptions}
+              disabled={isPending}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 justify-between gap-4 gap-y-8 my-12 tracking-[-1]">
+            {/* Preferred coverages */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+              <label className="block text-base font-medium text-[#27272A] mb-3">
+                Preferred coverages
               </label>
-              <Input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full"
-              />
+              <div className="flex flex-wrap gap-2">
+                {["General", "Politics", "Economics"].map((coverage) => (
+                  <button
+                    key={coverage}
+                    type="button"
+                    onClick={() => toggleCoverage(coverage)}
+                    disabled={isPending}
+                    className={getPrefferedStyles(formData.coverages, coverage)}
+                  >
+                    {coverage}
+                  </button>
+                ))}
+              </div>
             </div>
+
+            {/* Preferred reporting region */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone number
+              <label className="block text-base font-medium text-[#27272A] mb-3">
+                Preferred reporting region
               </label>
-              <Input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full"
-              />
+              <div className="flex flex-wrap gap-2">
+                {["North", "West", "East", "South"].map((region) => (
+                  <button
+                    key={region}
+                    type="button"
+                    onClick={() => toggleRegion(region)}
+                    disabled={isPending}
+                    className={getPrefferedStyles(formData.regions, region)}
+                  >
+                    {region}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Preferred reporting language */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Country
+              <label className="block text-base font-medium text-[#27272A] mb-3">
+                Preferred reporting language
               </label>
-              <select
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="Nigeria">Nigeria</option>
-                <option value="Ghana">Ghana</option>
-                <option value="Kenya">Kenya</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                City
-              </label>
-              <select
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="Abuja">Abuja</option>
-                <option value="Lagos">Lagos</option>
-                <option value="Accra">Accra</option>
-              </select>
+              <div className="flex flex-wrap gap-2">
+                {["English", "Hausa", "Yoruba"].map((language) => (
+                  <button
+                    key={language}
+                    type="button"
+                    onClick={() => toggleLanguage(language)}
+                    disabled={isPending}
+                    className={getPrefferedStyles(formData.languages, language)}
+                  >
+                    {language}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* ✅ Preferred coverages (General, Politics, Economics) */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Preferred coverages
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {["General", "Politics", "Economics"].map((coverage) => (
-                <button
-                  key={coverage}
-                  type="button"
-                  onClick={() => toggleCoverage(coverage)}
-                  className={`px-4 py-2 rounded-lg border-2 transition-colors ${
-                    (formData.coverages || []).includes(coverage)
-                      ? "border-blue-600 bg-blue-50 text-blue-600"
-                      : "border-gray-300 text-gray-600 hover:border-gray-400"
-                  }`}
-                >
-                  {coverage}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* ✅ Preferred reporting region (North, West, East, South) */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Preferred reporting region
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {["North", "West", "East", "South"].map((region) => (
-                <button
-                  key={region}
-                  type="button"
-                  onClick={() => toggleRegion(region)}
-                  className={`px-4 py-2 rounded-lg border-2 transition-colors ${
-                    (formData.regions || []).includes(region)
-                      ? "border-blue-600 bg-blue-50 text-blue-600"
-                      : "border-gray-300 text-gray-600 hover:border-gray-400"
-                  }`}
-                >
-                  {region}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* ✅ Preferred reporting language */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Preferred reporting language
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {["English", "Hausa", "Yoruba"].map((language) => (
-                <button
-                  key={language}
-                  type="button"
-                  onClick={() => toggleLanguage(language)}
-                  className={`px-4 py-2 rounded-lg border-2 transition-colors ${
-                    (formData.languages || []).includes(language)
-                      ? "border-blue-600 bg-blue-50 text-blue-600"
-                      : "border-gray-300 text-gray-600 hover:border-gray-400"
-                  }`}
-                >
-                  {language}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <Button
+          <GradientButton
             type="submit"
             disabled={isPending}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium disabled:opacity-50"
-          >
-            {isPending ? "Saving..." : "Save & Continue to Dashboard"}
-          </Button>
+            classes="w-[244px] tracking-[-1]"
+            btnText={isPending ? "Saving..." : "Save & Continue to Dashboard"}
+          />
         </form>
-      </div>
-
-      <div className="text-center mt-6 text-sm text-gray-600">
-        <span>Need help? </span>
-        <a href="#" className="text-blue-600 hover:text-blue-700">
-          Contact support
-        </a>
-      </div>
+      </AuthWrapper>
 
       {showSuccessModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">

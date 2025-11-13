@@ -8,11 +8,12 @@ import { Input } from "@/components/ui/input";
 import useToast from "@/app/hooks/useToast";
 import { useSendResetEmail } from "@/app/api/auth/mutations";
 import CheckEmail from "@/public/check-email.svg";
-import Image from "next/image"
+import Image from "next/image";
 import { Mail } from "lucide-react";
 import GradientButton from "@/components/ui/gradient-button";
 import GoBack from "@/components/Common/go-back";
 import AuthWrapper from "@/components/Layouts/auth-wrapper";
+import CustomInput from "@/components/ui/custom-input";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
@@ -43,7 +44,7 @@ export default function ForgotPasswordPage() {
     mutate({ email });
   };
 
-  const timer = "00:30"
+  const timer = "00:30";
 
   return (
     <div className="w-full max-w-lg">
@@ -65,25 +66,17 @@ export default function ForgotPasswordPage() {
 
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Email */}
-              <div>
-                <label className="block text-base font-medium text-[#27272A] mb-2">
-                  Email Address
-                </label>
-                <div className="flex items-center rounded-2xl py-2 px-4 border border-[#e5e7eb]">
-                  <Mail className="size-6 text-[#39474F]/65" />
-                  <Input
-                    type="email"
-                    placeholder="your.email@example.com"
-                    className={
-                      "w-full border-none shadow-none font-[poppins] !ring-0 placeholder:text-[#ADADAD]/70 placeholder:font-normal placeholder:text-base"
-                    }
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    disabled={loading}
-                  />
-                </div>
-              </div>
+              <CustomInput
+                type={"text"}
+                label="New Password"
+                placeholder="your.email@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={error}
+                Icon={Mail}
+                disabled={loading}
+                name={"email"}
+              />
 
               {/* Submit Button */}
               <GradientButton
@@ -107,17 +100,19 @@ export default function ForgotPasswordPage() {
             <h1 className="text-2xl font-semibold text-[#1E1E1E] tracking-[-1.5] mb-4 text-center">
               Check your Email
             </h1>
-             <p className="text-[#00000099] font-normal tracking-[-1] text-center leading-[150%] text-base">
-                We sent a verification link to <span className="font-bold mr-1">{email || "youremail@gmail.com"}.</span>
-                Please verify your email address
-              </p>
-              <div>
-
-            <p className="text-[#39474F] text-xl tracking-[-1.9] mt-7 mb-4">
-             {timer}
+            <p className="text-[#00000099] font-normal tracking-[-1] text-center leading-[150%] text-base">
+              We sent a verification link to{" "}
+              <span className="font-bold mr-1">
+                {email || "youremail@gmail.com"}.
+              </span>
+              Please verify your email address
             </p>
-            <GradientButton btnText={"Resend Email"} />
-              </div>
+            <div>
+              <p className="text-[#39474F] text-xl tracking-[-1.9] mt-7 mb-4">
+                {timer}
+              </p>
+              <GradientButton btnText={"Resend Email"} />
+            </div>
             <Link
               className="text-xs font-semibold text-blue-500 mb-2"
               href={createLink ?? "#"}

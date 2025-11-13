@@ -158,7 +158,7 @@ export default function TellUsAboutYourself() {
         <GoBack iconSize={18} to="/" />
       </div>
       <AuthWrapper>
-        <h1 className="text-2xl font-semibold text-black tracking-[-1.5] mb-4 text-left">
+        <h1 className="text-2xl font-semibold text-black tracking-[-1.5] my-4 text-left">
           Tell us about Yourself
         </h1>
         <p className="text-[#00000099] font-normal tracking-[-1.3] text-left mb-8">
