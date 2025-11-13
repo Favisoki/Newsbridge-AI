@@ -7,6 +7,7 @@ export function NavbarWrapper() {
   const pathname = usePathname()
   const isDashboard = pathname.startsWith("/dashboard")
   const isAuth = pathname.startsWith("/auth") || pathname.startsWith("/onboarding")
+  const isSuperadmin = pathname.startsWith("/superadmin")
 
-  return !isDashboard && !isAuth ? <Navbar /> : null
+  return !isDashboard && !isAuth && !isSuperadmin ? <Navbar /> : null
 }
