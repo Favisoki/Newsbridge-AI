@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="w-full max-w-lg">
       <AuthWrapper>
-        {success ? (
+        {!success ? (
           <>
             <h1 className="text-2xl font-semibold text-[#1E1E1E] tracking-[-1.5] mb-4 text-center">
               Forgot Password

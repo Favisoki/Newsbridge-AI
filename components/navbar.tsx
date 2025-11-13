@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Logo from "./Common/Logo";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -62,25 +63,12 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed top-8 left-0 right-0 z-50 px-6 max-w-7xl mx-auto bg-transparent">
+    <nav className="fixed top-8 left-0 right-0 z-50 px-6 max-w-7xl mx-auto bg-transparent tracking-[-1]">
       <div className="">
         <div className="bg-white rounded-3xl border border-[#E1E1E1] shadow-[0px_20px_40px_0px_#C3C3C340]">
           <div className="px-8 py-4 flex items-center justify-between">
             {/* Logo */}
-            <Link
-              href="/"
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <Image
-                src={"/images/logo.png"}
-                width={28}
-                height={25}
-                alt={"Logo"}
-              />
-              <span className="text-lg font-semibold text-[#3C60AF]">
-                NewsBridge
-              </span>
-            </Link>
+            <Logo textSize="tracking-[-0.5] text-xl" />
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-8">
@@ -100,7 +88,7 @@ export function Navbar() {
             </div>
 
             {/* Auth Buttons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center font-medium gap-3 text-base">
               <Link href="/auth/login">
                 <Button
                   variant="outline"

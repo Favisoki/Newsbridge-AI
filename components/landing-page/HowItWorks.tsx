@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import {
-  ArrowRight,
-} from "lucide-react";
+import { ArrowRight, CircleArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Step1, stepInfo } from "./StepComponents";
 
@@ -74,7 +72,7 @@ const HowItWorks = () => {
   const StepComponent = stepInfo[activeStep as activeType];
 
   return (
-    <section className=" bg-[#0E1B3E] flex items-center justify-center p-4 sm:p-8 font-sans relative z-10 overflow-hidden">
+    <section className=" bg-[#0E1B3E] flex items-cente tracking-[-1] justify-center p-4 sm:p-8 font-sans relative z-10 overflow-hidden">
       <div className="absolute h-full w-full inset-0">
         <Image
           src={"/how-it-works-bg.png"}
@@ -118,22 +116,20 @@ const HowItWorks = () => {
       <div className="w-full max-w-7xl mx-auto px-8" id="how-it-works">
         <div className="flex justify-between gap-12 h-[550px] mt-6">
           <div className="max-w-md basis-[35%] mt-14">
-            <h1 className="text-[40px] font-semibold text-white mb-4">
+            <h1 className="text-[40px] font-semibold tracking-[-2.8] text-white mb-4">
               How it Works
             </h1>
-            <p className="text-lg text-white font-normal">
+            <p className="text-lg text-white font-normal tracking-[-1.3]">
               From a single voice note to a verified story here’s how NewsBridge
               connects communities and journalists in three simple steps.
             </p>
             <div className="mt-7">
-              <p className="text-lg italic font-normal text-[#FFFFFF] mb-4">
+              <p className="text-lg italic tracking-[-1] font-normal text-[#FFFFFF] mb-4">
                 Ready to amplify unheard voices?
               </p>
-              <div className="inline-flex items-center gap-2 underline underline-offset-3 bg-transparent outline-none! text-[#FEE00F] rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
+              <div className="inline-flex items-center gap-2 underline tracking-[0] underline-offset-3 bg-transparent outline-none! text-[#FEE00F] rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
                 Request Access
-                <div className="rounded-full border-2 p-0.5 border-[#FEE00F]">
-                  <ArrowRight className="w-4 h-4" />
-                </div>
+                <CircleArrowRight className="w-5 h-5" />
               </div>
             </div>
           </div>
@@ -206,10 +202,10 @@ const HowItWorks = () => {
                             animationDelay: `${index * 0.15}s`,
                           }}
                         >
-                          <h1 className="text-lg font-bold text-white mb-2">
+                          <h1 className="text-lg font-bold tracking-[-1.3] text-white mb-2">
                             {data.heading}
                           </h1>
-                          <p className="text-sm text-white font-normal leading-[180%]">
+                          <p className="text-sm text-white font-normal tracking-[-0.6] leading-[180%]">
                             {data.text[index]}
                           </p>
                         </div>
