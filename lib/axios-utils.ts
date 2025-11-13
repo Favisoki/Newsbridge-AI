@@ -21,12 +21,24 @@ client.interceptors.request.use(
       config.baseURL = externalBaseUrl;
     }
 
-    // Attach access token if available 
-    const token = Cookies.get("access");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+    // For external API calls, we need to send the token in the header
+    // because Django expects it there
+    if (
+      !url.startsWith("/api/") &&
+      ["post", "put", "delete", "patch"].includes(config.method?.toLowerCase() || "")
+    ) {
+      const csrfToken = Cookies.get("csrftoken");
+      if (csrfToken) {
+        config.headers["X-CSRFToken"] = csrfToken;
+      }
     }
 
+     if (!url.startsWith("/api/")) {
+      const token = Cookies.get("access_token_header");
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+    }
     return config;
   },
   (error) => Promise.reject(error)
@@ -34,15 +46,19 @@ client.interceptors.request.use(
 
 client.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     const status = error.response?.status;
 
-    // Handle expired or invalid token
     if (status === 401) {
-      console.warn("401 detected – possibly expired session");
-      // Optionally clear local cookies here
-      // Cookies.remove("access");
-      // Cookies.remove("user");
+      console.warn("401 detected – session expired");
+      
+      // // Clear client-side cookies
+      // document.cookie = "access=; path=/; max-age=0";
+      // document.cookie = "access_token_header=; path=/; max-age=0";
+      // document.cookie = "user=; path=/; max-age=0";
+      
+      // // Redirect to login
+      // window.location.href = "/login";
     }
 
     return Promise.reject(error);

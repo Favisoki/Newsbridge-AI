@@ -7,15 +7,23 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, Check } from "lucide-react";
+import { Eye, EyeOff, Check, Mail } from "lucide-react";
 import { useLogin, useSetToken } from "@/app/api/auth/mutations";
 import useToast from "@/app/hooks/useToast";
 import { useAuth } from "@/app/context/auth-context";
 import Logo from "@/components/Common/Logo";
+import GoBack from "@/components/Common/go-back";
+import GradientButton from "@/components/ui/gradient-button";
+import AuthWrapper from "@/components/Layouts/auth-wrapper";
+
+const style = {
+  input:
+    "w-full border-none shadow-none font-[poppins] !ring-0 placeholder:text-[#ADADAD]/70 placeholder:font-normal placeholder:text-base",
+};
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setUser } = useAuth()
+  const { setUser } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -46,16 +54,37 @@ export default function LoginPage() {
       errorToastHandler(errMsg);
       setError(errMsg);
     },
-    (success, data) => {
-      if (data?.status === 200 && data?.data?.access && data?.data?.user)
-        setUser(data?.data.user)
-        setToken({
-          token: data?.data.access,
-          user: data?.data.user,
-        });
-      successToastHandler("Login Successful");
-      router.refresh()
-      setTimeout(() => router.push("/dashboard"), 100);
+    (_, data) => {
+      if (data?.status === 200 && data?.data?.access && data?.data?.user) {
+        // Set the user in context
+        setUser(data?.data.user);
+
+        // Set the token in cookies via API route
+        setToken(
+          {
+            token: data?.data.access,
+            refresh: data?.data.refresh,
+            user: data?.data.user,
+          },
+          {
+            onSuccess: () => {
+              console.log(" Cookies set successfully");
+              router.refresh();
+              // Small delay to ensure cookies are set
+              setTimeout(
+                () => router.push("/dashboard?msg=login-success"),
+                200
+              );
+            },
+            onError: (error) => {
+              console.error("Failed to set cookies:", error);
+              errorToastHandler(
+                "Authentication setup failed. Please try logging in again."
+              );
+            },
+          }
+        );
+      }
     }
   );
 
@@ -94,162 +123,106 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full max-w-md">
-      {/* Logo */}
-      <Logo />
+    <div className="w-full max-w-lg">
+      <GoBack className="mb-8"/>
+      <AuthWrapper>
+          <h1 className="text-2xl font-semibold text-[#1E1E1E] tracking-[-1.5] mb-4 text-center">
+            Welcome Back
+          </h1>
+          <p className="text-[#00000099] font-normal tracking-[-1] text-center mb-8">
+            Sign in to continue to Newbridge
+          </p>
 
-      {/* Card */}
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">
-          Welcome Back
-        </h1>
-        <p className="text-gray-600 text-center mb-8">
-          Sign in to continue to Newbridge
-        </p>
+          {/* Error message */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
+              {error}
+            </div>
+          )}
 
-        {/* Error message */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
-            {error}
-          </div>
-        )}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Email */}
+            <div>
+              <label className="block text-base font-medium text-[#27272A] mb-2">
+                Email Address
+              </label>
+              <div className="flex items-center rounded-2xl py-2 px-4 border border-[#e5e7eb]">
+                <Mail className="size-6 text-[#39474F]/65" />
+                <Input
+                  type="email"
+                  placeholder="your.email@example.com"
+                  className={style.input}
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  required
+                  disabled={isPending}
+                />
+              </div>
+            </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Email Address
-            </label>
-            <Input
-              type="email"
-              placeholder="your.email@example.com"
-              className="w-full"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              required
+            {/* Password */}
+            <div>
+              <label className="block text-base font-medium text-[#27272A] mb-2">
+                Password
+              </label>
+              <div className="relative flex items-center rounded-2xl py-2 px-1 border border-[#e5e7eb]">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  className={`${style.input}`}
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  required
+                  disabled={isPending}
+                />
+                <div
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showPassword ? (
+                    <EyeOff
+                      strokeWidth={1.5}
+                      className="w-7 h-7 text-[#192D65]/60"
+                    />
+                  ) : (
+                    <Eye
+                      strokeWidth={1.5}
+                      className="w-7 h-7 text-[#192D65]/60"
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Forgot Password Link */}
+            <div className="text-left w-full">
+              <Link
+                href="/auth/forgot-password"
+                className="text-base font-medium tracking-[-1] text-[#192D65] hover:text-[#2148A2] transition-colors duration-300"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            {/* Submit Button */}
+            <GradientButton
+              btnText={isPending ? "Logging in..." : "Log in"}
+              borderColor="#213670"
               disabled={isPending}
             />
-          </div>
+          </form>
 
-          {/* Email Criteria - Only show if user started typing */}
-          {formData.email && (
-            <div>
-              <div className="space-y-2">
-                {emailCriteria.map((item, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                        item.met
-                          ? "bg-green-500 border-green-500"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {item.met && <Check size={14} className="text-white" />}
-                    </div>
-                    <span className="text-sm text-gray-600">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">
-              Password
-            </label>
-            <div className="relative">
-              <Input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                className="w-full pr-10"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                required
-                disabled={isPending}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-              >
-                {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Password Criteria - Only show if user started typing */}
-          {formData.password && (
-            <div>
-              <div className="space-y-2">
-                {passwordCriteria.map((item, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                        item.met
-                          ? "bg-green-500 border-green-500"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {item.met && <Check size={14} className="text-white" />}
-                    </div>
-                    <span className="text-sm text-gray-600">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Forgot Password Link */}
-          <div className="text-right">
-            <Link
-              href="/auth/forgot-password"
-              className="text-sm text-blue-600 hover:text-blue-700"
-            >
-              Forgot password?
+          {/* Sign Up Link */}
+          <p className="text-center text-[#3754A3] text-base mt-6 font-semibold tracking-[-1] underline underline-offset-3 hover:text-[#2148A2] transition-colors duration-300">
+            <Link href="/auth/signup">
+              Don't have an account? Become a reporter
             </Link>
-          </div>
-
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2"
-            disabled={isPending}
-          >
-            {isPending ? "Signing in..." : "Log in"}
-          </Button>
-        </form>
-
-        {/* Sign Up Link */}
-        <p className="text-center text-gray-600 text-sm mt-6">
-          Don't have an account?{" "}
-          <Link
-            href="/auth/signup"
-            className="text-blue-600 hover:text-blue-700 font-medium"
-          >
-            Become a reporter
-          </Link>
-        </p>
-      </div>
-
-      {/* Support Link */}
-      <div className="text-center mt-6 text-sm text-gray-600">
-        Need help?{" "}
-        <a
-          href="mailto:info@newsbridge.com"
-          className="text-blue-600 hover:text-blue-700"
-        >
-          Contact support
-        </a>
-      </div>
+          </p>
+      </AuthWrapper>
     </div>
   );
 }

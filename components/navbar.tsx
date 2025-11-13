@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Logo from "./Common/Logo";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -62,25 +63,12 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed top-8 left-0 right-0 z-50 px-6 max-w-7xl mx-auto bg-transparent">
+    <nav className="fixed top-8 left-0 right-0 z-50 px-6 max-w-7xl mx-auto bg-transparent tracking-[-1]">
       <div className="">
         <div className="bg-white rounded-3xl border border-[#E1E1E1] shadow-[0px_20px_40px_0px_#C3C3C340]">
           <div className="px-8 py-4 flex items-center justify-between">
             {/* Logo */}
-            <Link
-              href="/"
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <Image
-                src={"/images/logo.png"}
-                width={28}
-                height={25}
-                alt={"Logo"}
-              />
-              <span className="text-lg font-semibold text-[#3C60AF]">
-                NewsBridge
-              </span>
-            </Link>
+            <Logo textSize="tracking-[-0.5] text-xl" />
 
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-8">
@@ -100,22 +88,22 @@ export function Navbar() {
             </div>
 
             {/* Auth Buttons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center font-medium gap-3 text-base">
               <Link href="/auth/login">
                 <Button
                   variant="outline"
-                  className="text-[#3754A3] border-none rounded-2xl bg-[#E8EEFF] h-14 w-36"
+                  className="text-[#3754A3] border-none rounded-2xl hover:scale-105 bg-[#E8EEFF] h-14 w-36"
                 >
                   Sign in
                 </Button>
               </Link>
               <Link href="/auth/signup">
                 <Button
-                  className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] text-white h-14 w-36 rounded-2xl"
+                  className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] text-white h-14 w-36 hover:scale-105 rounded-2xl"
                   style={{
                     borderImageSource:
                       "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
-                    boxShadow: "0px 0px 0px 1px #8078FF"
+                    boxShadow: "0px 0px 0px 1px #8078FF",
                   }}
                 >
                   Request Access

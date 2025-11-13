@@ -1,130 +1,155 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useParams, useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Eye, EyeOff } from "lucide-react"
-import { apiClient } from "@/lib/api-client"
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Check, CheckCircle2Icon, CircleX, Eye, EyeOff, X } from "lucide-react";
+import useToast from "@/app/hooks/useToast";
+import { useResetEmail } from "@/app/api/auth/mutations";
+import AuthWrapper from "@/components/Layouts/auth-wrapper";
+import GradientButton from "@/components/ui/gradient-button";
+import CustomInput from "@/components/ui/custom-input";
 
 export default function ResetPasswordPage() {
-  const params = useParams()
-  const router = useRouter()
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirm, setShowConfirm] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const params = useParams();
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [error, setError] = useState("");
   const [passwords, setPasswords] = useState({
     password1: "",
     password2: "",
-  })
+  });
+  const { errorToastHandler } = useToast();
+  const { mutate: resetPassword, isPending: loading } = useResetEmail(
+    (errMsg) => errorToastHandler(errMsg),
+    (_, data) => {
+      if (data?.data) {
+        router.push("/auth/reset-success");
+      }
+    }
+  );
 
-  const uid64 = params.uid64 as string
-  const token = params.token as string
+  const criteria = [
+    {
+      label: "Lowercase character e.g a,b,c",
+      met: /[a-z]/.test(passwords.password1),
+    },
+    {
+      label: "Uppercase character e.g A,B,C",
+      met: /[A-Z]/.test(passwords.password1),
+    },
+    {
+      label: "Non-alphanumeric character e.g @,!,#",
+      met: /[^a-zA-Z0-9]/.test(passwords.password1),
+    },
+    {
+      label: "Numeric character e.g 1,2,3",
+      met: /[0-9]/.test(passwords.password1),
+    },
+  ];
+
+  const allCriteriaMet = criteria.every((condition) => condition.met);
+  const isDisabled =
+    !allCriteriaMet || !passwords.password1 || !passwords.password2 || loading;
+
+  const uid64 = params.uid64 as string;
+  const token = params.token as string;
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
 
     if (passwords.password1 !== passwords.password2) {
-      setError("Passwords do not match")
-      return
+      errorToastHandler("Passwords do not match");
+      setError("Passwords do not match");
+      return;
     }
 
-    if (passwords.password1.length < 8) {
-      setError("Password must be at least 8 characters")
-      return
+    if (!allCriteriaMet) {
+      errorToastHandler("Password must meet all criteria");
+      return;
     }
 
-    setLoading(true)
-    try {
-      const response = await apiClient.resetPassword(uid64, token, passwords)
-      if (response.success) {
-        router.push("/auth/reset-success")
-      } else {
-        setError(response.error || "Failed to reset password")
-      }
-    } catch (err) {
-      setError("An error occurred. Please try again.")
-    } finally {
-      setLoading(false)
-    }
-  }
+    resetPassword({ data: passwords, uid64, token });
+  };
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-lg">
       {/* Logo */}
-      <div className="flex justify-center mb-8">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-bold">NB</span>
-          </div>
-          <span className="text-lg font-semibold text-gray-900">Newbridge</span>
-        </div>
-      </div>
-
-      {/* Card */}
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">Reset Your Password</h1>
-        <p className="text-gray-600 text-center mb-8 text-sm">Enter your new password below</p>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">{error}</div>
-        )}
+      <AuthWrapper>
+        <h1 className="text-2xl font-semibold text-[#1E1E1E] tracking-[-1.5] mb-4 text-center">
+          Reset Password
+        </h1>
+        <p className="text-[#00000099] font-normal tracking-[-1.3] text-center mb-8">
+          Please enter a password you can remember
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* New Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">New Password</label>
-            <div className="relative">
-              <Input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter new password"
-                className="w-full pr-10"
-                value={passwords.password1}
-                onChange={(e) => setPasswords({ ...passwords, password1: e.target.value })}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          <CustomInput
+            name="password1"
+            type="password"
+            label="New Password"
+            placeholder="Enter new password"
+            value={passwords.password1}
+            onChange={(e) => {
+              setPasswords({ ...passwords, password1: e.target.value });
+              setError("");
+            }}
+            showPassword={showPassword}
+            onTogglePassword={() => setShowPassword(!showPassword)}
+            error={undefined}
+          />
+
+          {/* Password Criteria */}
+          <div className="space-y-2">
+            <p className="text-base tracking-[-1] font-medium text-gray-900">
+              Password Criteria
+            </p>
+            {criteria.map((item, idx) => (
+              <div
+                key={idx}
+                className="flex items-center gap-2 text-sm text-gray-600"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-              </button>
-            </div>
+                <CheckCircle2Icon
+                  strokeWidth={1.5}
+                  className={`w-7 h-7 ${
+                    item.met ? `text-green-600` : `text-[#646464]`
+                  }`}
+                />
+
+                <span>{item.label}</span>
+              </div>
+            ))}
           </div>
 
           {/* Confirm Password */}
-          <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">Confirm Password</label>
-            <div className="relative">
-              <Input
-                type={showConfirm ? "text" : "password"}
-                placeholder="Confirm password"
-                className="w-full pr-10"
-                value={passwords.password2}
-                onChange={(e) => setPasswords({ ...passwords, password2: e.target.value })}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-              >
-                {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-              </button>
-            </div>
-          </div>
+          <CustomInput
+            name="password2"
+            type="password"
+            label="Confirm Password"
+            placeholder="Confirm password"
+            value={passwords.password2}
+            onChange={(e) => {
+              setPasswords({ ...passwords, password2: e.target.value });
+              setError("");
+            }}
+            showPassword={showConfirm}
+            onTogglePassword={() => setShowConfirm(!showConfirm)}
+            error={passwords.password2 && error}
+          />
 
           {/* Submit Button */}
-          <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2" disabled={loading}>
-            {loading ? "Resetting..." : "Reset Password"}
-          </Button>
+          <GradientButton
+            disabled={isDisabled}
+            type="submit"
+            btnText={loading ? "Resetting..." : "Reset Password"}
+          />
         </form>
-      </div>
+      </AuthWrapper>
     </div>
-  )
+  );
 }

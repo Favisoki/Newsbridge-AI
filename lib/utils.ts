@@ -42,82 +42,50 @@ export const clearSignupData = (): void => {
   }
 };
 
-// User Data Management
-// export const saveUserData = (data: Partial<ObjectLiteral>): void => {
-//   if (typeof window === 'undefined') return;
-  
-//   try {
-//     const existing = localStorage.getItem('user_data');
-//     const current = existing ? JSON.parse(existing) : {};
-//     localStorage.setItem('user_data', JSON.stringify({ ...current, ...data }));
-//   } catch (error) {
-//     console.error('Failed to save user data:', error);
-//   }
-// };
+export const storage = {
+  set: (key: string, value: any, expiryMs?: number) => {
+    try {
+      const item = expiryMs
+        ? { value, expiry: Date.now() + expiryMs }
+        : { value };
+      localStorage.setItem(key, JSON.stringify(item));
+      return true;
+    } catch (e: any) {
+      if (e.name === 'QuotaExceededError') {
+        console.error('localStorage quota exceeded');
 
-// export const getUserData = (): ObjectLiteral | null => {
-//   if (typeof window === 'undefined') return null;
-  
-//   try {
-//     const data = localStorage.getItem('user_data');
-//     return data ? JSON.parse(data) : null;
-//   } catch (error) {
-//     console.error('Failed to get user data:', error);
-//     return null;
-//   }
-// };
+      }
+      console.error('localStorage.setItem failed:', e);
+      return false;
+    }
+  },
 
-// export const clearUserData = (): void => {
-//   if (typeof window === 'undefined') return;
-  
-//   try {
-//     localStorage.removeItem('user_data');
-//   } catch (error) {
-//     console.error('Failed to clear user data:', error);
-//   }
-// };
+  get: (key: string) => {
+    try {
+      const itemStr = localStorage.getItem(key);
+      if (!itemStr) return null;
 
-// // Access Token Management
-// export const saveAccessToken = (token: string): void => {
-//   if (typeof window === 'undefined') return;
-  
-//   try {
-//     localStorage.setItem('accessToken', token);
-//   } catch (error) {
-//     console.error('Failed to save access token:', error);
-//   }
-// };
+      const item = JSON.parse(itemStr);
+      
+      // Check expiry
+      if (item.expiry && Date.now() > item.expiry) {
+        localStorage.removeItem(key);
+        return null;
+      }
 
-// export const getAccessToken = (): string | null => {
-//   if (typeof window === 'undefined') return null;
-  
-//   try {
-//     return localStorage.getItem('accessToken');
-//   } catch (error) {
-//     console.error('Failed to get access token:', error);
-//     return null;
-//   }
-// };
+      return item.value;
+    } catch (e) {
+      console.error('localStorage.getItem failed:', e);
+      localStorage.removeItem(key); // Clean up corrupted data
+      return null;
+    }
+  },
 
-// export const clearAccessToken = (): void => {
-//   if (typeof window === 'undefined') return;
-  
-//   try {
-//     localStorage.removeItem('accessToken');
-//   } catch (error) {
-//     console.error('Failed to clear access token:', error);
-//   }
-// };
-
-// Check if user is authenticated
-// export const isAuthenticated = (): boolean => {
-//   const token = getAccessToken();
-//   return !!token;
-// };
-
-// Clear all session data
-// export const clearAllData = (): void => {
-//   clearSignupData();
-//   clearUserData();
-//   clearAccessToken();
-// };
+  remove: (key: string) => {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      console.error('localStorage.removeItem failed:', e);
+    }
+  },
+};

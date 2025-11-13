@@ -24,8 +24,8 @@ export function DashboardHeader() {
         {/* Profile */}
         <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
           <div className="text-right">
-            <p className="text-sm font-medium text-gray-900">{user?.email}</p>
-            <p className="text-xs text-gray-500">Journalist</p>
+            <p className="text-sm font-medium text-gray-900">{user?.first_name + " " + user?.last_name}</p>
+            <p className="text-xs text-gray-500">{user?.role}</p>
           </div>
           <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
             DL

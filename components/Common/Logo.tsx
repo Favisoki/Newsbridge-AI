@@ -1,14 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const Logo = () => {
+const Logo = ({className, height = 25, width = 28, textSize = "text-lg"}: {className?: string, textSize?: string, height?: number, width?: number}) => {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+      className={`flex items-center gap-2 transition-opacity ${className}`}
     >
-      <Image src={"/images/logo.png"} width={28} height={25} alt={"Logo"} />
-      <span className="text-lg font-semibold text-[#3C60AF]">NewsBridge</span>
+      <Image src={"/images/logo.png"} width={width} height={height} alt={"Logo"} />
+      <span className={` font-semibold text-[#2148A2] tracking-[-2] ${textSize}`}>NewsBridge</span>
     </Link>
   );
 };

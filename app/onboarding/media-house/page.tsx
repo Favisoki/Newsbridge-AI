@@ -14,9 +14,10 @@ import Logo from "@/components/Common/Logo";
 interface SuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
+  name: string;
 }
 
-function SuccessModal({ isOpen, onClose }: SuccessModalProps) {
+function SuccessModal({name, isOpen, onClose }: SuccessModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -38,7 +39,7 @@ function SuccessModal({ isOpen, onClose }: SuccessModalProps) {
           </div>
         </div>
         <h2 className="text-2xl font-bold text-center text-foreground mb-2">
-          Thank you
+          Thank you {name}
         </h2>
         <p className="text-center text-muted-foreground mb-6">
           Your request has been submitted for review. You'll receive an email
@@ -158,40 +159,39 @@ export default function MediaHouseOnboarding() {
     const newErrors = validateForm();
     if (Object.keys(newErrors).length === 0) {
       setSubmitError("");
-      
+
+      const coverages = [];
+
       const selectedFocusArea = focusAreaOptions.find(
-        option => option.id === Number(formData.focusArea)
+        (option) => option.id === Number(formData.focusArea)
       );
-      
-      const coverages = [{ name: selectedFocusArea?.name }];
-      const coverageIds = [Number(formData.focusArea)];
-      
+
+      if (selectedFocusArea) {
+        coverages.push({ name: selectedFocusArea.name });
+      }
+
       if (formData.focusArea2) {
         const selectedFocusArea2 = focusAreaOptions.find(
-          option => option.id === Number(formData.focusArea2)
+          (option) => option.id === Number(formData.focusArea2)
         );
-        coverages.push({ name: selectedFocusArea2?.name });
-        coverageIds.push(Number(formData.focusArea2));
+        if (selectedFocusArea2) {
+          coverages.push({ name: selectedFocusArea2.name });
+        }
       }
-      
+      // Generate dynamic IDs: [1, 2, 3, ...]
+      // const coverageIds = coverages.map((_, index) => index + 1);
+
       mediaSignup({
-        
-  organisation_name: "Daily Pulse",
-  email: "edito@dailypulse.com",
-  coverages: [
-    { name: "Politics" },
-    { name: "Economy" },
-    { name: "Technology" }
-  ],
-  coverage_ids: [1, 2, 3],  // optional if backend uses IDs
-  organisation_type: "Media Agency",
-  country: "Nigeria",
-  city: "Lagos",
-  website: "https://dailypulse.com",
-  agree_terms: true,
-  "agree_request_access": true
-
-
+        organisation_name: formData.organizationName,
+        email: formData.workEmail,
+        coverages,
+        // coverageIds,
+        organisation_type: formData.organizationType,
+        country: formData.country,
+        city: formData.city,
+        website: formData.website,
+        agree_terms: formData.termsAccepted,
+        agree_request_access: formData.authorizationAccepted,
       });
     } else {
       setErrors(newErrors);
@@ -218,7 +218,7 @@ export default function MediaHouseOnboarding() {
 
         {/* Logo */}
         <div className="mb-6 flex justify-center">
-        <Logo />
+          <Logo />
         </div>
 
         {/* Form Card */}
@@ -522,7 +522,7 @@ export default function MediaHouseOnboarding() {
       </div>
 
       {/* Success Modal */}
-      <SuccessModal isOpen={showSuccessModal} onClose={handleCloseModal} />
+      <SuccessModal isOpen={showSuccessModal} onClose={handleCloseModal} name={formData?.organizationName} />
     </>
   );
 }
