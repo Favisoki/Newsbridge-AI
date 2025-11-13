@@ -1,228 +1,143 @@
-"use client";
+"use client"
 
-import type React from "react";
+import type React from "react"
 
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Eye, EyeOff, Check, Mail } from "lucide-react";
-import { useLogin, useSetToken } from "@/app/api/auth/mutations";
-import useToast from "@/app/hooks/useToast";
-import { useAuth } from "@/app/context/auth-context";
-import Logo from "@/components/Common/Logo";
-import GoBack from "@/components/Common/go-back";
-import GradientButton from "@/components/ui/gradient-button";
-import AuthWrapper from "@/components/Layouts/auth-wrapper";
-
-const style = {
-  input:
-    "w-full border-none shadow-none font-[poppins] !ring-0 placeholder:text-[#ADADAD]/70 placeholder:font-normal placeholder:text-base",
-};
+import { useState } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Eye, EyeOff } from "lucide-react"
+import { apiClient } from "@/lib/api-client"
 
 export default function LoginPage() {
-  const router = useRouter();
-  const { setUser } = useAuth();
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  });
-
-  const emailCriteria = [
-    {
-      label: "Valid email format",
-      met: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email),
-    },
-  ];
-
-  const passwordCriteria = [
-    {
-      label: "At least 6 characters",
-      met: formData.password.length >= 6,
-    },
-  ];
-
-  const { errorToastHandler, successToastHandler } = useToast();
-  const { mutate: setToken } = useSetToken();
-
-  const { mutate: login, isPending } = useLogin(
-    (errMsg) => {
-      errorToastHandler(errMsg);
-      setError(errMsg);
-    },
-    (_, data) => {
-      if (data?.status === 200 && data?.data?.access && data?.data?.user) {
-        // Set the user in context
-        setUser(data?.data.user);
-
-        // Set the token in cookies via API route
-        setToken(
-          {
-            token: data?.data.access,
-            refresh: data?.data.refresh,
-            user: data?.data.user,
-          },
-          {
-            onSuccess: () => {
-              console.log(" Cookies set successfully");
-              router.refresh();
-              // Small delay to ensure cookies are set
-              setTimeout(
-                () => router.push("/dashboard?msg=login-success"),
-                200
-              );
-            },
-            onError: (error) => {
-              console.error("Failed to set cookies:", error);
-              errorToastHandler(
-                "Authentication setup failed. Please try logging in again."
-              );
-            },
-          }
-        );
-      }
-    }
-  );
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+    e.preventDefault()
+    setError("")
+    setLoading(true)
 
-    // Email validation
-    if (!formData.email.trim()) {
-      setError("Email is required");
-      return;
+    try {
+      const response = await apiClient.login(formData.email, formData.password)
+      if (response.success) {
+        // Tokens are now stored automatically in apiClient.login()
+        // access_token and refresh_token are saved to localStorage
+        router.push("/dashboard")
+      } else {
+        setError(response.error || "Login failed. Please try again.")
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.")
+    } finally {
+      setLoading(false)
     }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
-
-    // Password validation
-    if (!formData.password) {
-      setError("Password is required");
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
-
-    const payload = {
-      email: formData.email,
-      password: formData.password,
-    };
-
-    login(payload);
-  };
+  }
 
   return (
-    <div className="w-full max-w-lg">
-      <GoBack className="mb-8"/>
-      <AuthWrapper>
-          <h1 className="text-2xl font-semibold text-[#1E1E1E] tracking-[-1.5] mb-4 text-center">
-            Welcome Back
-          </h1>
-          <p className="text-[#00000099] font-normal tracking-[-1] text-center mb-8">
-            Sign in to continue to Newbridge
-          </p>
+    <div className="w-full max-w-md">
+      {/* Logo */}
+      <div className="flex justify-center mb-8">
+        <Link
+          href="/"
+          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <Image
+            src={"/images/logo.png"}
+            width={28}
+            height={25}
+            alt={"Logo"}
+          />
+          <span className="text-lg font-semibold text-[#3C60AF]">
+            NewsBridge
+          </span>
+        </Link>
+      </div>
 
-          {/* Error message */}
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
-              {error}
-            </div>
-          )}
+      {/* Card */}
+      <div className="bg-white rounded-lg shadow-lg p-8">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">Welcome Back</h1>
+        <p className="text-gray-600 text-center mb-8">Sign in to continue to Newsbridge</p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email */}
-            <div>
-              <label className="block text-base font-medium text-[#27272A] mb-2">
-                Email Address
-              </label>
-              <div className="flex items-center rounded-2xl py-2 px-4 border border-[#e5e7eb]">
-                <Mail className="size-6 text-[#39474F]/65" />
-                <Input
-                  type="email"
-                  placeholder="your.email@example.com"
-                  className={style.input}
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  required
-                  disabled={isPending}
-                />
-              </div>
-            </div>
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">{error}</div>
+        )}
 
-            {/* Password */}
-            <div>
-              <label className="block text-base font-medium text-[#27272A] mb-2">
-                Password
-              </label>
-              <div className="relative flex items-center rounded-2xl py-2 px-1 border border-[#e5e7eb]">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  className={`${style.input}`}
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  required
-                  disabled={isPending}
-                />
-                <div
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showPassword ? (
-                    <EyeOff
-                      strokeWidth={1.5}
-                      className="w-7 h-7 text-[#192D65]/60"
-                    />
-                  ) : (
-                    <Eye
-                      strokeWidth={1.5}
-                      className="w-7 h-7 text-[#192D65]/60"
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Forgot Password Link */}
-            <div className="text-left w-full">
-              <Link
-                href="/auth/forgot-password"
-                className="text-base font-medium tracking-[-1] text-[#192D65] hover:text-[#2148A2] transition-colors duration-300"
-              >
-                Forgot password?
-              </Link>
-            </div>
-
-            {/* Submit Button */}
-            <GradientButton
-              btnText={isPending ? "Logging in..." : "Log in"}
-              borderColor="#213670"
-              disabled={isPending}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">Email Address</label>
+            <Input
+              type="email"
+              placeholder="your.email@example.com"
+              className="w-full"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+              disabled={loading}
             />
-          </form>
+          </div>
 
-          {/* Sign Up Link */}
-          <p className="text-center text-[#3754A3] text-base mt-6 font-semibold tracking-[-1] underline underline-offset-3 hover:text-[#2148A2] transition-colors duration-300">
-            <Link href="/auth/signup">
-              Don't have an account? Become a reporter
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">Password</label>
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your password"
+                className="w-full pr-10"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                required
+                disabled={loading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Forgot Password Link */}
+          <div className="text-right">
+            <Link href="/auth/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">
+              Forgot password?
             </Link>
-          </p>
-      </AuthWrapper>
+          </div>
+
+          {/* Submit Button */}
+          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2" disabled={loading}>
+            {loading ? "Signing in..." : "Log in"}
+          </Button>
+        </form>
+
+        {/* Sign Up Link */}
+        <p className="text-center text-gray-600 text-sm mt-6">
+          Don't have an account?{" "}
+          <Link href="/auth/signup" className="text-blue-600 hover:text-blue-700 font-medium">
+            Become a reporter
+          </Link>
+        </p>
+      </div>
+
+      {/* Support Link */}
+      <div className="text-center mt-6 text-sm text-gray-600">
+        Need help?{" "}
+        <a href="mailto:info@newsbridge.com" className="text-blue-600 hover:text-blue-700">
+          Contact support
+        </a>
+      </div>
     </div>
-  );
+  )
 }

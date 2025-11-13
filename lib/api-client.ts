@@ -70,6 +70,11 @@ export interface CreatePasswordPayload {
   password2: string
 }
 
+export interface WaitlistPayload {
+  email: string
+  source?: string
+}
+
 class ApiClient {
   private baseUrl: string
 
@@ -256,6 +261,13 @@ class ApiClient {
 
     return this.request(`/reports/?${queryParams.toString()}`, {
       method: "GET",
+    })
+  }
+
+  async submitWaitlist(data: WaitlistPayload) {
+    return this.request("/invite-onboard/", {
+      method: "POST",
+      body: JSON.stringify(data),
     })
   }
 }

@@ -60,7 +60,7 @@ export const NEWSBRIDGE_COLORS = {
 }
 
 // Convenience exports for common use cases
-export const NB_PRIMARY = NEWSBRIDGE_COLORS.primary.DEFAULT
-export const NB_SECONDARY = NEWSBRIDGE_COLORS.secondary.DEFAULT
-export const NB_SUCCESS = NEWSBRIDGE_COLORS.success
-export const NB_ERROR = NEWSBRIDGE_COLORS.error
+export const NB_PRIMARY = NEWBRIDGE_COLORS.primary.DEFAULT
+export const NB_SECONDARY = NEWBRIDGE_COLORS.secondary.DEFAULT
+export const NB_SUCCESS = NEWBRIDGE_COLORS.success
+export const NB_ERROR = NEWBRIDGE_COLORS.error

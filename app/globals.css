@@ -11,17 +11,6 @@
    Neutrals: Light gray backgrounds
 */
 
-@layer base {
-  input,
-  button,
-  select,
-  textarea {
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-  }
-}
-
 :root {
   /* Brand Primary Colors */
   --nb-primary: #3754a3;

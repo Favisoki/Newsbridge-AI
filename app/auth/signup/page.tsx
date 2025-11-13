@@ -1,110 +1,104 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import Logo from "@/components/Common/Logo";
-import Image from "next/image";
-import GradientButton from "@/components/ui/gradient-button";
-import GoBack from "@/components/Common/go-back";
-
-const signUpDetails: {
-  Icon: string;
-  title: string;
-  bulletins: string[];
-  borderColor: string;
-  variant?: "default" | "primary" | "secondary";
-}[] = [
-  {
-    Icon: "/Frame5.png",
-    title: "For Independent Journalists",
-    bulletins: [
-      "Discover real community stories",
-      "Collaborate securely with contributors",
-      "Stay connected across regions",
-    ],
-    borderColor: "#3754A3",
-    variant: "primary"
-  },
-  {
-    Icon: "/Frame4.png",
-    title: "For Media Houses",
-    bulletins: [
-      "Discover real community stories",
-      "Collaborate securely with contributors",
-      "Stay connected across regions",
-    ],
-    borderColor: "#FCC527",
-    variant: "secondary"
-  },
-];
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export default function SignupPage() {
   return (
-    <div className="w-full max-w-4xl">
+    <div className="w-full max-w-2xl">
       {/* Back Link */}
-      <div className="flex items-center flex-col gap-6">
-        <GoBack />
-        <Logo textSize="text-3xl" height={40} width={40} />
+      <div className="mb-16">
+        <Link href="/" className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
+          ← Back Home
+        </Link>
       </div>
 
-      <div className="bg-transparent pt-4 px-6">
-        <p className="text-xl text-[#00000099]/90 tracking-[-1] max-w-xl mx-auto leading-[150%] font-normal mb-2 text-center">
-          Where journalists and media houses connect to verify, translate, and
-          share real-time stories across Africa.
+      {/* Logo */}
+      <div className="flex justify-center mb-8">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+            <span className="text-white text-sm font-bold">NB</span>
+          </div>
+          <span className="text-lg font-semibold text-gray-900">Newbridge</span>
+        </div>
+      </div>
+
+      {/* Card */}
+      <div className="bg-white rounded-lg shadow-lg p-8">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+          Where journalists and media houses connect
+        </h1>
+        <p className="text-gray-600 text-center mb-12 text-sm">
+          to verify, translate, and share real-time stories across Africa.
         </p>
-      </div>
 
-      <div className="max-w-[880px] mx-auto">
-        <div className="grid md:grid-cols-2 gap-5 pt-8">
-          {/* Card */}
-          {signUpDetails.map((data) => {
-            return (
-              <div
-                key={data.title}
-                className=" rounded-3xl p-8 tracking-[-1] leading-[180%] transition-colors bg-[#FFFFFF]"
-                style={{ boxShadow: "0px 7px 23px 0px #C3C3C340" }}
-              >
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="relative w-16 h-16 rounded-full flex items-center justify-center text-white font-bold">
-                    <Image
-                      src={data.Icon}
-                      fill
-                      alt=""
-                      className="object-cover scale-75"
-                    />
-                  </div>
-                  <h2 className="text-[22px] tracking-[-1.7] font-semibold text-black">
-                    {data.title}
-                  </h2>
-                </div>
-                <ul className="space-y-3 mb-8 text-[#545454]/90 text-lg">
-                  {data?.bulletins?.map((info) => {
-                    return (
-                      <li key={info} className="flex items-center gap-2">
-                        <span className="text-[#545454]">•</span>
-                        <span>{info}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <Link href="/onboarding/independent-journalist">
-                  <GradientButton
-                    btnText="Get Started"
-                    variant={data?.variant}
-                    borderColor={data.borderColor}
-                  />
-                </Link>
+        {/* Two Options */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Independent Journalists */}
+          <div className="border-2 border-blue-200 rounded-lg p-6 hover:border-blue-400 transition-colors">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                👤
               </div>
-            );
-          })}
+              <h2 className="text-lg font-semibold text-gray-900">For Independent Journalists</h2>
+            </div>
+            <ul className="space-y-2 mb-6 text-gray-600 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 mt-1">•</span>
+                <span>Discover real community stories</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 mt-1">•</span>
+                <span>Collaborate securely with contributors</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-600 mt-1">•</span>
+                <span>Stay connected across regions</span>
+              </li>
+            </ul>
+            <Link href="/onboarding/independent-journalist">
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
+            </Link>
+          </div>
+
+          {/* Media Houses */}
+          <div className="border-2 border-yellow-300 rounded-lg p-6 hover:border-yellow-400 transition-colors">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-slate-900 font-bold text-lg">
+                🏢
+              </div>
+              <h2 className="text-lg font-semibold text-gray-900">For Media Houses</h2>
+            </div>
+            <ul className="space-y-2 mb-6 text-gray-600 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-yellow-500 mt-1">•</span>
+                <span>Discover real community stories</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-yellow-500 mt-1">•</span>
+                <span>Collaborate securely with contributors</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-yellow-500 mt-1">•</span>
+                <span>Stay connected across regions</span>
+              </li>
+            </ul>
+            <Link href="/onboarding/media-house">
+              <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-semibold">
+                Get Started
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Login Link */}
-        <p className="text-center hover:text-[#2148A2] tracking-[-1] underline font-semibold text-[#3754A3] text-base mt-8">
-          <Link href="/auth/login">Already have an account? Log in</Link>
+        <p className="text-center text-gray-600 text-sm mt-8">
+          Already have an account?{" "}
+          <Link href="/auth/login" className="text-blue-600 hover:text-blue-700 font-medium">
+            Log in
+          </Link>
         </p>
       </div>
     </div>
-  );
+  )
 }

@@ -2,11 +2,12 @@ import HowItWorks from "@/components/landing-page/HowItWorks";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import Link from"next/link";
+
 
 export default function Home() {
   return (
-    <div className="overflow-hidden tracking-[-1]">
+    <div className="overflow-hidden">
       {/* Hero Section */}
       <main className="relative overflow-hidden">
         <div className="absolute inset-0">
@@ -52,36 +53,36 @@ export default function Home() {
 
           <div className="-translate-y-24 relative z-10 bg-background opacity-90">
             {/* Main Headline */}
-            <h1 className="text-5xl md:text-6xl tracking-[-4] font-bold text-gray-900 mb-4 leading-tight relative z-10 ">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight relative z-10 ">
               Every Community Has a Story.
             </h1>
 
             {/* Subheadline */}
-            <h2 className="text-4xl md:text-5xl tracking-[-4] font-bold text-[#3754A3] mb-8 relative z-10">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#3754A3] mb-8 relative z-10">
               Not Every Voice Is Heard.
             </h2>
 
             {/* Description */}
-            <p className="text-[#00000099] text-lg tracking-[-0.7] max-w-lg mx-auto mb-12 leading-relaxed relative z-10">
+            <p className="text-[#00000099] text-lg max-w-2xl mx-auto mb-12 leading-relaxed relative z-10">
               NewsBridge connects journalists with underserved African
               communities through AI-powered multilingual reporting secure,
               anonymous, and authentic.
             </p>
 
             {/* CTA Button */}
-            <Link href={"/auth/signup"}>
+            <Link href="/auth/signup">
               <Button
-                className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] hover:[#3754A3] hover:scale-105 w-56 h-11 text-white px-8 py-7 text-base rounded-2xl inline-flex items-center gap-2 relative z-10"
+                className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] hover:[#3754A3] w-56 h-11 text-white px-8 py-7 text-base rounded-2xl inline-flex items-center gap-2 relative z-10"
                 style={{
                   borderImageSource:
                     "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
                   boxShadow: "0px 0px 0px 1px #8078FF",
                 }}
               >
-                Become a reporter
-                <div className="outline-2 outline-white rounded-full p-0.5">
-                  <ArrowRight className="w-6 h-6" strokeWidth={3} />
-                </div>
+              Become a reporter
+              <div className="outline-2 outline-white rounded-full p-0.5">
+                <ArrowRight className="w-6 h-6" strokeWidth={3} />
+              </div>
               </Button>
             </Link>
           </div>
@@ -99,12 +100,12 @@ export default function Home() {
           />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <h2 className="text-4xl md:text-4xl tracking-[-2.8] text-center font-semibold text-[#1E1E1E] mb-4">
+          <h2 className="text-4xl md:text-4xl text-center font-semibold text-[#1E1E1E] mb-4">
             The Stories that Never Get Told
           </h2>
           <div className="grid sm:flex items-start gap-12 py-20">
             {/* Left Content */}
-            <div className="space-y-6 basis-[55%] tracking-[-1.5]">
+            <div className="space-y-6 basis-[55%]">
               <div className="text-[#00000099] leading-loose text-lg">
                 <p>
                   A health crisis unfolds in silence, not because it isn't
@@ -154,10 +155,10 @@ export default function Home() {
       <section id="features" className="relative py-20 md:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl tracking-[-2.8] font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Our Core Features
             </h2>
-            <p className="text-gray-600 text-lg tracking-[-1.2] max-w-2xl mx-auto">
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
               Newsbridge was built to close that gap. We connect local voices to
               journalists and media houses using accessible, language-aware
               technology.
@@ -174,9 +175,9 @@ export default function Home() {
                 border: "1px solid #F1F1F1",
               }}
             >
-              <div className="tracking-[-1.2]">
+              <div>
                 <div>
-                  <h1 className="text-[#1E1E1E] tracking-[-1.6] text-xl font-semibold mb-3">
+                  <h1 className="text-[#1E1E1E] text-xl font-semibold mb-3">
                     WhatsApp and voice reporting
                   </h1>
                   <p className="text-[#1E1E1E99] text-base leading-relaxed">
@@ -240,10 +241,10 @@ export default function Home() {
                 style={{ border: "1px solid #F1F1F1" }}
               ></div>
               <div className="mt-6 font-semibold w-full">
-                <h1 className="text-xl tracking-[-1.6] text-[#1E1E1E] mb-2">
+                <h1 className="text-xl text-[#1E1E1E] mb-2">
                   AI-Powered Translation
                 </h1>
-                <p className="text-[#1E1E1E99] tracking-[-1.4] text-lg font-normal">
+                <p className="text-[#1E1E1E99] text-md font-normal">
                   Advanced AI preserves cultural nuances while translating
                   across 47 African languages
                 </p>
@@ -272,10 +273,10 @@ export default function Home() {
                 style={{ border: "1px solid #F1F1F1" }}
               ></div>
               <div className="mt-6 font-semibold w-full">
-                <h1 className="text-xl tracking-[-1.6] text-[#1E1E1E] mb-2">
+                <h1 className="text-xl text-[#1E1E1E] mb-2">
                   Cultural Context
                 </h1>
-                <p className="text-[#1E1E1E99] tracking-[-1.4] text-lg font-normal">
+                <p className="text-[#1E1E1E99] text-md font-normal">
                   AI understands local customs, traditions, and sensitive topics
                   to maintain story authenticity
                 </p>
@@ -297,10 +298,10 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl tracking-[-2.6] font-bold mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Who it is for
             </h2>
-            <p className="text-gray-300 tracking-[-1.2] text-lg max-w-2xl mx-auto">
+            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
               Whether you're an independent journalist or part of a major media
               house, Newbridge adapts to your workflow and amplifies your
               impact.
@@ -323,7 +324,7 @@ export default function Home() {
                     className="object-cover scale-75"
                   />
                 </div>
-                <h3 className="text-xl tracking-[-1.4] font-semibold">
+                <h3 className="text-xl font-semibold">
                   For Independent Journalists
                 </h3>
               </div>
@@ -341,7 +342,7 @@ export default function Home() {
                   <span>Stay connected across regions</span>
                 </li>
               </ul>
-              <div className="inline-flex items-center gap-2 tracking-[0] underline underline-offset-3 bg-transparent outline-none! text-white rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
+              <div className="inline-flex items-center gap-2 underline underline-offset-3 bg-transparent outline-none! text-white rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
                 Request Access
                 <div className="rounded-full border-2 p-0.5 border-white">
                   <ArrowRight className="w-4 h-4" />
@@ -394,7 +395,7 @@ export default function Home() {
       <section id="team" className="relative py-20 md:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl tracking-[-2.8] font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Meet the team behind News Bridge
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -440,10 +441,10 @@ export default function Home() {
                     className="object-cover rounded-lg"
                   />
                 </div>
-                <h3 className="font-semibold tracking-[-1.2] text-gray-900 mb-1">
+                <h3 className="font-semibold text-gray-900 mb-1">
                   {member.name}
                 </h3>
-                <p className="text-gray-600 tracking-[-1.2] text-sm">{member.role}</p>
+                <p className="text-gray-600 text-sm">{member.role}</p>
               </div>
             ))}
           </div>
@@ -469,13 +470,13 @@ export default function Home() {
             <div className="flex justify-center max-w-7xl mx-auto">
               <div className="flex gap-12 items-center">
                 {/* Left - Contact */}
-                <div className="bg-[#F7F9FF33] tracking-[-1.5] bg-opacity-60 backdrop-blur-xl text-center rounded-2xl py-9 translate-y-31 translate-x-7 z-10 basis-[43%] border border-gray-300/60">
+                <div className="bg-[#F7F9FF33] bg-opacity-60 backdrop-blur-xl text-center rounded-2xl py-9 translate-y-31 translate-x-7 z-10 basis-[43%] border border-gray-300/60">
                   <h3 className="text-[32px] text-white font-semibold mb-2">
                     Contact us
                   </h3>
                   <a
                     href="mailto:info@newsbridge.com"
-                    className="text-[48px] tracking-[-4] font-semibold underline"
+                    className="text-[45px] font-semibold underline"
                     style={{
                       background:
                         "linear-gradient(90deg, #FFFFFF -29.78%, #FDCD20 88.65%)",
@@ -509,10 +510,10 @@ export default function Home() {
                         className="bg-contain"
                       />
                     </div>
-                    <h3 className="text-5xl font-semibold tracking-[-3] text-white mb-6 leading-[150%]">
+                    <h3 className="text-5xl font-semibold text-white mb-6 leading-[150%]">
                       A Future of Inclusive Journalism
                     </h3>
-                    <p className="text-lg tracking-[-1.3] font-normal mb-8 leading-relaxed">
+                    <p className="text-lg font-normal mb-8 leading-relaxed">
                       We believe in an Africa where every citizen — regardless
                       of language, literacy, or location — can contribute to
                       trustworthy, community-driven news.

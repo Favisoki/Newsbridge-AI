@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Eye, EyeOff } from "lucide-react"
 import { apiClient } from "@/lib/api-client"
 
-export default function ResetPasswordPage() {
+export default function CreatePasswordPage() {
   const params = useParams()
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
@@ -40,11 +40,12 @@ export default function ResetPasswordPage() {
 
     setLoading(true)
     try {
-      const response = await apiClient.resetPassword(uid64, token, passwords)
+      const response = await apiClient.createPassword(uid64, token, passwords)
       if (response.success) {
-        router.push("/auth/reset-success")
+        // Redirect to login on success
+        router.push("/auth/login?success=true")
       } else {
-        setError(response.error || "Failed to reset password")
+        setError(response.error || "Failed to create password")
       }
     } catch (err) {
       setError("An error occurred. Please try again.")
@@ -67,21 +68,21 @@ export default function ResetPasswordPage() {
 
       {/* Card */}
       <div className="bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">Reset Your Password</h1>
-        <p className="text-gray-600 text-center mb-8 text-sm">Enter your new password below</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">Create Your Password</h1>
+        <p className="text-gray-600 text-center mb-8 text-sm">Set a strong password to secure your Newbridge account</p>
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">{error}</div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* New Password */}
+          {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">New Password</label>
+            <label className="block text-sm font-medium text-gray-900 mb-2">Password</label>
             <div className="relative">
               <Input
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter new password"
+                placeholder="Create a strong password"
                 className="w-full pr-10"
                 value={passwords.password1}
                 onChange={(e) => setPasswords({ ...passwords, password1: e.target.value })}
@@ -103,7 +104,7 @@ export default function ResetPasswordPage() {
             <div className="relative">
               <Input
                 type={showConfirm ? "text" : "password"}
-                placeholder="Confirm password"
+                placeholder="Confirm your password"
                 className="w-full pr-10"
                 value={passwords.password2}
                 onChange={(e) => setPasswords({ ...passwords, password2: e.target.value })}
@@ -121,7 +122,7 @@ export default function ResetPasswordPage() {
 
           {/* Submit Button */}
           <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2" disabled={loading}>
-            {loading ? "Resetting..." : "Reset Password"}
+            {loading ? "Creating Password..." : "Create Password"}
           </Button>
         </form>
       </div>
