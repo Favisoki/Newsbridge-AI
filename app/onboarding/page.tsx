@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation"
 
 export default function OnboardingPage() {
-  redirect("/onboarding/tell-us-about-yourself")
+  return <div>
+    <h1>hbkjbjk</h1>
+  </div>
 }

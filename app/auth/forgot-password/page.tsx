@@ -4,26 +4,29 @@ import type React from "react";
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { apiClient } from "@/lib/api-client";
 import useToast from "@/app/hooks/useToast";
 import { useSendResetEmail } from "@/app/api/auth/mutations";
+import CheckEmail from "@/public/check-email.svg";
+import Image from "next/image"
+import { Mail } from "lucide-react";
+import GradientButton from "@/components/ui/gradient-button";
+import GoBack from "@/components/Common/go-back";
+import AuthWrapper from "@/components/Layouts/auth-wrapper";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const { errorToastHandler, successToastHandler } = useToast();
-  const [createLink, setCreateLink] = useState(null)
-
+  const { errorToastHandler } = useToast();
+  const [createLink, setCreateLink] = useState(null);
 
   const { mutate, isPending: loading } = useSendResetEmail(
     (errMsg) => errorToastHandler(errMsg),
     (_, data) => {
       if (data?.status === 200 && data?.data?.detail) {
-        setCreateLink(data?.data?.reset_link)
-        setSuccess(true)
+        setCreateLink(data?.data?.reset_link);
+        setSuccess(true);
       }
     }
   );
@@ -40,27 +43,18 @@ export default function ForgotPasswordPage() {
     mutate({ email });
   };
 
-  return (
-    <div className="w-full max-w-md">
-      {/* Logo */}
-      <div className="flex justify-center mb-8">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-bold">NB</span>
-          </div>
-          <span className="text-lg font-semibold text-gray-900">Newbridge</span>
-        </div>
-      </div>
+  const timer = "00:30"
 
-      {/* Card */}
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        {!success ? (
+  return (
+    <div className="w-full max-w-lg">
+      <AuthWrapper>
+        {success ? (
           <>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+            <h1 className="text-2xl font-semibold text-[#1E1E1E] tracking-[-1.5] mb-4 text-center">
               Forgot Password
             </h1>
-            <p className="text-gray-600 text-center mb-8 text-sm">
-              We'll send you a verification code
+            <p className="text-[#00000099] font-normal tracking-[-1] text-center mb-8">
+              We'll send you a Verification code
             </p>
 
             {error && (
@@ -69,84 +63,80 @@ export default function ForgotPasswordPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-8">
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-2">
+                <label className="block text-base font-medium text-[#27272A] mb-2">
                   Email Address
                 </label>
-                <Input
-                  type="email"
-                  placeholder="your.email@example.com"
-                  className="w-full"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={loading}
-                />
+                <div className="flex items-center rounded-2xl py-2 px-4 border border-[#e5e7eb]">
+                  <Mail className="size-6 text-[#39474F]/65" />
+                  <Input
+                    type="email"
+                    placeholder="your.email@example.com"
+                    className={
+                      "w-full border-none shadow-none font-[poppins] !ring-0 placeholder:text-[#ADADAD]/70 placeholder:font-normal placeholder:text-base"
+                    }
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    disabled={loading}
+                  />
+                </div>
               </div>
 
               {/* Submit Button */}
-              <Button
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2"
+              <GradientButton
+                btnText={loading ? "Sending..." : "Send Verification Code"}
                 disabled={loading}
-              >
-                {loading ? "Sending..." : "Send Verification Code"}
-              </Button>
+              />
             </form>
           </>
         ) : (
-          <div className="text-center">
+          <div className="text-center px-2">
             <div className="mb-6">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                <svg
-                  className="w-8 h-8 text-green-600"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+              <div className="flex items-center justify-center mx-auto">
+                <Image
+                  src={CheckEmail}
+                  alt="Check email"
+                  width={84}
+                  height={84}
+                />
               </div>
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              Check your email
-            </h2>
-            <p className="text-gray-600 text-sm mb-6">
-              We've sent a password reset link to <strong>{email}</strong>
-            </p>
-            <p className="text-gray-600 text-xs mb-6">
-              Check your spam folder if you don't see it in your inbox.
+            <h1 className="text-2xl font-semibold text-[#1E1E1E] tracking-[-1.5] mb-4 text-center">
+              Check your Email
+            </h1>
+             <p className="text-[#00000099] font-normal tracking-[-1] text-center leading-[150%] text-base">
+                We sent a verification link to <span className="font-bold mr-1">{email || "youremail@gmail.com"}.</span>
+                Please verify your email address
               </p>
-              <p className="text-xs text-gray-700 mb-2">until sending emails have been embedded, click the link below to create password</p>
-              <Link className="text-xs font-semibold text-blue-500 mb-2" href={createLink ?? "#"}>Click to continue</Link>
+              <div>
+
+            <p className="text-[#39474F] text-xl tracking-[-1.9] mt-7 mb-4">
+             {timer}
+            </p>
+            <GradientButton btnText={"Resend Email"} />
+              </div>
+            <Link
+              className="text-xs font-semibold text-blue-500 mb-2"
+              href={createLink ?? "#"}
+            >
+              Click to continue
+            </Link>
           </div>
         )}
 
         {/* Back to Login */}
-        <div className="text-center mt-6">
-          <Link
-            href="/auth/login"
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center justify-center gap-1"
-          >
-            ← Back to Login
-          </Link>
+        <div className="mt-8">
+          <GoBack
+            iconSize={18}
+            btnText="Back to Login"
+            className="text-lg"
+            to="/auth/login"
+          />
         </div>
-      </div>
-
-      {/* Support Link */}
-      <div className="text-center mt-6 text-sm text-gray-600">
-        Need help?{" "}
-        <a
-          href="mailto:info@newsbridge.com"
-          className="text-blue-600 hover:text-blue-700"
-        >
-          Contact support
-        </a>
-      </div>
+      </AuthWrapper>
     </div>
   );
 }

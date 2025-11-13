@@ -53,12 +53,12 @@ export default function Home() {
 
           <div className="-translate-y-24 relative z-10 bg-background opacity-90">
             {/* Main Headline */}
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight relative z-10 ">
+            <h1 className="text-5xl md:text-6xl tracking-[-4] font-bold text-gray-900 mb-4 leading-tight relative z-10 ">
               Every Community Has a Story.
             </h1>
 
             {/* Subheadline */}
-            <h2 className="text-4xl md:text-5xl font-bold text-[#3754A3] mb-8 relative z-10">
+            <h2 className="text-4xl md:text-5xl tracking-[-4] font-bold text-[#3754A3] mb-8 relative z-10">
               Not Every Voice Is Heard.
             </h2>
 
