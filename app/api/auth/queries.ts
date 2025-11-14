@@ -20,19 +20,46 @@ export const useUserData = () => {
   });
 };
 
-const getAllReports = async (page: number) => {
+const getAllReports = async (page: number, search?: string) => {
+  const params = new URLSearchParams();
+  params.append('page', page.toString());
+  if (search && search.trim()) {
+    params.append('search', search.trim());
+  }
   const response = await request({
-    url: `/all_reports/?page=${page}`,
+    url: `/all_reports/?${params.toString()}`,
     method: `GET`,
     withCredentials: true,
   });
-  return response?.data
+  return response?.data;
 };
 
-export const useGetAllReports = (page: number = 1) => {
+export const useGetAllReports = (page: number = 1, search: string) => {
   return useQuery({
-    queryKey: ["all-reports", page],
-    queryFn: () => getAllReports(page),
+ queryKey: ["all-reports", page, search], // Include search in queryKey
+    queryFn: () => getAllReports(page, search),
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+};
+const getPrefefrenceReports = async (page: number, search?: string) => {
+  const params = new URLSearchParams();
+  params.append('page', page.toString());
+  if (search && search.trim()) {
+    params.append('search', search.trim());
+  }
+  const response = await request({
+    url: `/reports/?${params.toString()}`,
+    method: `GET`,
+    withCredentials: true,
+  });
+  return response?.data;
+};
+
+export const useGetPreferenceReports = (page: number = 1, search: string) => {
+  return useQuery({
+ queryKey: ["preference-reports", page, search], // Include search in queryKey
+    queryFn: () => getPrefefrenceReports(page, search),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });

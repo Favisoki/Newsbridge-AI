@@ -30,10 +30,10 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable}`}>
       <body className={inter.className}>
         <Providers>
-           <ToastProvider>
-          <NavbarWrapper />
+          <ToastProvider>
+            <NavbarWrapper />
             {children}
-            </ToastProvider>
+          </ToastProvider>
         </Providers>
       </body>
     </html>

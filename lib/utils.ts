@@ -89,3 +89,28 @@ export const storage = {
     }
   },
 };
+
+export const getNameAbbr = (name: string): string => {
+  if (!name || !name.trim()) return "";
+  
+  return name
+    .trim()
+    .split(/\s+/) // Split by one or more whitespace characters
+    .filter(word => word.length > 0) // Remove empty strings
+    .map(word => word.charAt(0).toUpperCase())
+    .join("");
+}
+
+export function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  delay: number
+) {
+  let timeout: NodeJS.Timeout;
+
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+}
