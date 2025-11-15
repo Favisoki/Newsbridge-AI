@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { PropsWithChildren } from "react";
 import { getQueryClient } from "@/app/getQueryClient";
-import { AuthProvider } from "../context/auth-context";
+import { AuthProvider } from "../../context/auth-context";
 
 const isDev = process.env.NEXT_PUBLIC_NODE_ENV !== "production";
 
@@ -23,9 +23,7 @@ function Providers({ children }: PropsWithChildren) {
 
   return (
     <QueryClientProvider client={client}>
-      <AuthProvider>
-      {children}
-      </AuthProvider>
+      <AuthProvider>{children}</AuthProvider>
       {isDev && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );

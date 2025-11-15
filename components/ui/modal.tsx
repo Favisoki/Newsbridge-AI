@@ -7,8 +7,9 @@ interface ModalProps {
   onClose: () => void;
   title?: string;
   description?: string;
+  isHeader?: boolean;
   children: ReactNode;
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "xxl";
   showCloseButton?: boolean;
   closeOnOverlayClick?: boolean;
   closeOnEscape?: boolean;
@@ -19,12 +20,14 @@ const sizeClasses = {
   md: "max-w-md",
   lg: "max-w-lg",
   xl: "max-w-xl",
+  xxl:"max-w-3xl"
 };
 
 export default function Modal({
   isOpen,
   onClose,
   title,
+  isHeader = false,
   description,
   children,
   size = "md",
@@ -115,7 +118,7 @@ export default function Modal({
 
   const modalContent = (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 tracking-[-1] flex items-center justify-center p-4 bg-black/80 animate-in fade-in duration-200"
       onClick={handleOverlayClick}
       aria-hidden="true"
     >
@@ -127,43 +130,44 @@ export default function Modal({
         aria-describedby={description ? "modal-description" : undefined}
         tabIndex={-1}
         className={`
-          bg-white rounded-2xl shadow-xl 
+          relative bg-white rounded-2xl shadow-xl 
           w-full ${sizeClasses[size]} 
-          max-h-[90vh] overflow-y-auto
+          max-h-[90vh] pt-8 overflow-y-auto
           animate-in zoom-in-95 slide-in-from-bottom-4 duration-200
           focus:outline-none focus:ring-none
         `}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-4">
+       {isHeader && <div className="flex items-start justify-between py-4 px-8">
           <div className="flex-1">
             <h2
               id="modal-title"
-              className="text-xl font-semibold text-gray-900"
+              className="text-2xl font-semibold text-gray-900 mb-2"
             >
               {title}
             </h2>
             {description && (
               <p
                 id="modal-description"
-                className="mt-1 text-sm text-gray-600"
+                className="text-gray-600"
               >
                 {description}
               </p>
             )}
           </div>
 
-          {showCloseButton && (
-            <button
-              type="button"
-              onClick={onClose}
-              className="ml-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label="Close modal"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          )}
         </div>
+        }
+      {showCloseButton && (
+        <button
+        type="button"
+        onClick={onClose}
+        className="ml-4 p-2 absolute right-8 top-8 text-gray-900 hover:text-black hover:bg-gray-100 rounded-full cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+        aria-label="Close modal"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      )}
 
         {/* Body */}
         <div className="p-6">{children}</div>

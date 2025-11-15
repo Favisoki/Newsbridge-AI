@@ -9,7 +9,7 @@ const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       <div
-        className="bg-white rounded-2xl p-9"
+        className="relative bg-white rounded-2xl p-9"
         style={{ boxShadow: "0px 17px 23px 0px #C3C3C340" }}
       >
         {children}
