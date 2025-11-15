@@ -258,6 +258,16 @@ class ApiClient {
       method: "GET",
     })
   }
+
+  async submitWaitlist(email: string) {
+    return this.request("/invite-onboard/", {
+      method: "POST",
+      body: JSON.stringify({ 
+        email,
+        source: "waitlist" 
+      }),
+    })
+  }
 }
 
 export const apiClient = new ApiClient()
