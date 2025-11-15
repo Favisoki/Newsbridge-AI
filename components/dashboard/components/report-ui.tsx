@@ -4,8 +4,14 @@ import { Search, ChevronDown, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StoryCard } from "../components/story-card";
 import EmptyState from "@/components/Common/empty-state";
+import { useState } from "react";
+import Modal from "@/components/ui/modal";
+import ReportDetailModal from "@/components/modal-components/report-details-modal";
+import { ObjectLiteral } from "@/lib/utils";
+import { StoryCardSkeletonList } from "@/app/loaders/dashboard-loader";
 
 interface ReportUiProps {
+  story: ObjectLiteral; 
   reportUi: any[];
   totalCount: number;
   isLoading: boolean;
@@ -23,6 +29,7 @@ interface ReportUiProps {
 }
 
 export default function ReportUi({
+  story,
   reportUi,
   totalCount,
   isLoading,
@@ -38,13 +45,15 @@ export default function ReportUi({
   setSearchQuery,
   header
 }: ReportUiProps) {
+    const [isOpen, setIsOpen] = useState(false)
+
   return (
     <div className="p-8">
       {/* Active Reports Section */}
-      <div className="mt-8">
+      <div className="mt-2">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-3xl tracking-[-2] font-bold text-gray-900">
               {header} ({totalCount})
             </h2>
             <p className="text-gray-600 mt-1">
@@ -86,9 +95,7 @@ export default function ReportUi({
           </h3>
 
           {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="text-gray-500">Loading reports...</div>
-            </div>
+            <StoryCardSkeletonList />
           ) : (
             <div className="space-y-4">
               {reportUi.length > 0 ? (
@@ -157,6 +164,8 @@ export default function ReportUi({
           </Button>
         </div>
       </div>
+
+    
 
       {/* WhatsApp Icon */}
       <div className="fixed bottom-8 right-8 w-16 h-16 bg-green-500 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 cursor-pointer">

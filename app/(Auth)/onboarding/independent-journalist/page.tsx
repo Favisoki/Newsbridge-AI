@@ -48,7 +48,6 @@ export default function TellUsAboutYourself() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { errorToastHandler } = useToast();
-  const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { setSignupData } = useAuth();
 

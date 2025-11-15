@@ -6,6 +6,7 @@ import {
 import useToast from "@/app/hooks/useToast";
 import { debounce } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
+import Cookies from "js-cookie";
 import {
   createContext,
   useContext,
@@ -140,6 +141,11 @@ function DashboardProviderContent({ children }: { children: ReactNode }) {
     if (message) {
       successToastHandler(message);
       toastShownRef.current = true;
+          Cookies.set("blockSpecialRoutes", "true", {
+      expires: 7,
+      secure: true,
+      sameSite: 'strict'
+    });
 
       // Remove query param from URL
       const params = new URLSearchParams(searchParams.toString());

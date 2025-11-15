@@ -1,10 +1,9 @@
 "use client";
 
-import { useDashboard } from "@/context/dashboard-context";
-import ReportUi from "../components/report-ui";
-import { useCitizenReports } from "@/context/citizen-reports-context";
+import ReportUi from "@/components/dashboard/components/report-ui";
+import { useSuperAdminDashboard } from "@/context/super-admin-context";
 
-export default function CitizenReports() {
+export default function Reports() {
   const {
     reportFeed,
     totalCount,
@@ -18,12 +17,12 @@ export default function CitizenReports() {
     goToPreviousPage,
     searchQuery,
     setSearchQuery,
-  } = useCitizenReports();
+  } = useSuperAdminDashboard();
 
   return (
     <ReportUi
-          header={"Citizen Reports"}
-          description="Showing reports that match your newsroom's focus areas"
+          header={"Reports"}
+          description="Monitor all reports received across the Newsbridge ecosystem."
           reportUi={reportFeed}
           totalCount={totalCount}
           isLoading={isLoading}

@@ -2,11 +2,9 @@
 
 import type React from "react";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Check, CheckCircle2Icon, CircleX, Eye, EyeOff, X } from "lucide-react";
+import { CheckCircle2Icon } from "lucide-react";
 import useToast from "@/app/hooks/useToast";
 import { useResetEmail } from "@/app/api/auth/mutations";
 import AuthWrapper from "@/components/Layouts/auth-wrapper";

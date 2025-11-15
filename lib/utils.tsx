@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from 'clsx'
+import { AudioLines, FileText, Video } from 'lucide-react';
 import { twMerge } from 'tailwind-merge'
+import Cookies from 'js-cookie';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -114,3 +116,78 @@ export function debounce<T extends (...args: any[]) => void>(
     }, delay);
   };
 }
+
+export const getMediaIcon = (story: any) => {
+    if (story.video) return <Video className="w-4 h-4 text-gray-600" />;
+    if (story.audio) return <AudioLines className="w-4 h-4 text-gray-600" />;
+    return <FileText className="w-4 h-4 text-gray-600" />;
+  };
+
+  // Format date
+export const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  // Get headline - use title, or first part of translated_text, or fallback
+export const getHeadline = (story: any) => {
+    if (story?.title) return story?.title;
+    if (story?.translated_text) {
+      const firstSentence = story?.translated_text.split(/[.!?]/)[0];
+      return firstSentence.length > 100
+        ? firstSentence.substring(0, 97) + "..."
+        : firstSentence;
+    }
+    return "Report Submitted";
+  };
+
+  // Get excerpt
+export const getExcerpt = (story: any) => {
+    return (
+      story?.translated_text ||
+      story?.text ||
+      story?.summary ||
+      "No description available"
+    );
+};
+  
+export const logout = async () => {
+
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Server logout failed");
+      }
+    } catch (err) {
+      console.error("Logout failed", err);
+      // Continue with cleanup even if server call fails
+    } finally {
+      // Clear cookies
+      const cookiesToRemove = ["user", "access", "access_token_header"];
+      cookiesToRemove.forEach((name) => {
+        Cookies.remove(name, { path: "/" });
+      });
+
+      // Clear storage
+      clearSignupData();
+      localStorage.removeItem("journalist-profile-draft");
+      localStorage.removeItem("media-house-setup-draft");
+      sessionStorage.clear();
+
+      // Reset state
+
+      // Redirect with success message
+      window.location.href = "/auth/login?logout=success";
+    }
+  };

@@ -36,7 +36,7 @@ const getAllReports = async (page: number, search?: string) => {
 
 export const useGetAllReports = (page: number = 1, search: string) => {
   return useQuery({
- queryKey: ["all-reports", page, search], // Include search in queryKey
+    queryKey: ["all-reports", page, search], // Include search in queryKey
     queryFn: () => getAllReports(page, search),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
@@ -58,8 +58,26 @@ const getPrefefrenceReports = async (page: number, search?: string) => {
 
 export const useGetPreferenceReports = (page: number = 1, search: string) => {
   return useQuery({
- queryKey: ["preference-reports", page, search], // Include search in queryKey
+    queryKey: ["preference-reports", page, search], // Include search in queryKey
     queryFn: () => getPrefefrenceReports(page, search),
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+};
+
+const getReportDetails = async (id: number) => {
+  const response = await request({
+    url: `/report/${id}/`,
+    method: `GET`,
+    withCredentials: true,
+  });
+  return response?.data;
+};
+
+export const useGetReportDetails = (id: number) => {
+  return useQuery({
+    queryKey: ["report-details", id], // Include search in queryKey
+    queryFn: () => getReportDetails(id),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });

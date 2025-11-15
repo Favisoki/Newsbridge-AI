@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import Cookies from "js-cookie";
+import { logout } from "./utils";
 
 const externalBaseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || "https://newsbridge-backend.onrender.com";
@@ -13,16 +14,14 @@ client.interceptors.request.use(
   (config) => {
     const url = config.url || "";
 
-    // Decide which baseURL to use
     if (url.startsWith("/api/")) {
       config.baseURL = ""; // same origin
     } else {
-      // External Django backend
+
       config.baseURL = externalBaseUrl;
     }
 
     // For external API calls, we need to send the token in the header
-    // because Django expects it there
     if (
       !url.startsWith("/api/") &&
       ["post", "put", "delete", "patch"].includes(config.method?.toLowerCase() || "")
@@ -51,14 +50,7 @@ client.interceptors.response.use(
 
     if (status === 401) {
       console.warn("401 detected – session expired");
-      
-      // // Clear client-side cookies
-      // document.cookie = "access=; path=/; max-age=0";
-      // document.cookie = "access_token_header=; path=/; max-age=0";
-      // document.cookie = "user=; path=/; max-age=0";
-      
-      // // Redirect to login
-      // window.location.href = "/login";
+      logout()
     }
 
     return Promise.reject(error);

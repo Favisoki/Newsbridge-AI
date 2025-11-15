@@ -3,9 +3,12 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { LayoutDashboard, FileText, Users, Settings } from "lucide-react"
+import { useSuperAdminDashboard } from "@/context/super-admin-context"
+import { useEffect } from "react"
 
 export function SuperadminSidebar() {
   const pathname = usePathname()
+  const { setSuperAdminHeader } = useSuperAdminDashboard()
 
   const menuItems = [
     { href: "/superadmin", label: "Dashboard", icon: LayoutDashboard },
@@ -14,6 +17,14 @@ export function SuperadminSidebar() {
     { href: "/superadmin/settings", label: "Settings", icon: Settings },
   ]
 
+   useEffect(() => {
+      const activeItem = menuItems.find(item => item.href === pathname)
+      if (activeItem) {
+        setSuperAdminHeader(activeItem.label)
+      }
+    }, [pathname, setSuperAdminHeader])
+  
+    
   return (
     <aside className="w-[200px] bg-[#1a1f37] text-white flex flex-col h-screen fixed left-0 top-0">
       {/* Logo */}

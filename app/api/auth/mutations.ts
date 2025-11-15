@@ -3,6 +3,43 @@ import { ObjectLiteral } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 
+interface ErrorResponse {
+  errors?: string[];
+  message?: string;
+  messages?: {message: string | string[]}
+  detail?: string;
+  non_field_errors?: string[]
+}
+
+function extractErrorMessage(error: AxiosError<ErrorResponse>): string {
+  const errorData = error.response?.data;
+
+  // Priority: detail > errors > message
+  if (errorData?.messages?.message) {
+    const msg = errorData.messages.message;
+    return Array.isArray(msg) ? msg.join(", ") : msg;
+  }
+  if (errorData?.non_field_errors) {
+    return errorData.non_field_errors[0];
+  }
+
+  if (errorData?.detail) {
+    return errorData.detail;
+  }
+
+  if (errorData?.errors?.length) {
+    return errorData.errors.join(", ");
+  }
+
+  if (errorData?.message) {
+    return Array.isArray(errorData.message)
+      ? errorData.message.join(", ")
+      : errorData.message;
+  }
+
+  return "An unexpected error occurred";
+}
+
 const logout = async (data: ObjectLiteral) => {
   const response = request({
     url: "/logout/",
@@ -96,6 +133,15 @@ const updateUser = async (data: ObjectLiteral, id: number) => {
 
   return response;
 };
+const inviteJournalist = async (data: ObjectLiteral) => {
+  const response = request({
+    url: `/inviteJourno/`,
+    method: "POST",
+    data,
+  });
+
+  return response;
+};
 
 const journalistSignup = async (data: ObjectLiteral) => {
   const response = request({
@@ -128,13 +174,9 @@ export const useCreateIndependentJournalistAccount = (
 
       cb(message, data);
     },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message;
-      errorCb(message || error.message);
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
     },
   });
 };
@@ -160,13 +202,9 @@ export const useCreatePassword = (
       cb(message, data);
       return data;
     },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        (Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message);
-      errorCb(message || error.message);
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
     },
   });
 };
@@ -198,13 +236,9 @@ export const useUpdateUser = (
 
       cb(message, data);
     },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message;
-      errorCb(message || error.message);
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
     },
   });
 };
@@ -222,13 +256,9 @@ export const useLogin = (
 
       cb(message, data);
     },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message;
-      errorCb(message || error.message);
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
     },
   });
 };
@@ -246,13 +276,29 @@ export const useLogout = (
 
       cb?.(message, data);
     },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message;
-      errorCb?.(message || error.message);
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
+    },
+  });
+};
+
+export const useInviteJournalist = (
+  errorCb?: (err: string) => void,
+  cb?: (message: string, data?: ObjectLiteral) => void
+) => {
+  return useMutation({
+    mutationFn: inviteJournalist,
+    mutationKey: ["invite-journalist"],
+    onSuccess(response: AxiosResponse) {
+      const message = response?.data?.message;
+      const data = response;
+
+      cb?.(message, data);
+    },
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
     },
   });
 };
@@ -270,13 +316,9 @@ export const useMediaSignup = (
 
       cb(message, data);
     },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message;
-      errorCb(message || error.message);
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
     },
   });
 };
@@ -294,13 +336,9 @@ export const useSendResetEmail = (
 
       cb(message, data);
     },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message;
-      errorCb(message || error.message);
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
     },
   });
 };
@@ -318,18 +356,14 @@ export const useMediaJournalistSignup = (
     }) => MediaHouseJournalistSignup(data, encrypted_data),
     mutationKey: ["media-journalist-invite-signup"],
     onSuccess(response: AxiosResponse) {
-      const message = response?.data?.message;
+      const message = response?.data?.detail;
       const data = response;
 
       cb(message, data);
     },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message;
-      errorCb(message || error.message);
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
     },
   });
 };
@@ -355,13 +389,9 @@ export const useResetEmail = (
 
       cb(message, data);
     },
-    onError(error: AxiosError) {
-      const message =
-        (error.response?.data as { errors: string[] })?.errors?.join(", ") ||
-        Array.isArray((error.response?.data as { message: string[] })?.message)
-          ? (error.response?.data as { message: string[] })?.message.join(", ")
-          : (error.response?.data as { message: string })?.message;
-      errorCb(message || error.message);
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
     },
   });
 };

@@ -8,13 +8,14 @@ interface GradientButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   borderColor?: string;
   isIconPresent?: boolean
   classes?: string;
-  variant?: "default" | "primary" | "secondary";
+  variant?: "default" | "primary" | "secondary" | "destructive";
 }
 
 const variantStyles = {
   default: "bg-gradient-to-b from-gray-600 via-gray-700 to-gray-800",
   primary: "bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/85 to-[#3754A3] tracking-[-0.8]",
   secondary: "bg-linear-to-b from-[#FCC527]/50 via-[#FCC527]/70 to-[#FCC527] text-black border",
+  destructive: "bg-gradient-to-b from-white/32 to-transparent bg-[#A31212]"
 };
 
 const GradientButton = ({

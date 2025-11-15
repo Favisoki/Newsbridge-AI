@@ -5,14 +5,17 @@ import { usePathname } from "next/navigation"
 import { LayoutDashboard, Users, FileText, Settings } from "lucide-react"
 import { useDashboard } from "@/context/dashboard-context"
 import { useEffect } from "react"
+import { useAuth } from "@/context/auth-context"
 
 export function Sidebar() {
   const pathname = usePathname()
-  const {setDashboardHeader} = useDashboard()
+  const { setDashboardHeader } = useDashboard()
+  const { user } = useAuth();
+  const userType = user?.user_type
 
   const menuItems = [
     { href: "/dashboard", label: "Report Feed", icon: LayoutDashboard },
-    { href: "/dashboard/team", label: "Team Activity", icon: Users },
+    ...(userType === "mediaHouse" ? [{ href: "/dashboard/team", label: "Team Activity", icon: Users }] : []),
     { href: "/dashboard/citizen-reports", label: "Citizen Reports", icon: FileText },
     { href: "/dashboard/settings", label: "Settings", icon: Settings },
   ]

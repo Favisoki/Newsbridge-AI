@@ -61,10 +61,10 @@ export default function JournalistProfile() {
     initialData: initialData.current,
     enabled: true,
     onSave: (data) => {
-      console.log("✅ Draft saved successfully:", data);
+      console.log("Draft saved successfully:", data);
     },
     onLoad: (data) => {
-      console.log("✅ Draft loaded successfully:", data);
+      console.log("Draft loaded successfully:", data);
     },
   });
 
@@ -162,7 +162,7 @@ export default function JournalistProfile() {
       );
     }
 
-    console.log("📤 Submitting changed fields:", changedFields);
+    console.log("Submitting changed fields:", changedFields);
     updateUser({ data: changedFields, id: existingData?.id });
   };
 
