@@ -127,7 +127,7 @@ export default function LoginPage() {
           Welcome Back
         </h1>
         <p className="text-[#00000099] font-normal tracking-[-1] text-center mb-8">
-          Sign in to continue to Newbridge
+          Sign in to continue to Newsbridge
         </p>
 
         {/* Error message */}
@@ -141,7 +141,7 @@ export default function LoginPage() {
           {/* Email */}
           <CustomInput
             type={"text"}
-            label="New Password"
+            label="Email"
             placeholder="your.email@example.com"
             value={formData.email}
             onChange={(e) =>
@@ -155,7 +155,7 @@ export default function LoginPage() {
           {/* Password */}
           <CustomInput
             type={"password"}
-            label="New Password"
+            label="Password"
             placeholder="Enter your password"
             value={formData.password}
             onChange={(e) =>
