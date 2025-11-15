@@ -31,7 +31,6 @@ export default function WaitlistPage() {
       })
       setEmail("")
       
-      // Auto-dismiss success message after 5 seconds
       setTimeout(() => setMessage(null), 5000)
     } catch (error) {
       setMessage({ 
@@ -48,7 +47,7 @@ export default function WaitlistPage() {
       {/* Background Bridge Illustrations */}
       <div className="absolute left-0 top-1/3 w-1/4 opacity-30">
         <Image
-          src="/images/design-mode/background-bridge.png"
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/background-bridge-k3CZWHxuIFK0esxR7praB0iXqMsrwz.png"
           alt=""
           width={300}
           height={200}
@@ -57,7 +56,7 @@ export default function WaitlistPage() {
       </div>
       <div className="absolute right-0 top-1/3 w-1/4 opacity-30 scale-x-[-1]">
         <Image
-          src="/images/design-mode/background-bridge.png"
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/background-bridge-k3CZWHxuIFK0esxR7praB0iXqMsrwz.png"
           alt=""
           width={300}
           height={200}
@@ -139,7 +138,7 @@ export default function WaitlistPage() {
         {/* Reporter Illustration */}
         <div className="w-full max-w-lg mt-8">
           <Image
-            src="/images/design-mode/reporter-woman.png"
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/reporter-woman-Actc2y25nPW9ntaWE4tuBGx2Oe5sVt.png"
             alt="Journalist with microphones"
             width={500}
             height={300}
