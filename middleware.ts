@@ -27,12 +27,13 @@ export function middleware(req: NextRequest) {
   const matchesRoute = (routes: string[]) =>
     routes.some((route) => pathname === route || pathname.startsWith(route + "/"));
 
+  const isAccessiblEverywhere = "/waitlist";
   const isPublic = matchesRoute(publicRoutes);
   const isOnboarding = pathname.startsWith("/onboarding");
   const isSpecial = matchesRoute(specialRoutes);
 
   // If blockSpecialRoutes is true, redirect away from special routes
-  if (blockSpecialRoutes && isSpecial) {
+  if (blockSpecialRoutes && isSpecial && !isAccessiblEverywhere) {
     if (userCookie) {
       try {
         const user = JSON.parse(userCookie);
@@ -51,7 +52,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Basic auth check - allow special routes if blockSpecialRoutes is false
-  if (!token && !isPublic && !isOnboarding) {
+  if (!token && !isPublic && !isOnboarding && !isAccessiblEverywhere) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
@@ -74,7 +75,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Modified: Allow special routes without token if blockSpecialRoutes is false
-  if (token && isOnboarding && !isSpecial) {
+  if (token && isOnboarding && !isSpecial && !isAccessiblEverywhere) {
     // Check user type and redirect accordingly
     if (userCookie) {
       try {

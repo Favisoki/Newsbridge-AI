@@ -89,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.removeItem("journalist-profile-draft");
       localStorage.removeItem("media-house-setup-draft");
       sessionStorage.clear();
+      Cookies.remove("blockSpecialRoutes");
 
       // Reset state
       setIsLoggingOut(false);
