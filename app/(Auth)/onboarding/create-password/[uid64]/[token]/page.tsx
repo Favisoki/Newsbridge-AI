@@ -202,7 +202,7 @@ export default function CreatePasswordPage() {
             <GradientButton
               disabled={isDisabled}
               type="submit"
-              btnText={isPending ? "Resetting..." : "Reset Password"}
+              btnText={isPending ? "Creating Password..." : "Create Password"}
             />
           </form>
         </AuthWrapper>

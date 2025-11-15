@@ -99,7 +99,7 @@ export function Navbar() {
               </Link>
               <Link href="/auth/signup">
                 <Button
-                  className="bg-linear-to-b from-[#3754A3]/80 via-[#3754A3]/80 to-[#3754A3] text-white h-14 w-36 hover:scale-105 rounded-2xl"
+                  className="bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] text-white h-14 w-36 hover:scale-105 rounded-2xl"
                   style={{
                     borderImageSource:
                       "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",

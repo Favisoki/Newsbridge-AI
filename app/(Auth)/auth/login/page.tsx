@@ -141,7 +141,7 @@ export default function LoginPage() {
           {/* Email */}
           <CustomInput
             type={"text"}
-            label="New Password"
+            label="Email"
             placeholder="your.email@example.com"
             value={formData.email}
             onChange={(e) =>
@@ -155,7 +155,7 @@ export default function LoginPage() {
           {/* Password */}
           <CustomInput
             type={"password"}
-            label="New Password"
+            label="Password"
             placeholder="Enter your password"
             value={formData.password}
             onChange={(e) =>
