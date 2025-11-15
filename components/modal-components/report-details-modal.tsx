@@ -15,12 +15,14 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import GradientButton from "../ui/gradient-button";
+import { ReportDetailError, ReportDetailSkeleton } from "@/app/loaders/report-details-loader";
 
 interface ReportDetailModalProps {
   id: number;
+  onClose: () => void;
 }
 
-export default function ReportDetailModal({ id }: ReportDetailModalProps) {
+export default function ReportDetailModal({ id, onClose }: ReportDetailModalProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -73,17 +75,13 @@ export default function ReportDetailModal({ id }: ReportDetailModalProps) {
 
   if (isLoading) {
     return (
-      <div className="h-screen flex justify-center items-center">
-        <p>loading...</p>
-      </div>
+      <ReportDetailSkeleton />
     );
   }
 
   if (!isLoading && isError) {
     return (
-      <div className="h-screen flex justify-center items-center">
-        <p>{errorMsg}</p>
-      </div>
+      <ReportDetailError onClose={onClose} />
     );
   }
 

@@ -83,7 +83,7 @@ export function StoryCard({ story }: StoryCardProps) {
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
         >
-          <ReportDetailModal id={story?.id} />
+          <ReportDetailModal onClose={() => setIsOpen(false)} id={story?.id} />
         </Modal>
       )}
     </div>
