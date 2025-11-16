@@ -10,6 +10,8 @@ import { useMediaSignup } from "@/app/api/auth/mutations";
 import { saveSignupData } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import Logo from "@/components/Common/Logo";
+import GoBack from "@/components/Common/go-back";
+import AuthWrapper from "@/components/Layouts/auth-wrapper";
 
 interface SuccessModalProps {
   isOpen: boolean;
@@ -205,24 +207,13 @@ export default function MediaHouseOnboarding() {
 
   return (
     <>
-      <div className="w-full max-w-3xl">
+      <div className="w-full max-w-3xl mt-24">
         {/* Back Link */}
-        <div className="mb-16">
-          <Link
-            href="/"
-            className="text-primary font-semibold hover:underline flex items-center gap-2"
-          >
-            ← Back Home
-          </Link>
+        <div className="mb-8 ">
+          <GoBack iconSize={18} to="/" />
         </div>
 
-        {/* Logo */}
-        <div className="mb-6 flex justify-center">
-          <Logo />
-        </div>
-
-        {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+        <AuthWrapper>
           <div className="mb-8">
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
               Tell us about Yourself
@@ -510,23 +501,8 @@ export default function MediaHouseOnboarding() {
               </button>
             </div>
           </form>
-        </div>
-
-        {/* Footer */}
-        <div className="text-center mt-8 text-sm">
-          <span className="text-muted-foreground">Need help? </span>
-          <Link href="#" className="text-primary font-semibold hover:underline">
-            Contact support
-          </Link>
-        </div>
+        </AuthWrapper>
       </div>
-
-      {/* Success Modal */}
-      <SuccessModal
-        isOpen={showSuccessModal}
-        onClose={handleCloseModal}
-        name={formData?.organizationName}
-      />
     </>
   );
 }

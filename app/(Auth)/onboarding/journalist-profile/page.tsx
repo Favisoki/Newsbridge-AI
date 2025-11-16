@@ -81,7 +81,7 @@ export default function JournalistProfile() {
     },
     (_, data) => {
       clearDraft();
-      router.push("/dashboard?msg=firsttime-signup");
+      router.replace("/dashboard?msg=firsttime-signup");
     }
   );
 

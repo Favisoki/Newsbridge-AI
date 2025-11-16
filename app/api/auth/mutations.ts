@@ -70,6 +70,15 @@ const sendResetEmail = async (data: ObjectLiteral) => {
   return response;
 };
 
+const resendResetEmail = async (data: ObjectLiteral) => {
+  const response = request({
+    url: "/resend_reset/",
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
 const resetEmail = async (
   data: ObjectLiteral,
   uid64: string,
@@ -83,18 +92,18 @@ const resetEmail = async (
   return response;
 };
 
-const inviteOnboard = async (data: ObjectLiteral) => {
+const mediaSignup = async (data: ObjectLiteral) => {
   const response = request({
-    url: "/invite-onboard/",
+    url: "/mediaSignup/",
     method: "POST",
     data,
   });
   return response;
 };
 
-const mediaSignup = async (data: ObjectLiteral) => {
+const joinWaitlist = async (data: ObjectLiteral) => {
   const response = request({
-    url: "/mediaSignup/",
+    url: "/wait/",
     method: "POST",
     data,
   });
@@ -342,6 +351,47 @@ export const useSendResetEmail = (
     },
   });
 };
+
+export const useResendResetEmail = (
+  errorCb: (err: string) => void,
+  cb: (message: string, data?: ObjectLiteral) => void
+) => {
+  return useMutation({
+    mutationFn: sendResetEmail,
+    mutationKey: ["resend-reset-email"],
+    onSuccess(response: AxiosResponse) {
+      const message = response?.data?.message;
+      const data = response;
+
+      cb(message, data);
+    },
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
+    },
+  });
+};
+
+export const useJoinWaitlist = (
+  errorCb: (err: string) => void,
+  cb: (message: string, data?: ObjectLiteral) => void
+) => {
+  return useMutation({
+    mutationFn: joinWaitlist,
+    mutationKey: ["join-waitlist"],
+    onSuccess(response: AxiosResponse) {
+      const message = response?.data?.message;
+      const data = response;
+
+      cb(message, data);
+    },
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
+    },
+  });
+};
+
 export const useMediaJournalistSignup = (
   errorCb: (err: string) => void,
   cb: (message: string, data?: ObjectLiteral) => void

@@ -31,7 +31,7 @@ const GradientButton = ({
   return (
     <Button
       {...props}
-      className={`hover:scale-[1.02] w-full text-white px-8 py-[30px] text-base rounded-2xl inline-flex items-center transition-all duration-300 gap-2 relative ${variantStyles[variant]} ${classes}`}
+      className={`hover:scale-[1.02] cursor-pointer w-full text-white px-8 py-[30px] text-base rounded-2xl inline-flex items-center transition-all duration-300 gap-2 relative ${variantStyles[variant]} ${classes}`}
       style={{
         borderImageSource:
           "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",

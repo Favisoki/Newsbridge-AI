@@ -12,8 +12,9 @@ interface CustomInputProps {
   error?: string;
   disabled?: boolean;
   required?: boolean;
-    showPassword?: boolean;
-    Icon?: LucideIcon;
+  showPassword?: boolean;
+  Icon?: LucideIcon;
+  inputClassName?: string;
   onTogglePassword?: () => void;
 }
 
@@ -23,9 +24,10 @@ const CustomInput = ({
   onChange,
   type = "text",
   label,
-    placeholder,
+  placeholder,
   Icon = Mail,
   error,
+  inputClassName,
   disabled = false,
   required = false,
   showPassword,
@@ -53,7 +55,7 @@ const CustomInput = ({
           relative flex items-center rounded-2xl py-2 
           ${isPasswordInput ? "px-1" : "px-4"}
           border transition-all duration-300
-          ${getBorderClasses()}
+          ${getBorderClasses()}  ${inputClassName}
         `}
       >
         {/* Email Icon */}

@@ -174,7 +174,7 @@ export const logout = async () => {
       // Continue with cleanup even if server call fails
     } finally {
       // Clear cookies
-      const cookiesToRemove = ["user", "access", "access_token_header"];
+      const cookiesToRemove = ["user", "access", "access_token_header", "blockSpecialRoutes"];
       cookiesToRemove.forEach((name) => {
         Cookies.remove(name, { path: "/" });
       });

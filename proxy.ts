@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const token = req.cookies.get("access")?.value;
   const userCookie = req.cookies.get("user")?.value;
   const blockSpecialRoutes = req.cookies.get("blockSpecialRoutes")?.value === "true";
@@ -27,13 +27,18 @@ export function middleware(req: NextRequest) {
   const matchesRoute = (routes: string[]) =>
     routes.some((route) => pathname === route || pathname.startsWith(route + "/"));
 
-  const isAccessiblEverywhere = "/waitlist";
-  const isPublic = matchesRoute(publicRoutes);
+  const isPublic = matchesRoute(publicRoutes) || pathname === "/waitlist";
   const isOnboarding = pathname.startsWith("/onboarding");
   const isSpecial = matchesRoute(specialRoutes);
+  const isProtected = pathname.startsWith("/dashboard") || pathname.startsWith("/superadmin");
+
+  // CRITICAL: If no token and trying to access protected routes, redirect to login
+  if (!token && isProtected) {
+    return NextResponse.redirect(new URL("/auth/login", req.url));
+  }
 
   // If blockSpecialRoutes is true, redirect away from special routes
-  if (blockSpecialRoutes && isSpecial && !isAccessiblEverywhere) {
+  if (blockSpecialRoutes && isSpecial) {
     if (userCookie) {
       try {
         const user = JSON.parse(userCookie);
@@ -51,13 +56,13 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  // Basic auth check - allow special routes if blockSpecialRoutes is false
-  if (!token && !isPublic && !isOnboarding && !isAccessiblEverywhere) {
-    return NextResponse.redirect(new URL("/", req.url));
+  // Basic auth check - allow special routes and onboarding
+  if (!token && !isPublic && !isOnboarding) {
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  if (token && isPublic) {
-    // Check user type and redirect accordingly
+  // Redirect authenticated users away from public routes
+  if (token && isPublic && pathname !== "/waitlist") {
     if (userCookie) {
       try {
         const user = JSON.parse(userCookie);
@@ -74,9 +79,8 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  // Modified: Allow special routes without token if blockSpecialRoutes is false
-  if (token && isOnboarding && !isSpecial && !isAccessiblEverywhere) {
-    // Check user type and redirect accordingly
+  // Redirect authenticated users away from non-special onboarding
+  if (token && isOnboarding && !isSpecial) {
     if (userCookie) {
       try {
         const user = JSON.parse(userCookie);
@@ -118,7 +122,7 @@ export function middleware(req: NextRequest) {
     } catch (error) {
       console.error("Error parsing user cookie:", error);
       // Invalid user cookie, redirect to login
-      return NextResponse.redirect(new URL("/", req.url));
+      return NextResponse.redirect(new URL("/auth/login", req.url));
     }
   }
 

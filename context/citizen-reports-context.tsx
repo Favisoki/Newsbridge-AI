@@ -191,7 +191,7 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
 // Main provider with Suspense wrapper
 export function CitizenReportProvider({ children }: { children: ReactNode }) {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+    <Suspense fallback={null}>
       <CitizenReportsProviderContent>{children}</CitizenReportsProviderContent>
     </Suspense>
   );

@@ -341,12 +341,17 @@ export default function Home() {
                   <span>Stay connected across regions</span>
                 </li>
               </ul>
-              <div className="inline-flex items-center gap-2 tracking-[0] underline underline-offset-3 bg-transparent outline-none! text-white rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
-                Request Access
-                <div className="rounded-full border-2 p-0.5 border-white">
-                  <ArrowRight className="w-4 h-4" />
+              <Link
+                className="group cursor-pointer z-20 transition-all duration-300"
+                href={"onboarding/independent-journalist"}
+              >
+                <div className="group-hover:scale-105 inline-flex items-center gap-2 tracking-[0] underline underline-offset-3 bg-transparent outline-none! text-white rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
+                  Request Access
+                  <div className="rounded-full border-2 group-hover:translate-x-1 transition-all duration-300 p-0.5 border-white">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
 
             {/* Media Houses */}
@@ -379,12 +384,17 @@ export default function Home() {
                   <span>Stay connected across regions</span>
                 </li>
               </ul>
-              <div className="inline-flex items-center gap-2 underline underline-offset-3 bg-transparent outline-none! text-[#FEE00F] rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
-                Request Access
-                <div className="rounded-full border-2 p-0.5 border-[#FEE00F]">
-                  <ArrowRight className="w-4 h-4" />
+              <Link
+                className="group cursor-pointer hover:scale-105 z-20 transition-all duration-300"
+                href={"onboarding/independent-journalist"}
+              >
+                <div className="inline-flex items-center group-hover:scale-105 gap-2 underline underline-offset-3 bg-transparent outline-none! text-[#FEE00F] rounded-lg font-semibold hover:text-[#FEE00F] transition-all duration-300 text-base">
+                  Request Access
+                  <div className="rounded-full border-2 group-hover:translate-x-1 transition-all duration-300 p-0.5 border-[#FEE00F]">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -434,14 +444,14 @@ export default function Home() {
             ].map((member) => (
               <div
                 key={member.name}
-                className="text-center shadow-lg py-10 px-4 rounded-2xl"
+                className="text-center hover:scale-[1.02] cursor-pointer transition-all duration-300 shadow-lg py-10 px-4 rounded-2xl"
               >
                 <div className="relative w-full aspect-square bg-[#192c65] rounded-lg mb-4">
                   <Image
                     src={member.image}
                     alt=""
                     fill
-                    className={`object-contain rounded-lg ${member.scale}`}
+                    className={`object-cover rounded-lg ${member.scale}`}
                   />
                 </div>
                 <h3 className="font-semibold tracking-[-1.2] text-gray-900 mb-1">
@@ -526,12 +536,14 @@ export default function Home() {
                     <p className="text-lg font-normal mb-8 ">
                       "When stories connect, societies strengthen"
                     </p>
-                    <Button className="inline-flex items-center gap-2 bg-[#FCC527] outline-none! text-black rounded-2xl px-6 py-7 font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
-                      Request Access
-                      <div className="rounded-full border-2 p-0.5 border-black">
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                    </Button>
+                    <Link className="group" href={"/auth/signup"}>
+                      <Button className="inline-flex items-center hover:scale-105 gap-2 bg-[#FCC527] outline-none! text-black rounded-2xl px-6 py-7 font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
+                        Request Access
+                        <div className="rounded-full border-2 p-0.5 border-black">
+                          <ArrowRight className="w-4 h-4" />
+                        </div>
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -564,34 +576,34 @@ export default function Home() {
             <div>
               <ul className="space-y-2 flex gap-4 text-gray-600 text-sm">
                 <li>
-                  <a href="#how-it-works" className="hover:text-gray-900">
+                  <Link href="#how-it-works" className="hover:text-gray-900">
                     How it Works
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#team" className="hover:text-gray-900">
+                  <Link href="#team" className="hover:text-gray-900">
                     Meet the Team
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#who-its-for" className="hover:text-gray-900">
+                  <Link href="#who-its-for" className="hover:text-gray-900">
                     Who it's For
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#features" className="hover:text-gray-900">
+                  <Link href="#features" className="hover:text-gray-900">
                     Core Features
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-gray-900">
+                  <Link href="#" className="hover:text-gray-900">
                     Contact Us
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-gray-900">
+                  <Link href="#" className="hover:text-gray-900">
                     User Guide
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

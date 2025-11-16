@@ -1,12 +1,11 @@
 "use client";
 
 import type React from "react";
-
-import { useState } from "react";
-import Link from "next/link";
-import { Input } from "@/components/ui/input";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import useToast from "@/app/hooks/useToast";
-import { useSendResetEmail } from "@/app/api/auth/mutations";
+import { useResendResetEmail, useSendResetEmail } from "@/app/api/auth/mutations";
+import { useCountdownTimer } from "@/app/hooks/use-countdown-timer";
 import CheckEmail from "@/public/check-email.svg";
 import Image from "next/image";
 import { Mail } from "lucide-react";
@@ -15,36 +14,74 @@ import GoBack from "@/components/Common/go-back";
 import AuthWrapper from "@/components/Layouts/auth-wrapper";
 import CustomInput from "@/components/ui/custom-input";
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
+function ForgotPasswordContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const emailFromUrl = searchParams.get('email');
+  const successFromUrl = searchParams.get('success') === 'true';
+  
+  const [email, setEmail] = useState(emailFromUrl || "");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const { errorToastHandler } = useToast();
-  const [createLink, setCreateLink] = useState(null);
+  const [success, setSuccess] = useState(successFromUrl);
+  const { errorToastHandler, successToastHandler } = useToast();
+  
+  // Add countdown timer hook
+  const { timeLeft, canResend, startTimer } = useCountdownTimer(30, 'forgot-password-timer');
 
-  const { mutate, isPending: loading } = useSendResetEmail(
+  // Initialize state from URL params
+  useEffect(() => {
+    if (emailFromUrl && successFromUrl) {
+      setEmail(emailFromUrl);
+      setSuccess(true);
+    }
+  }, [emailFromUrl, successFromUrl]);
+
+  const { mutate: sendResetEmail, isPending: loading } = useSendResetEmail(
     (errMsg) => errorToastHandler(errMsg),
     (_, data) => {
       if (data?.status === 200 && data?.data?.detail) {
-        setCreateLink(data?.data?.reset_link);
         setSuccess(true);
+        // Update URL with email and success params
+        router.push(`/auth/forgot-password?email=${encodeURIComponent(email)}&success=true`);
+        startTimer();
       }
     }
   );
+  
+  const { mutate: resendResetEmail, isPending: resending } = useResendResetEmail(
+    (errMsg) => errorToastHandler(errMsg),
+    (_, data) => {
+      if (data?.status === 200 && data?.data?.detail) {
+        successToastHandler("Verification Email Resent");
+        startTimer();
+      }
+    }
+  );
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email) {
+    if (!email.trim()) {
       setError("Please enter your email address");
+      errorToastHandler("Please enter your email address");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address");
+      errorToastHandler("Please enter a valid email address");
       return;
     }
 
     setError("");
-    mutate({ email });
+    sendResetEmail({ email });
   };
 
-  const timer = "00:30";
+  const handleResend = () => {
+    if (!canResend || resending) return;
+    resendResetEmail({ email });
+  };
 
   return (
     <div className="w-full max-w-lg">
@@ -67,21 +104,22 @@ export default function ForgotPasswordPage() {
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Email */}
               <CustomInput
-                type={"text"}
-                label="New Password"
+                type="email"
+                label="Email Address"
                 placeholder="your.email@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 error={error}
                 Icon={Mail}
                 disabled={loading}
-                name={"email"}
+                name="email"
               />
 
               {/* Submit Button */}
               <GradientButton
                 btnText={loading ? "Sending..." : "Send Verification Code"}
                 disabled={loading}
+                type="submit"
               />
             </form>
           </>
@@ -109,16 +147,15 @@ export default function ForgotPasswordPage() {
             </p>
             <div>
               <p className="text-[#39474F] text-xl tracking-[-1.9] mt-7 mb-4">
-                {timer}
+                {timeLeft}
               </p>
-              <GradientButton btnText={"Resend Email"} />
+              <GradientButton 
+                btnText={resending ? "Sending..." : "Resend Email"} 
+                disabled={!canResend || resending}
+                onClick={handleResend}
+                type="button"
+              />
             </div>
-            <Link
-              className="text-xs font-semibold text-blue-500 mb-2"
-              href={createLink ?? "#"}
-            >
-              Click to continue
-            </Link>
           </div>
         )}
 
@@ -133,5 +170,15 @@ export default function ForgotPasswordPage() {
         </div>
       </AuthWrapper>
     </div>
+  );
+}
+
+export default function ForgotPasswordPage() {
+  return (
+    <Suspense fallback={
+     null
+    }>
+      <ForgotPasswordContent />
+    </Suspense>
   );
 }

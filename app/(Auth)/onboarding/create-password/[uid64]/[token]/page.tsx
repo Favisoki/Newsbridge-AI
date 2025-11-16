@@ -4,9 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Check, CheckCircle2Icon, CircleX, Eye, EyeOff } from "lucide-react";
+import { CheckCircle2Icon } from "lucide-react";
 import { useCreatePassword, useSetToken } from "@/app/api/auth/mutations";
 import useToast from "@/app/hooks/useToast";
 import { useAuth } from "@/context/auth-context";
@@ -58,8 +56,6 @@ export default function CreatePasswordPage() {
     },
     async (_, data) => {
       if (data?.status === 200 && data?.data?.access && data?.data?.user) {
-        successToastHandler("Password created successfully!");
-
         // Set the user in context
         setUser(data?.data.user);
 
@@ -72,10 +68,8 @@ export default function CreatePasswordPage() {
           },
           {
             onSuccess: () => {
-              console.log("Cookies set successfully");
               router.refresh();
-              // Small delay to ensure cookies are set
-              setTimeout(() => router.push(routeHandler()), 200);
+              router.push(routeHandler()), 200
             },
             onError: (error) => {
               console.error("Failed to set cookies:", error);
