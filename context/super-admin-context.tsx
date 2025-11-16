@@ -229,7 +229,7 @@ function SuperAdminProviderContent({ children }: { children: ReactNode }) {
 // Main provider with Suspense wrapper
 export function SuperAdminProvider({ children }: { children: ReactNode }) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
       <SuperAdminProviderContent>{children}</SuperAdminProviderContent>
     </Suspense>
   );

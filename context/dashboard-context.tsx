@@ -229,7 +229,7 @@ function DashboardProviderContent({ children }: { children: ReactNode }) {
 // Main provider with Suspense wrapper
 export function DashboardProvider({ children }: { children: ReactNode }) {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
       <DashboardProviderContent>{children}</DashboardProviderContent>
     </Suspense>
   );
