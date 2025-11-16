@@ -22,6 +22,8 @@ interface AuthContextType {
   setSignupData: React.Dispatch<React.SetStateAction<ObjectLiteral | null>>;
   isLoggingOut: boolean;
   setIsLoggingOut: React.Dispatch<React.SetStateAction<boolean>>;
+  isLogoutModal: boolean;
+  setIsLogoutModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,6 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<ObjectLiteral | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [signupData, setSignupData] = useState<ObjectLiteral | null>(null);
+  const [isLogoutModal, setIsLogoutModal] = useState<boolean>(false);
 
   // Hydrate user from client-readable cookie
   useEffect(() => {
@@ -79,7 +82,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSignupData(null);
 
       // Clear cookies
-      const cookiesToRemove = ["user", "access", "access_token_header"];
+      const cookiesToRemove = [
+        "user",
+        "access",
+        "access_token_header",
+        "blockSpecialRoutes",
+      ];
       cookiesToRemove.forEach((name) => {
         Cookies.remove(name, { path: "/" });
       });
@@ -89,13 +97,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.removeItem("journalist-profile-draft");
       localStorage.removeItem("media-house-setup-draft");
       sessionStorage.clear();
-      Cookies.remove("blockSpecialRoutes");
 
       // Reset state
       setIsLoggingOut(false);
 
       // Redirect with success message
-      router.push("/auth/login?logout=success");
+      window.location.href = "/auth/login?logout=success";
     }
   };
 
@@ -109,9 +116,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signupData,
       setSignupData,
       isLoggingOut,
-      setIsLoggingOut
+      setIsLoggingOut,
+      isLogoutModal,
+      setIsLogoutModal,
     }),
-    [user, isLoading, signupData, isLoggingOut, logout, updateUser, setSignupData, setIsLoggingOut]
+    [
+      user,
+      isLoading,
+      signupData,
+      isLoggingOut,
+      logout,
+      updateUser,
+      setSignupData,
+      setIsLoggingOut,
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

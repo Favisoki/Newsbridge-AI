@@ -11,7 +11,12 @@ import { UserProfileSkeleton } from "@/app/loaders/user-profile-loader";
 export function DashboardHeader() {
   const { user, isLoading } = useAuth();
   const { dashboardHeader } = useDashboard();
-  const fullName = user?.first_name + " " + user?.last_name;
+   const fullName = user?.first_name && user?.last_name 
+    ? `${user.first_name} ${user.last_name}`.trim()
+    : user?.first_name || user?.last_name || "";
+  
+  // Show skeleton during loading OR logging out
+  const shouldShowSkeleton = isLoading || isLoading || !user || !fullName;
   return (
     <header className="bg-white border-b border-gray-200 px-8 py-5 flex items-center justify-between">
       {/* Left - Title */}
@@ -28,7 +33,7 @@ export function DashboardHeader() {
         </button>
 
         {/* Profile */}
-        {isLoading ? (
+        {shouldShowSkeleton ? (
           <UserProfileSkeleton />
         ) : (
           <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
@@ -36,8 +41,8 @@ export function DashboardHeader() {
               {getNameAbbr(fullName)}
             </div>
             <div className="">
-              <p className="font-medium text-gray-900">{fullName}</p>
-              <p className="text-xs text-gray-500">{user?.role}</p>
+              <p className="font-medium text-gray-900">{fullName ?? "User"}</p>
+              <p className="text-xs text-gray-500">{user?.role ?? "Role"}</p>
             </div>
           </div>
         )}

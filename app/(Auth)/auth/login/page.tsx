@@ -1,10 +1,9 @@
 "use client";
 
 import type React from "react";
-
-import { useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLogin, useSetToken } from "@/app/api/auth/mutations";
 import useToast from "@/app/hooks/useToast";
 import { useAuth } from "@/context/auth-context";
@@ -13,38 +12,44 @@ import GradientButton from "@/components/ui/gradient-button";
 import AuthWrapper from "@/components/Layouts/auth-wrapper";
 import CustomInput from "@/components/ui/custom-input";
 
-const style = {
-  input:
-    "w-full border-none shadow-none font-[poppins] !ring-0 placeholder:text-[#ADADAD]/70 placeholder:font-normal placeholder:text-base",
-};
-
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const { setUser } = useAuth();
-
+  const searchParams = useSearchParams();
+  const message = searchParams.get("logout");
+  const logoutSuccess = message === "success";
+  const sessionExpired = message === "session-expired";
+  const { errorToastHandler, successToastHandler } = useToast();
+  const { mutate: setToken } = useSetToken();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const toastShown = useRef<boolean>(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const emailCriteria = [
-    {
-      label: "Valid email format",
-      met: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email),
-    },
-  ];
+  useEffect(() => {
+    if (toastShown.current) return;
 
-  const passwordCriteria = [
-    {
-      label: "At least 6 characters",
-      met: formData.password.length >= 6,
-    },
-  ];
-
-  const { errorToastHandler, successToastHandler } = useToast();
-  const { mutate: setToken } = useSetToken();
+    if (logoutSuccess) {
+      successToastHandler("Logout successful");
+      toastShown.current = true;
+      
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("logout");
+      router.replace(`/auth/login${params.toString() ? `?${params.toString()}` : ''}`);
+    }
+    
+    if (sessionExpired) {
+      errorToastHandler("Session expired - Login again to continue");
+      toastShown.current = true;
+      
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("logout");
+      router.replace(`/auth/login${params.toString() ? `?${params.toString()}` : ''}`);
+    }
+  }, [logoutSuccess, sessionExpired, successToastHandler, errorToastHandler, searchParams, router]);
 
   const { mutate: login, isPending } = useLogin(
     (errMsg) => {
@@ -67,11 +72,8 @@ export default function LoginPage() {
             onSuccess: () => {
               console.log(" Cookies set successfully");
               router.refresh();
-              // Small delay to ensure cookies are set
-              setTimeout(
-                () => router.push("/dashboard?msg=login-success"),
-                200
-              );
+              router.replace("/dashboard?msg=login-success")
+              
             },
             onError: (error) => {
               console.error("Failed to set cookies:", error);
@@ -196,3 +198,11 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <LoginContent />
+    </Suspense>
+  );
+} 

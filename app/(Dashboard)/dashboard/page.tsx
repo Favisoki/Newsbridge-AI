@@ -1,10 +1,10 @@
 'use client'
 
-import ReportFeed from '@/components/dashboard/report-feed'
+import DashboardPage from '@/components/dashboard/report-feed'
 
 const page = () => {
   return (
-      <ReportFeed />
+      <DashboardPage />
   )
 }
 

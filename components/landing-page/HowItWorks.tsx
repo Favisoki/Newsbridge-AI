@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { ArrowRight, CircleArrowRight } from "lucide-react";
 import Image from "next/image";
 import { Step1, stepInfo } from "./StepComponents";
+import Link from "next/link";
 
 type activeType = 0 | 1 | 2;
 
@@ -127,9 +128,11 @@ const HowItWorks = () => {
               <p className="text-lg italic tracking-[-1] font-normal text-[#FFFFFF] mb-4">
                 Ready to amplify unheard voices?
               </p>
-              <div className="inline-flex items-center gap-2 underline tracking-[0] underline-offset-3 bg-transparent outline-none! text-[#FEE00F] rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
+              <div className="group inline-flex cursor-pointer items-center gap-2 underline tracking-[0] underline-offset-3 bg-transparent outline-none! text-[#FEE00F] rounded-lg font-semibold text-base">
+                <Link className="cursor-pointer hover:scale-105 z-20 transition-all duration-300" href={'auth/signup'}>
                 Request Access
-                <CircleArrowRight className="w-5 h-5" />
+                </Link>
+                <CircleArrowRight className="w-5 h-5 z-20 group-hover:translate-x-1 transition-all duration-300" />
               </div>
             </div>
           </div>
