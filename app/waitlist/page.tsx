@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Mail } from "lucide-react";
 import Image from "next/image";
 import { useJoinWaitlist } from "../api/auth/mutations";
 import useToast from "../hooks/useToast";

@@ -17,7 +17,7 @@ export function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const publicRoutes = ["/", "/auth", "/about"];
+  const publicRoutes = ["/", "/auth", "/about", "/waitlist"];
   const specialRoutes = [
     "/onboarding/password-created",
     "/onboarding/journalist-profile",

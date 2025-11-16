@@ -18,7 +18,7 @@ import { useState } from "react";
 import { UserCardSkeleton } from "@/app/loaders/profile-card-loader";
 
 export default function SettingsPage() {
-  const { user, logout, isLoggingOut, isLoading, isLogoutModal, setIsLogoutModal } = useAuth();
+  const { user, isLoading, setIsLogoutModal } = useAuth();
   const fullName = user?.first_name + " " + user?.last_name;
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
