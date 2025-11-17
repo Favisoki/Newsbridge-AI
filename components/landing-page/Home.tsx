@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import Logo from "../Common/Logo";
 
 export default function Home() {
   return (
@@ -515,13 +516,10 @@ export default function Home() {
           <div className="grid md:grid-cols-1 gap-12 mb-12 relative">
             <div>
               {/*  Logo & Description */}
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">NB</span>
+              <div className="flex items-center gap-6 mb-6 ml-6">
+                <div className="w-8 flex items-center justify-center">
+                  <Logo textSize="text-2xl" height={40} width={40} />
                 </div>
-                <span className="text-lg font-semibold text-gray-900">
-                  Newbridge
-                </span>
               </div>
               <p className="text-gray-600 leading-relaxed max-w-md">
                 Connect with authentic citizen voices from underserved African
