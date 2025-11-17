@@ -78,7 +78,7 @@ export default function Home() {
                   boxShadow: "0px 0px 0px 1px #8078FF",
                 }}
               >
-                Become a reporter
+                Request Access
                 <div className="outline-2 outline-white rounded-full p-0.5">
                   <ArrowRight className="w-6 h-6" strokeWidth={3} />
                 </div>
@@ -177,7 +177,7 @@ export default function Home() {
               <div className="tracking-[-1.2]">
                 <div>
                   <h1 className="text-[#1E1E1E] tracking-[-1.6] text-xl font-semibold mb-3">
-                    WhatsApp and voice reporting
+                    WhatsApp Reporting
                   </h1>
                   <p className="text-[#1E1E1E99] text-base leading-relaxed">
                     Organized workspace for managing reports.
@@ -241,7 +241,7 @@ export default function Home() {
               ></div>
               <div className="mt-6 font-semibold w-full">
                 <h1 className="text-xl tracking-[-1.6] text-[#1E1E1E] mb-2">
-                  AI-Powered Translation
+                  AI-Powered Analysis
                 </h1>
                 <p className="text-[#1E1E1E99] tracking-[-1.4] text-lg font-normal">
                   Advanced AI preserves cultural nuances while translating
@@ -307,8 +307,8 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Two Option Cards */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* One Option Card */}
+          <div className="grid md:grid-cols-1 gap-4 max-w-4xl mx-auto">
             {/* Independent Journalists */}
             <div
               className="rounded-3xl p-8 bg-[#111E42]"
@@ -353,50 +353,6 @@ export default function Home() {
                 </div>
               </Link>
             </div>
-
-            {/* Media Houses */}
-            <div
-              className="rounded-3xl p-8 bg-[#111E42]"
-              style={{ borderTop: "4px solid #FCC527" }}
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="relative w-14 h-14 rounded-full flex items-center justify-center text-white font-bold">
-                  <Image
-                    src="/Frame4.png"
-                    fill
-                    alt=""
-                    className="object-cover scale-75"
-                  />
-                </div>
-                <h3 className="text-xl font-semibold">For Media Houses</h3>
-              </div>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-start gap-3">
-                  <span className="text-white">•</span>
-                  <span>Discover real community stories</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-white">•</span>
-                  <span>Collaborate securely with contributors</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-white">•</span>
-                  <span>Stay connected across regions</span>
-                </li>
-              </ul>
-              <Link
-                className="group cursor-pointer hover:scale-105 z-20 transition-all duration-300"
-                href={"onboarding/independent-journalist"}
-              >
-                <div className="inline-flex items-center group-hover:scale-105 gap-2 underline underline-offset-3 bg-transparent outline-none! text-[#FEE00F] rounded-lg font-semibold hover:text-[#FEE00F] transition-all duration-300 text-base">
-                  Request Access
-                  <div className="rounded-full border-2 group-hover:translate-x-1 transition-all duration-300 p-0.5 border-[#FEE00F]">
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -425,13 +381,13 @@ export default function Home() {
               },
               {
                 name: "Gbadegesin Adeyanju",
-                role: "Backend Engineer",
+                role: "Backend AI Engineer",
                 image: "/Frame10.png",
                 scale: "",
               },
               {
                 name: "Isaac Adedokun",
-                role: "Data & ML Scientist",
+                role: "Data Scientist & AI Engineer",
                 image: "/Frame9.png",
                 scale: "",
               },
@@ -503,7 +459,7 @@ export default function Home() {
                       textDecorationColor: "#FDCD20",
                     }}
                   >
-                    info@newsbridge.com
+                    info@newsbridgeai.com
                   </a>
                 </div>
 
