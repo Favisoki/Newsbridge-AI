@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { logout } from "./utils";
 
 const externalBaseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://newsbridge-backend.onrender.com";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://newsbridgeai-nbyx.onrender.com";
 
 const client = axios.create({
   timeout: 300000,

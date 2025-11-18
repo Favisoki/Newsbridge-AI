@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     // Call Django logout endpoint if refresh token exists
     if (refreshToken) {
       try {
-        const djangoLogoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL || "https://newsbridge-backend.onrender.com"}/logout/`;
+        const djangoLogoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL || "https://newsbridgeai-nbyx.onrender.com"}/logout/`;
         
         console.log("Calling Django logout:", djangoLogoutUrl);
         
