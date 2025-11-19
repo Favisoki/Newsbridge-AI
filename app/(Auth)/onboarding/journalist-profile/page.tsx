@@ -5,11 +5,11 @@ import type React from "react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
 import Image from "next/image";
-import { X, CheckCircle, User, PhoneCall } from "lucide-react";
+import { X, CheckCircle, User, PhoneCall } from 'lucide-react';
 import { getSignupData } from "@/lib/utils";
 import { useUpdateUser } from "@/app/api/auth/mutations";
 import useToast from "@/app/hooks/useToast";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useAuth } from "@/context/auth-context";
 import { useDraft } from "@/app/hooks/useSaveDraft";
 import CustomInput from "@/components/ui/custom-input";
@@ -322,7 +322,14 @@ export default function JournalistProfile() {
                 Preferred reporting region
               </label>
               <div className="flex flex-wrap gap-2">
-                {["North", "West", "East", "South"].map((region) => (
+                {[
+                  "South South",
+                  "South West",
+                  "South East",
+                  "North West",
+                  "North Central",
+                  "North East",
+                ].map((region) => (
                   <button
                     key={region}
                     type="button"
