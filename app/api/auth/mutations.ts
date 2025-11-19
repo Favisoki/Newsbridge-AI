@@ -163,6 +163,15 @@ const inviteJournalist = async (data: ObjectLiteral) => {
   return response;
 };
 
+const journalistSignup = async (data: ObjectLiteral) => {
+  const response = request({
+    url: "/journalistSignup/",
+    method: "POST",
+    data,
+  });
+  return response;
+};
+
 export const useCreateIndependentJournalistAccount = (
   errorCb: (err: string) => void,
   cb: (message: string, data?: ObjectLiteral) => void
@@ -457,4 +466,13 @@ export const useResetEmail = (
       errorCb?.(message);
     },
   });
+};
+
+// Helper function for setting token
+const setToken = async (payload: {
+  token: string;
+  user: any;
+  refresh?: string;
+}) => {
+  // Implementation for setting token
 };
