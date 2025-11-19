@@ -6,9 +6,9 @@ import { AxiosError, AxiosResponse } from "axios";
 interface ErrorResponse {
   errors?: string[];
   message?: string;
-  messages?: {message: string | string[]}
+  messages?: { message: string | string[] };
   detail?: string;
-  non_field_errors?: string[]
+  non_field_errors?: string[];
 }
 
 function extractErrorMessage(error: AxiosError<ErrorResponse>): string {
@@ -142,6 +142,17 @@ const updateUser = async (data: ObjectLiteral, id: number) => {
 
   return response;
 };
+
+const updateUserPreferences = async (data: { languages: string[]; topics: string[] }) => {
+  const response = request({
+    url: `/user-preferences/`,
+    method: "PATCH",
+    data,
+  });
+
+  return response;
+};
+
 const inviteJournalist = async (data: ObjectLiteral) => {
   const response = request({
     url: `/inviteJourno/`,
@@ -149,24 +160,6 @@ const inviteJournalist = async (data: ObjectLiteral) => {
     data,
   });
 
-  return response;
-};
-
-const journalistSignup = async (data: ObjectLiteral) => {
-  const response = request({
-    url: "/journalistSignup/",
-    method: "POST",
-    data,
-  });
-  return response;
-};
-
-const setToken = async (data: ObjectLiteral) => {
-  const response = request({
-    url: "/api/auth/set-token",
-    method: "POST",
-    data,
-  });
   return response;
 };
 
@@ -241,6 +234,26 @@ export const useUpdateUser = (
     mutationKey: ["update-user"],
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.message;
+      const data = response;
+
+      cb(message, data);
+    },
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error);
+      errorCb?.(message);
+    },
+  });
+};
+
+export const useUpdateUserPreferences = (
+  errorCb: (err: string) => void,
+  cb: (message: string, data?: ObjectLiteral) => void
+) => {
+  return useMutation({
+    mutationFn: updateUserPreferences,
+    mutationKey: ["update-user-preferences"],
+    onSuccess(response: AxiosResponse) {
+      const message = response?.data?.message || "Preferences updated successfully";
       const data = response;
 
       cb(message, data);
@@ -357,7 +370,7 @@ export const useResendResetEmail = (
   cb: (message: string, data?: ObjectLiteral) => void
 ) => {
   return useMutation({
-    mutationFn: sendResetEmail,
+    mutationFn: resendResetEmail,
     mutationKey: ["resend-reset-email"],
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.message;

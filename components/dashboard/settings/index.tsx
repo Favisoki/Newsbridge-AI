@@ -17,15 +17,33 @@ import ComfirmationModal from "@/components/modal-components/confirmation-modal"
 import { useState } from "react";
 import { UserCardSkeleton } from "@/app/loaders/profile-card-loader";
 import Preferences from "@/components/dashboard/settings/preferences";
+import { useGetUserPreferences } from "@/app/api/auth/queries";
+import { useUpdateUserPreferences } from "@/app/api/auth/mutations";
+import useToast from "@/app/hooks/useToast";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function SettingsPage() {
   const { user, isLoading, setIsLogoutModal } = useAuth();
   const fullName = user?.first_name + " " + user?.last_name;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  
+  const { data: preferencesData, isLoading: isLoadingPreferences } = useGetUserPreferences();
+  const { successToastHandler, errorToastHandler } = useToast();
+  const queryClient = useQueryClient();
+
+  const { mutate: updatePreferences, isPending: isSavingPreferences } = useUpdateUserPreferences(
+    (error) => {
+      errorToastHandler(error);
+    },
+    (message) => {
+      successToastHandler(message);
+      queryClient.invalidateQueries({ queryKey: ["user-preferences"] });
+      queryClient.invalidateQueries({ queryKey: ["preference-reports"] });
+    }
+  );
 
   const handleSavePreferences = async (data: { languages: string[]; topics: string[] }) => {
-    console.log("Saving preferences:", data);
-    // TODO: Add API call to save preferences
+    updatePreferences(data);
   };
 
   return (
@@ -65,9 +83,11 @@ export default function SettingsPage() {
         <UpdatePassword />
 
         <Preferences 
-          initialLanguages={["English"]}
-          initialTopics={["Climate", "Metro"]}
+          initialLanguages={preferencesData?.languages || []}
+          initialTopics={preferencesData?.topics || []}
           onSave={handleSavePreferences}
+          isLoading={isLoadingPreferences}
+          isSaving={isSavingPreferences}
         />
 
         <Card className="mb-2 bg-[#FFF1F4] border-2 border-[#F93C65]">
