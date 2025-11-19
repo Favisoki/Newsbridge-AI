@@ -16,11 +16,17 @@ import Modal from "@/components/ui/modal";
 import ComfirmationModal from "@/components/modal-components/confirmation-modal";
 import { useState } from "react";
 import { UserCardSkeleton } from "@/app/loaders/profile-card-loader";
+import Preferences from "@/components/dashboard/settings/preferences";
 
 export default function SettingsPage() {
   const { user, isLoading, setIsLogoutModal } = useAuth();
   const fullName = user?.first_name + " " + user?.last_name;
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleSavePreferences = async (data: { languages: string[]; topics: string[] }) => {
+    console.log("Saving preferences:", data);
+    // TODO: Add API call to save preferences
+  };
 
   return (
     <div className="p-8 space-y-6">
@@ -58,6 +64,12 @@ export default function SettingsPage() {
 
         <UpdatePassword />
 
+        <Preferences 
+          initialLanguages={["English"]}
+          initialTopics={["Climate", "Metro"]}
+          onSave={handleSavePreferences}
+        />
+
         <Card className="mb-2 bg-[#FFF1F4] border-2 border-[#F93C65]">
           <CardContent className="space-y-2">
             <CardTitle>Danger Zone</CardTitle>
@@ -90,7 +102,6 @@ export default function SettingsPage() {
           />
         </Modal>
       )}
-     
     </div>
   );
 }
