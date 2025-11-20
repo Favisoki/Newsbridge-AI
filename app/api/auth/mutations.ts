@@ -446,5 +446,10 @@ const setToken = async (payload: {
   user: any
   refresh?: string
 }) => {
-  // Implementation for setting token
+  const response = request({
+    url: "/api/auth/set-token",
+    method: "POST",
+    data: payload,
+  })
+  return response
 }
