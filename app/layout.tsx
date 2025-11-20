@@ -1,30 +1,35 @@
-import type React from "react";
-import type { Metadata } from "next";
-import { NavbarWrapper } from "@/components/navbar-wrapper";
-import "./globals.css";
-import { Inter, Poppins } from "next/font/google";
-import Providers from "./providers/Provider";
-import ToastProvider from "./providers/ToastProvider";
+import type React from "react"
+import type { Metadata } from "next"
+import { NavbarWrapper } from "@/components/navbar-wrapper"
+import "./globals.css"
+import { Inter, Poppins } from "next/font/google"
+import Providers from "./providers/Provider"
+import ToastProvider from "./providers/ToastProvider"
 
 export const metadata: Metadata = {
   title: "Newsbridge - African Journalism Platform",
-  description:
-    "Connect with authentic citizen voices from underserved African communities",
+  description: "Connect with authentic citizen voices from underserved African communities",
   generator: "v0.app",
-};
+  metadataBase: new URL("https://newsbridgeai-nbyx.onrender.com"),
+  icons: {
+    icon: "/images/logo.png",
+    shortcut: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
+}
 
-const inter = Inter({ subsets: ["latin"], display: "swap" });
+const inter = Inter({ subsets: ["latin"], display: "swap" })
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"], // optional
   display: "swap",
   variable: "--font-poppins", // gives you a CSS variable
-});
+})
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en" className={`${poppins.variable}`}>
@@ -37,5 +42,5 @@ export default function RootLayout({
         </Providers>
       </body>
     </html>
-  );
+  )
 }
