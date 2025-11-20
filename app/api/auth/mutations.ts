@@ -47,6 +47,15 @@ const logout = async (data: ObjectLiteral) => {
   return response
 }
 
+const independentJournalistSignup = async (data: ObjectLiteral) => {
+  const response = request({
+    url: "/journalistSignup/",
+    method: "POST",
+    data,
+  })
+  return response
+}
+
 const MediaHouseJournalistSignup = async (data: ObjectLiteral, encrypted_data: string) => {
   const response = request({
     url: `/MediaHouseJournalistSignup/${encrypted_data}`,
@@ -140,15 +149,6 @@ const updateUserPreferences = async (data: { languages: string[]; topics: string
   return response
 }
 
-async function journalistSignup(data: ObjectLiteral) {
-  const response = request({
-    url: "/journalistSignup/",
-    method: "POST",
-    data,
-  })
-  return response
-}
-
 const inviteJournalist = async (data: ObjectLiteral) => {
   const response = request({
     url: `/inviteJourno/`,
@@ -164,7 +164,7 @@ export const useCreateIndependentJournalistAccount = (
   cb: (message: string, data?: ObjectLiteral) => void,
 ) => {
   return useMutation({
-    mutationFn: journalistSignup,
+    mutationFn: independentJournalistSignup,
     mutationKey: ["journalist-signup"],
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.message
@@ -197,6 +197,7 @@ export const useCreatePassword = (
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.message
       const data = response
+
       cb(message, data)
       return data
     },
