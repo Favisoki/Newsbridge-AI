@@ -42,7 +42,8 @@ export const useGetAllReports = (page: number = 1, search: string) => {
     refetchOnWindowFocus: false,
   });
 };
-const getPrefefrenceReports = async (page: number, search?: string) => {
+
+const getPreferenceReports = async (page: number, search?: string) => {
   const params = new URLSearchParams();
   params.append('page', page.toString());
   if (search && search.trim()) {
@@ -59,7 +60,25 @@ const getPrefefrenceReports = async (page: number, search?: string) => {
 export const useGetPreferenceReports = (page: number = 1, search: string) => {
   return useQuery({
     queryKey: ["preference-reports", page, search], // Include search in queryKey
-    queryFn: () => getPrefefrenceReports(page, search),
+    queryFn: () => getPreferenceReports(page, search),
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
+};
+
+const getUserPreferences = async () => {
+  const response = await request({
+    url: `/user-preferences/`,
+    method: `GET`,
+    withCredentials: true,
+  });
+  return response?.data;
+};
+
+export const useGetUserPreferences = () => {
+  return useQuery({
+    queryKey: ["user-preferences"],
+    queryFn: getUserPreferences,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
@@ -76,7 +95,7 @@ const getReportDetails = async (id: number) => {
 
 export const useGetReportDetails = (id: number) => {
   return useQuery({
-    queryKey: ["report-details", id], // Include search in queryKey
+    queryKey: ["report-details", id],
     queryFn: () => getReportDetails(id),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
