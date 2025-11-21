@@ -299,7 +299,7 @@ export default function Home() {
                 <div className="flex gap-3 mt-4">
                 {featureTags.map((tag) => {
                   return (
-                      <span className="text-[#1A1799] font-normal p-2 rounded-lg bg-[#F0F0FA] text-xs">
+                      <span key={tag} className="text-[#1A1799] font-normal p-2 rounded-lg bg-[#F0F0FA] text-xs">
                         {tag}
                       </span>
                   );
