@@ -7,6 +7,11 @@ import Logo from "../Common/Logo";
 import { DottedLine } from "../Common/Svgs";
 
 export default function Home() {
+  const featureTags = [
+    "Geolocation tagging",
+    "Cultural Context",
+    "Classification based on preference",
+  ];
   return (
     <div className="overflow-hidden tracking-[-1]">
       {/* Hero Section */}
@@ -170,7 +175,7 @@ export default function Home() {
           </div>
 
           {/* Feature Cards */}
-          <div className="grid md:grid-cols-2 gap-8 mb-20">
+          <div className="grid md:grid-cols-2 gap-8">
             {/* Feature 1 */}
             <div
               className="bg-white rounded-2xl p-8"
@@ -244,13 +249,13 @@ export default function Home() {
                   <div className="w-1/2 z-0 translate-y-15 translate-x-0">
                     <DottedLine />
                   </div>
-                   <div className="w-1/2 z-0 translate-y-15 absolute right-0 top-6 translate-x-0">
+                  <div className="w-1/2 z-0 translate-y-15 absolute right-0 top-6 translate-x-0">
                     <DottedLine />
                   </div>
                   <div className="w-1/2 z-0 translate-y-47 translate-x-0">
                     <DottedLine />
                   </div>
-                   <div className="w-1/2 z-0 translate-y-47 absolute right-0 top-6 translate-x-0">
+                  <div className="w-1/2 z-0 translate-y-47 absolute right-0 top-6 translate-x-0">
                     <DottedLine />
                   </div>
                 </div>
@@ -287,9 +292,19 @@ export default function Home() {
                   AI-Powered Analysis
                 </h1>
                 <p className="text-[#1E1E1E99] tracking-[-1.4] text-lg font-normal">
-                  Advanced AI preserves cultural nuances while translating
-                  across 47 African languages
+                  Automatically transcribes audio and video reports in the
+                  language they were originally spoken, so journalists can read
+                  the exact message as reported.
                 </p>
+                <div className="flex gap-3 mt-4">
+                {featureTags.map((tag) => {
+                  return (
+                      <span className="text-[#1A1799] font-normal p-2 rounded-lg bg-[#F0F0FA] text-xs">
+                        {tag}
+                      </span>
+                  );
+                })}
+                </div>
               </div>
             </div>
           </div>
