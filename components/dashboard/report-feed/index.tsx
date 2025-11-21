@@ -22,7 +22,7 @@ export default function DashboardPage() {
   return (
     <ReportUi
       header={"Report Feed"}
-      description={"Explore stories shared by citizens across regions"}
+      description={"Showing reports that match your newsroom's focus areas"}
       reportUi={reportFeed}
       totalCount={totalCount}
       isLoading={isLoading}
