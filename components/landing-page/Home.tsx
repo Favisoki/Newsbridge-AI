@@ -4,18 +4,24 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "../Common/Logo";
+import { DottedLine } from "../Common/Svgs";
 
 export default function Home() {
+  const featureTags = [
+    "Geolocation tagging",
+    "Cultural Context",
+    "Classification based on preference",
+  ];
   return (
     <div className="overflow-hidden tracking-[-1]">
       {/* Hero Section */}
-      <main className="relative overflow-hidden">
+      <main className="relative overflow-hidden z-10">
         <div className="absolute inset-0">
           <Image
             src="/images/background.png"
             alt="Hero background"
             fill
-            className="object-cover"
+            className="object-fill"
             priority
           />
         </div>
@@ -26,6 +32,7 @@ export default function Home() {
             alt="African map"
             fill
             className="object-contain"
+            priority
           />
         </div>
 
@@ -34,7 +41,8 @@ export default function Home() {
             src="/images/africa_right.png"
             alt="African map"
             fill
-            className="object-contain opacity-"
+            className="object-contain"
+            priority
           />
         </div>
 
@@ -47,6 +55,7 @@ export default function Home() {
                 width={500}
                 height={400}
                 className="object-contain"
+                priority
               />
             </div>
           </div>
@@ -166,7 +175,7 @@ export default function Home() {
           </div>
 
           {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mb-20">
+          <div className="grid md:grid-cols-2 gap-8">
             {/* Feature 1 */}
             <div
               className="bg-white rounded-2xl p-8"
@@ -180,37 +189,39 @@ export default function Home() {
                   <h1 className="text-[#1E1E1E] tracking-[-1.6] text-xl font-semibold mb-3">
                     WhatsApp Reporting
                   </h1>
-                  <p className="text-[#1E1E1E99] text-base leading-relaxed">
-                    Organized workspace for managing reports.
+                  <p className="text-[#1E1E1E99] text-lg leading-relaxed">
+                    Citizens report stories directly through WhatsApp using
+                    video, audio, or text, making it easy to share real-time
+                    information in the language they are most comfortable with
                   </p>
                 </div>
 
                 <div className="mt-6 h-[254px] w-[351px">
                   <div className="bg-[#F6F6F6] relative inset-0 h-full w-full rounded-lg overflow-hidden">
-                    <div className="absolute inset-x-0 translate-y-[50%]">
+                    <div className="absolute inset-x-0 translate-y-[30%]">
                       <Image
                         src="/Vector.png"
                         alt="Feature 1"
                         width={300}
                         height={300}
-                        className="object-cover translate-x-[3%]"
+                        className="object-cover translate-x-[38%]"
                       />
                     </div>
-                    <div className="absolute inset-0 translate-x-[10%] translate-y-[10%]">
+                    <div className="absolute inset-0 translate-x-[21%] translate-y-[2%]">
                       <Image
                         src="/Frame.png"
                         alt="Feature "
-                        width={250}
+                        width={300}
                         height={300}
                         className="object-cover z-30"
                       />
                     </div>
-                    <div className="absolute inset-0 translate-x-[7%] translate-y-[4%]">
+                    <div className="absolute inset-0 translate-x-[13%]">
                       <Image
                         src="/Vector-2.png"
                         alt="Feature "
-                        width={40}
-                        height={30}
+                        width={48}
+                        height={40}
                         className="object-cover z-30"
                       />
                     </div>
@@ -227,14 +238,50 @@ export default function Home() {
                 border: "1px solid #F1F1F1",
               }}
             >
-              <div className="bg-[#F6F6F6] w-full h-[246px] rounded-2xl flex justify-center items-center">
-                <Image
-                  src="/Frame129.png"
-                  width={550}
-                  height={550}
-                  alt=""
-                  className=" translate-y-[9%] scale-110"
-                />
+              <div className="relative bg-[#F6F6F6] w-full h-[266px] rounded-2xl flex justify-center items-center">
+                <div className="absolute inset-0">
+                  <div className="w-1/4 z-0 translate-y-18 translate-x-36 rotate-90">
+                    <DottedLine />
+                  </div>
+                  <div className="w-1/4 z-0 translate-y-17 translate-x-64 rotate-90">
+                    <DottedLine />
+                  </div>
+                  <div className="w-1/2 z-0 translate-y-15 translate-x-0">
+                    <DottedLine />
+                  </div>
+                  <div className="w-1/2 z-0 translate-y-15 absolute right-0 top-6 translate-x-0">
+                    <DottedLine />
+                  </div>
+                  <div className="w-1/2 z-0 translate-y-47 translate-x-0">
+                    <DottedLine />
+                  </div>
+                  <div className="w-1/2 z-0 translate-y-47 absolute right-0 top-6 translate-x-0">
+                    <DottedLine />
+                  </div>
+                </div>
+                <div
+                  className="w-[299px] flex flex-col gap-3 z-10 bg-[#FFFFFF] rounded-2xl py-[19px] px-[35px]"
+                  style={{ boxShadow: "0px 20px 40px 0px #D4D4D440" }}
+                >
+                  <div
+                    className="py-[18px] px-3 rounded-xl bg-white"
+                    style={{ boxShadow: "0px 20px 40px 0px #89878740" }}
+                  >
+                    <h1 className="text-sm mb-2">Original (Hausa)</h1>
+                    <p className="text-xs font-normal text-[#00000080]">
+                      "Maji yamekuwa shida kubwa..."
+                    </p>
+                  </div>
+                  <div
+                    className="py-[18px] px-3 rounded-xl bg-white"
+                    style={{ boxShadow: "0px 20px 40px 0px #89878740" }}
+                  >
+                    <h1 className="text-sm mb-2">Translated (English)</h1>
+                    <p className="text-xs font-normal text-[#00000080]">
+                      Our city is flooded
+                    </p>
+                  </div>
+                </div>
               </div>
               <div
                 className="w-full mt-4"
@@ -245,41 +292,19 @@ export default function Home() {
                   AI-Powered Analysis
                 </h1>
                 <p className="text-[#1E1E1E99] tracking-[-1.4] text-lg font-normal">
-                  Advanced AI preserves cultural nuances while translating
-                  across 47 African languages
+                  Automatically transcribes audio and video reports in the
+                  language they were originally spoken, so journalists can read
+                  the exact message as reported.
                 </p>
-              </div>
-            </div>
-
-            {/* Feature 3 */}
-            <div
-              className="bg-white p-5 rounded-2xl"
-              style={{
-                boxShadow: "0px 20px 40px 0px #E8EEFF",
-                border: "1px solid #F1F1F1",
-              }}
-            >
-              <div className="bg-[#F6F6F6] w-full h-[246px] rounded-2xl flex justify-center items-center">
-                <Image
-                  src="/Frame98.png"
-                  width={250}
-                  height={250}
-                  alt=""
-                  className=" translate-y-[9%]"
-                />
-              </div>
-              <div
-                className="w-full mt-4"
-                style={{ border: "1px solid #F1F1F1" }}
-              ></div>
-              <div className="mt-6 font-semibold w-full">
-                <h1 className="text-xl tracking-[-1.6] text-[#1E1E1E] mb-2">
-                  Cultural Context
-                </h1>
-                <p className="text-[#1E1E1E99] tracking-[-1.4] text-lg font-normal">
-                  AI understands local customs, traditions, and sensitive topics
-                  to maintain story authenticity
-                </p>
+                <div className="flex gap-3 mt-4">
+                {featureTags.map((tag) => {
+                  return (
+                      <span key={tag} className="text-[#1A1799] font-normal p-2 rounded-lg bg-[#F0F0FA] text-xs">
+                        {tag}
+                      </span>
+                  );
+                })}
+                </div>
               </div>
             </div>
           </div>
@@ -297,38 +322,24 @@ export default function Home() {
         }}
       >
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl tracking-[-2.6] font-bold mb-4">
-              Who it is for
-            </h2>
-            <p className="text-gray-300 tracking-[-1.2] text-lg max-w-2xl mx-auto">
-              Whether you're an independent journalist or part of a major media
-              house, Newbridge adapts to your workflow and amplifies your
-              impact.
-            </p>
-          </div>
+          <div className="grid md:grid-cols-2 justify-between gap-4 mx-auto">
+            <div className="text-left mb-16">
+              <h2 className="text-4xl md:text-5xl tracking-[-2.6] font-semibold mb-4">
+                Who it is for
+              </h2>
+              <p className="text-gray-200 tracking-[-1.2] text-lg max-w-2xl mx-auto">
+                Newsbridge helps you get the right report from citizens
+              </p>
+            </div>
 
-          {/* One Option Card */}
-          <div className="grid md:grid-cols-1 gap-4 max-w-4xl mx-auto">
+            {/* One Option Card */}
             {/* Independent Journalists */}
             <div
-              className="rounded-3xl p-8 bg-[#111E42]"
+              className="rounded-3xl px-8 py-11 bg-[#111E42] max-w-sm translate-x-56"
               style={{ borderTop: "4px solid #3754A3" }}
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="relative w-14 h-14 rounded-full flex items-center justify-center text-white font-bold">
-                  <Image
-                    src="/Frame5.png"
-                    fill
-                    alt=""
-                    className="object-cover scale-75"
-                  />
-                </div>
-                <h3 className="text-xl tracking-[-1.4] font-semibold">
-                  For Independent Journalists
-                </h3>
-              </div>
-              <ul className="space-y-3 mb-8">
+              {/* <div className="flex items-center gap-3 mb-6"></div> */}
+              <ul className="space-y-3 mb-8 text-lg">
                 <li className="flex items-center gap-3">
                   <span className="text-white">•</span>
                   <span>Discover real community stories</span>

@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  useGetPreferenceReports,
-} from "@/app/api/auth/queries";
+import { useGetPreferenceReports } from "@/app/api/auth/queries";
 import useToast from "@/app/hooks/useToast";
 import { debounce } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -57,7 +55,20 @@ interface DashboardContextType {
   // Utility
   itemsPerPage: number;
   dashboardHeader: string;
+  hasActiveFilter: boolean;
   setDashboardHeader: React.Dispatch<React.SetStateAction<string>>;
+  filterCategory: string;
+  filterRegion: string;
+  filterLanguage: string;
+  filterStoryType: string;
+  setFilterCategory: (value: string) => void;
+  setFilterRegion: (value: string) => void;
+  setFilterLanguage: (value: string) => void;
+  setFilterStoryType: (value: string) => void;
+  clearFilters: () => void;
+  filteredReportFeed: ReportFeed[];
+    isFilterLoading: boolean;
+
 }
 
 const DashboardContext = createContext<DashboardContextType | undefined>(
@@ -73,6 +84,7 @@ function DashboardProviderContent({ children }: { children: ReactNode }) {
   const [debouncedSearchQuery, setDebounceSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [dashboardHeader, setDashboardHeader] = useState("Report Feed");
+    const [isFilterLoading, setIsFilterLoading] = useState(false)
   const toastShownRef = useRef(false);
   const dataFetchedRef = useRef(false);
 
@@ -98,6 +110,80 @@ function DashboardProviderContent({ children }: { children: ReactNode }) {
       }, 500),
     []
   );
+
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterRegion, setFilterRegion] = useState("");
+  const [filterLanguage, setFilterLanguage] = useState("");
+  const [filterStoryType, setFilterStoryType] = useState("");
+
+    const hasActiveFilter = !!(filterCategory.trim() || filterRegion.trim() || filterLanguage.trim() || filterStoryType.trim())
+
+
+  const filteredReportFeed = useMemo(() => {
+    let filtered = reportFeed;
+
+    // Filter by category
+    if (filterCategory) {
+      filtered = filtered.filter(
+        (report) =>
+          report.category?.toLowerCase() === filterCategory.toLowerCase()
+      );
+    }
+
+    // Filter by region/location
+    if (filterRegion) {
+      filtered = filtered.filter((report) =>
+        report.location?.toLowerCase().includes(filterRegion.toLowerCase())
+      );
+    }
+
+    // Filter by language
+    if (filterLanguage) {
+      filtered = filtered.filter(
+        (report) =>
+          report.language?.toLowerCase() === filterLanguage.toLowerCase()
+      );
+    }
+
+    // Filter by story type (video/audio/text)
+    if (filterStoryType) {
+      filtered = filtered.filter((report) => {
+        if (filterStoryType === "video") return !!report.video;
+        if (filterStoryType === "audio" || filterStoryType === "podcast")
+          return !!report.audio;
+        if (filterStoryType === "article") return !!report.text;
+        return true;
+      });
+    }
+
+    return filtered;
+  }, [
+    reportFeed,
+    filterCategory,
+    filterRegion,
+    filterLanguage,
+    filterStoryType,
+  ]);
+
+    useEffect(() => {
+  // Start loading when filters change
+  setIsFilterLoading(true);
+
+  const timer = setTimeout(() => {
+    setIsFilterLoading(false);
+  }, 500); // add slight delay to show loading UI
+
+  return () => clearTimeout(timer);
+}, [filterCategory, filterRegion, filterLanguage, filterStoryType, reportFeed]);
+
+
+  // Add clear filters function
+  const clearFilters = () => {
+    setFilterCategory("");
+    setFilterRegion("");
+    setFilterLanguage("");
+    setFilterStoryType("");
+  };
 
   useEffect(() => {
     setCurrentPage(1);
@@ -141,11 +227,11 @@ function DashboardProviderContent({ children }: { children: ReactNode }) {
     if (message) {
       successToastHandler(message);
       toastShownRef.current = true;
-          Cookies.set("blockSpecialRoutes", "true", {
-      expires: 7,
-      secure: true,
-      sameSite: 'strict'
-    });
+      Cookies.set("blockSpecialRoutes", "true", {
+        expires: 7,
+        secure: true,
+        sameSite: "strict",
+      });
 
       // Remove query param from URL
       const params = new URLSearchParams(searchParams.toString());
@@ -201,6 +287,19 @@ function DashboardProviderContent({ children }: { children: ReactNode }) {
       itemsPerPage,
       dashboardHeader,
       setDashboardHeader,
+
+      filterCategory,
+      filterRegion,
+      filterLanguage,
+      filterStoryType,
+      setFilterCategory,
+      hasActiveFilter,
+      setFilterRegion,
+      setFilterLanguage,
+      setFilterStoryType,
+      clearFilters,
+      filteredReportFeed,
+      isFilterLoading
     }),
     [
       reportFeed,
@@ -213,9 +312,21 @@ function DashboardProviderContent({ children }: { children: ReactNode }) {
       hasPrevious,
       searchQuery,
       selectedFilter,
+      hasActiveFilter,
       itemsPerPage,
       dashboardHeader,
       setDashboardHeader,
+      filterCategory,
+      filterRegion,
+      filterLanguage,
+      filterStoryType,
+      setFilterCategory,
+      setFilterRegion,
+      setFilterLanguage,
+      setFilterStoryType,
+      clearFilters,
+      filteredReportFeed,
+      isFilterLoading
     ]
   );
 
@@ -229,7 +340,13 @@ function DashboardProviderContent({ children }: { children: ReactNode }) {
 // Main provider with Suspense wrapper
 export function DashboardProvider({ children }: { children: ReactNode }) {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          Loading...
+        </div>
+      }
+    >
       <DashboardProviderContent>{children}</DashboardProviderContent>
     </Suspense>
   );
