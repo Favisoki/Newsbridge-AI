@@ -14,6 +14,7 @@ import SmartDatePicker from "@/components/Common/smart-date-picker";
 import { usePathname } from "next/navigation";
 import { useCitizenReports } from "@/context/citizen-reports-context";
 import { useDashboard } from "@/context/dashboard-context";
+import { useSuperAdminDashboard } from "@/context/super-admin-context";
 
 interface ReportUiProps {
   story: ObjectLiteral; 
@@ -79,7 +80,7 @@ useEffect(() => {
 
 const providerValue = pathname.startsWith("/dashboard/citizen-reports")
   ? useCitizenReports()
-  : useDashboard();
+  : pathname.startsWith("/superadmin/reports") ? useSuperAdminDashboard() :  useDashboard();
 
 
   return (

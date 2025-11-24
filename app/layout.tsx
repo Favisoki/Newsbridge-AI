@@ -5,6 +5,7 @@ import "./globals.css"
 import { Inter, Poppins } from "next/font/google"
 import Providers from "./providers/Provider"
 import ToastProvider from "./providers/ToastProvider"
+import { CircleCheck } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Newsbridge - African Journalism Platform",
@@ -36,6 +37,17 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <ToastProvider>
+             <div className="fixed left-0 top-0 w-full z-50 bg-gradient-to-r from-blue-900 via-blue-950 to-blue-900 border-b border-blue-800/30">
+              <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-center gap-2">
+                <span className="text-xs text-blue-200/80 font-medium tracking-wide">
+                  Proudly Supported by
+                </span>
+                <span className="text-sm text-white font-semibold tracking-wide">
+                  CJID
+                </span>
+                <CircleCheck className="fill-blue-300 text-blue-950"/>
+              </div>
+            </div>
             <NavbarWrapper />
             {children}
           </ToastProvider>
