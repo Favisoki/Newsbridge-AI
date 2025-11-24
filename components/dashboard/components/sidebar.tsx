@@ -7,6 +7,7 @@ import { useDashboard } from "@/context/dashboard-context";
 import { useEffect } from "react";
 import { useAuth } from "@/context/auth-context";
 import { Logout } from "@/components/Common/Svgs";
+import Logo from "@/components/Common/Logo";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -37,16 +38,9 @@ export function Sidebar() {
   return (
     <aside className="relative w-64 bg-gradient-to-b from-slate-900 to-slate-800 text-white flex flex-col">
       {/* Logo */}
-      <div className="p-6 border-b border-slate-700">
-        <Link
-          href="/"
-          className="flex items-center gap-2 hover:opacity-80 transition"
-        >
-          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-bold">NB</span>
-          </div>
-          <span className="font-bold text-lg">NewsBridge</span>
-        </Link>
+      <div className="p-7 border-b border-slate-800">
+      <Logo textSize="text-white text-lg font-bold !tracking-[-0.8]"/>
+
       </div>
 
       {/* Navigation */}

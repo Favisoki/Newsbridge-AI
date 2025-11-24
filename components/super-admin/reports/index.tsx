@@ -21,19 +21,21 @@ export default function Reports() {
 
   return (
     <ReportUi
-          header={"Reports"}
-          description="Monitor all reports received across the Newsbridge ecosystem."
-          reportUi={reportFeed}
-          totalCount={totalCount}
-          isLoading={isLoading}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          hasNext={hasNext}
-          hasPrevious={hasPrevious}
-          setCurrentPage={setCurrentPage}
-          goToNextPage={goToNextPage}
-          goToPreviousPage={goToPreviousPage}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery} story={reportFeed}    />
+      header={"Reports"}
+      description="Monitor all reports received across the Newsbridge ecosystem."
+      reportUi={reportFeed}
+      totalCount={totalCount}
+      isLoading={isLoading}
+      currentPage={currentPage}
+      totalPages={totalPages}
+      hasNext={hasNext}
+      hasPrevious={hasPrevious}
+      setCurrentPage={setCurrentPage}
+      goToNextPage={goToNextPage}
+      goToPreviousPage={goToPreviousPage}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery} story={reportFeed} clearFilters={function (): void {
+        throw new Error("Function not implemented.");
+      } } hasActiveFilter={false}    />
   );
 }

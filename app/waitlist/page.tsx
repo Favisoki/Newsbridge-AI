@@ -48,7 +48,7 @@ export default function WaitlistPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] tracking-[-1] bg-[url('/waitlist-bg.png')] bg-no-repeat bg-cover relative overflow-hidden">
+    <div className="min-h-screen top-6 bg-[#F5F7FA] tracking-[-1] bg-[url('/waitlist-bg.png')] bg-no-repeat bg-cover relative overflow-hidden">
       {/* Background Bridge Illustrations */}
       <div className="absolute left-0 bottom-0 w-full">
         <Image

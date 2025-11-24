@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden tracking-[-1]">
       {/* Hero Section */}
-      <main className="relative overflow-hidden z-10">
+      <main className="mt-4 h-screen overflow-hidden z-10">
         <div className="absolute inset-0">
           <Image
             src="/images/background.png"
@@ -26,7 +26,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="absolute left-20 top-48 w-48 h-96 scale-190 opacity-40 pointer-events-none">
+        <div className="absolute left-20 top-52 w-48 h-96 scale-190 opacity-40 pointer-events-none">
           <Image
             src="/images/africa_left.png"
             alt="African map"

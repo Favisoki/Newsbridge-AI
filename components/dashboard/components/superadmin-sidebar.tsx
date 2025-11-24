@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { LayoutDashboard, FileText, Users, Settings } from "lucide-react"
 import { useSuperAdminDashboard } from "@/context/super-admin-context"
 import { useEffect } from "react"
+import Logo from "@/components/Common/Logo"
 
 export function SuperadminSidebar() {
   const pathname = usePathname()
@@ -26,44 +27,11 @@ export function SuperadminSidebar() {
   
     
   return (
-    <aside className="w-[200px] bg-[#1a1f37] text-white flex flex-col h-screen fixed left-0 top-0">
+    <aside className="w-[280px] bg-[#1a1f37] text-white flex flex-col h-screen fixed left-0 top-10">
       {/* Logo */}
-      <div className="p-6 border-b border-slate-700/50">
-        <Link href="/superadmin" className="flex items-center gap-2 hover:opacity-80 transition">
-          <div className="w-8 h-8 bg-[#5b7cfa] rounded-full flex items-center justify-center">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="text-white"
-            >
-              <path
-                d="M12 2L2 7L12 12L22 7L12 2Z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M2 17L12 22L22 17"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M2 12L12 17L22 12"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-          <span className="font-semibold text-base">NewsBridge</span>
-        </Link>
+      <div className="p-7 border-b border-slate-800">
+      <Logo textSize="text-white text-lg font-bold !tracking-[-0.8]"/>
+
       </div>
 
       {/* Navigation */}
