@@ -15,7 +15,7 @@ export default function DashboardLayout({
   const { isLogoutModal, setIsLogoutModal, isLoggingOut, logout } = useAuth();
   return (
     <DashboardProvider>
-      <div className="fixed top-10 flex w-full h-[96vh] bg-gray-50 tracking-[-1]">
+      <div className="flex h-screen bg-gray-50 tracking-[-1]">
         <Sidebar />
         <div className="flex-1 flex flex-col overflow-hidden">
           <DashboardHeader />

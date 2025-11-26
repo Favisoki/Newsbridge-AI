@@ -1,20 +1,14 @@
 "use client";
 
-import { Search, ChevronDown, Calendar, ChevronUp, X } from "lucide-react";
+import { Search, ChevronDown, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StoryCard } from "../components/story-card";
 import EmptyState from "@/components/Common/empty-state";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Modal from "@/components/ui/modal";
 import ReportDetailModal from "@/components/modal-components/report-details-modal";
 import { ObjectLiteral } from "@/lib/utils";
 import { StoryCardSkeletonList } from "@/app/loaders/dashboard-loader";
-import FilterModal from "@/components/Common/filter-component";
-import SmartDatePicker from "@/components/Common/smart-date-picker";
-import { usePathname } from "next/navigation";
-import { useCitizenReports } from "@/context/citizen-reports-context";
-import { useDashboard } from "@/context/dashboard-context";
-import { useSuperAdminDashboard } from "@/context/super-admin-context";
 
 interface ReportUiProps {
   story: ObjectLiteral; 
@@ -23,11 +17,9 @@ interface ReportUiProps {
   isLoading: boolean;
   currentPage: number;
   totalPages: number;
-  clearFilters: () => void;
   hasNext: boolean;
   description: string
   header: string
-  hasActiveFilter: boolean
   hasPrevious: boolean;
   setCurrentPage: (page: number) => void;
   goToNextPage: () => void;
@@ -41,10 +33,8 @@ export default function ReportUi({
   reportUi,
   totalCount,
   isLoading,
-  hasActiveFilter,
   currentPage,
   totalPages,
-  clearFilters,
   hasNext,
   hasPrevious,
   setCurrentPage,
@@ -55,33 +45,7 @@ export default function ReportUi({
   setSearchQuery,
   header
 }: ReportUiProps) {
-  const [isClicked, setIsClicked] = useState(false)
-  const filterRef = useRef<HTMLDivElement>(null);
-    console.log(reportUi)
-
-
-useEffect(() => {
-  const handleClickOutside = (event: MouseEvent) => {
-    if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-      setIsClicked(false);
-    }
-  };
-
-  if (isClicked) {
-    document.addEventListener('mousedown', handleClickOutside);
-  }
-
-  return () => {
-    document.removeEventListener('mousedown', handleClickOutside);
-  };
-}, [isClicked]);
-  
-  const pathname = usePathname();
-
-const providerValue = pathname.startsWith("/dashboard/citizen-reports")
-  ? useCitizenReports()
-  : pathname.startsWith("/superadmin/reports") ? useSuperAdminDashboard() :  useDashboard();
-
+    const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className="p-8">
@@ -96,7 +60,11 @@ const providerValue = pathname.startsWith("/dashboard/citizen-reports")
               {description}
             </p>
           </div>
-          <SmartDatePicker />
+          <Button variant="outline" className="gap-2 bg-transparent">
+            <Calendar className="w-4 h-4" />
+            Today
+            <ChevronDown className="w-4 h-4" />
+          </Button>
         </div>
 
         {/* Search and Filter Bar */}
@@ -114,17 +82,10 @@ const providerValue = pathname.startsWith("/dashboard/citizen-reports")
               className="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div ref={filterRef} className="relative">
-          <Button onClick={() => setIsClicked(prev => !prev)} variant="outline" className="gap-2 bg-white p-5 text-[#2D2D2D]">
+          <Button variant="outline" className="gap-2 bg-transparent">
             Filter by
-            {isClicked ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            <ChevronDown className="w-4 h-4" />
           </Button>
-            {isClicked && <FilterModal setIsClicked={setIsClicked} provider={providerValue} />}
-          </div>
-         {hasActiveFilter && <Button variant={'ghost'} onClick={clearFilters} className="flex gap-2 py-5 hover:bg-gray-100">
-            <X className="text-red-700" />
-            <p className="">Clear Filters</p>
-          </Button>}
         </div>
 
         {/* Recent Reports */}

@@ -14,10 +14,6 @@ export default function DashboardPage() {
     hasPrevious,
     setCurrentPage,
     goToNextPage,
-    filteredReportFeed,
-    hasActiveFilter,
-    isFilterLoading,
-    clearFilters,
     goToPreviousPage,
     searchQuery,
     setSearchQuery,
@@ -26,10 +22,10 @@ export default function DashboardPage() {
   return (
     <ReportUi
       header={"Report Feed"}
-      description={"Showing reports that match your newsroom's focus areas"}
-      reportUi={filteredReportFeed}
-      totalCount={hasActiveFilter ? filteredReportFeed?.length : totalCount}
-      isLoading={isLoading || isFilterLoading}
+      description={"Explore stories shared by citizens across regions"}
+      reportUi={reportFeed}
+      totalCount={totalCount}
+      isLoading={isLoading}
       currentPage={currentPage}
       totalPages={totalPages}
       hasNext={hasNext}
@@ -39,9 +35,7 @@ export default function DashboardPage() {
       goToPreviousPage={goToPreviousPage}
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
-      story={filteredReportFeed}
-      hasActiveFilter={hasActiveFilter}
-      clearFilters={clearFilters}
+      story={reportFeed}
     />
   );
 }

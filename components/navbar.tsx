@@ -63,7 +63,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed top-14 left-0 right-0 z-50 px-6 max-w-7xl mx-auto bg-transparent tracking-[-1]">
+    <nav className="fixed top-8 left-0 right-0 z-50 px-6 max-w-7xl mx-auto bg-transparent tracking-[-1]">
       <div className="">
         <div className="bg-white rounded-3xl border border-[#E1E1E1] shadow-[0px_20px_40px_0px_#C3C3C340]">
           <div className="px-8 py-4 flex items-center justify-between">

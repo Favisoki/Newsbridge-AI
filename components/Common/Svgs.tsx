@@ -62,19 +62,3 @@ export const Logout = ({
     </svg>
   );
 };
-
-export const DottedLine = () => {
-  return (
-    <svg width="100%" height="2">
-      <line
-        x1="0"
-        y1="1"
-        x2="100%"
-        y2="1"
-        stroke="#3754A3"
-        strokeWidth="1"
-        strokeDasharray="10 6"
-      />
-    </svg>
-  );
-};

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -14,8 +14,6 @@ interface PreferencesProps {
   initialLanguages?: string[];
   initialTopics?: string[];
   onSave?: (data: { languages: string[]; topics: string[] }) => void;
-  isLoading?: boolean;
-  isSaving?: boolean;
 }
 
 const AVAILABLE_LANGUAGES = [
@@ -44,21 +42,12 @@ export default function Preferences({
   initialLanguages = [],
   initialTopics = [],
   onSave,
-  isLoading = false,
-  isSaving = false,
 }: PreferencesProps) {
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>(initialLanguages);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(initialTopics);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showTopicDropdown, setShowTopicDropdown] = useState(false);
-
-  useEffect(() => {
-    setSelectedLanguages(initialLanguages);
-  }, [initialLanguages]);
-
-  useEffect(() => {
-    setSelectedTopics(initialTopics);
-  }, [initialTopics]);
+  const [isSaving, setIsSaving] = useState(false);
 
   const toggleLanguage = (language: string) => {
     if (selectedLanguages.includes(language)) {
@@ -85,8 +74,16 @@ export default function Preferences({
   };
 
   const handleSave = async () => {
-    if (onSave) {
-      await onSave({ languages: selectedLanguages, topics: selectedTopics });
+    setIsSaving(true);
+    try {
+      if (onSave) {
+        await onSave({ languages: selectedLanguages, topics: selectedTopics });
+      }
+      // You can add success toast here
+    } catch (error) {
+      console.error("Failed to save preferences:", error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -98,35 +95,19 @@ export default function Preferences({
     (topic) => !selectedTopics.includes(topic)
   );
 
-  if (isLoading) {
-    return (
-      <Card className="mb-2 bg-white">
-        <CardContent className="space-y-6">
-          <div>
-            <CardTitle className="text-xl mb-1">Preferences</CardTitle>
-            <CardDescription>Customize your workspace experience</CardDescription>
-          </div>
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3754A3]"></div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
     <Card className="mb-2 bg-white">
       <CardContent className="space-y-6">
         <div>
           <CardTitle className="text-xl mb-1">Preferences</CardTitle>
-          <CardDescription>Customize your workspace experience and personalize your report feed</CardDescription>
+          <CardDescription>Customize your workspace experience</CardDescription>
         </div>
 
         {/* Language Section */}
         <div className="space-y-3">
           <div>
             <h3 className="text-base font-medium text-[#27272A] mb-2">Language</h3>
-            <p className="text-sm text-gray-600">Select your preferred languages for reports</p>
+            <p className="text-sm text-gray-600">Select your preferred language</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
@@ -152,7 +133,6 @@ export default function Preferences({
                 type="button"
                 onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-600 hover:border-[#3754A3]/30 transition-colors"
-                disabled={availableLanguages.length === 0}
               >
                 <ChevronDown size={16} />
               </button>
@@ -184,10 +164,7 @@ export default function Preferences({
 
         {/* Topic of Interest Section */}
         <div className="space-y-3">
-          <div>
-            <h3 className="text-base font-medium text-[#27272A] mb-2">Topic of Interest</h3>
-            <p className="text-sm text-gray-600">Choose topics you want to see in your feed</p>
-          </div>
+          <h3 className="text-base font-medium text-[#27272A]">Topic of Interest</h3>
 
           <div className="flex flex-wrap items-center gap-2">
             {selectedTopics.map((topic) => (
@@ -212,7 +189,6 @@ export default function Preferences({
                 type="button"
                 onClick={() => setShowTopicDropdown(!showTopicDropdown)}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm text-gray-600 hover:border-[#3754A3]/30 transition-colors"
-                disabled={availableTopics.length === 0}
               >
                 <ChevronDown size={16} />
               </button>

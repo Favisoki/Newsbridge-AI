@@ -1,4 +1,4 @@
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, CircleX } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 export interface SelectOption {
@@ -16,7 +16,6 @@ interface CustomSelectProps {
   error?: string;
   disabled?: boolean;
   required?: boolean;
-  textSize?: string;
 }
 
 const CustomSelect = ({
@@ -27,7 +26,6 @@ const CustomSelect = ({
   placeholder = "Select",
   options,
   error,
-  textSize,
   disabled = false,
   required = false,
 }: CustomSelectProps) => {
@@ -86,7 +84,7 @@ const CustomSelect = ({
 
   return (
     <div className="w-full" ref={dropdownRef}>
-      <label className={`block text-base font-medium text-[#27272A] mb-2 ${textSize}`}>
+      <label className="block text-base font-medium text-[#27272A] mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
@@ -113,7 +111,7 @@ const CustomSelect = ({
             ${disabled ? "" : "cursor-pointer hover:border-[#3754A3]/30"}
           `}
         >
-          <span className={`truncate ${textSize}`}>{displayText}</span>
+          <span className="truncate">{displayText}</span>
           <ChevronDown
             className={`w-5 h-5 text-gray-400 transition-transform duration-200 flex-shrink-0 ml-2 ${
               isOpen ? "rotate-180" : ""

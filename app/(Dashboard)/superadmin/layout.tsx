@@ -10,11 +10,13 @@ export default function SuperadminLayout({
 }) {
   return (
     <SuperAdminProvider>
-        <SuperadminSidebar />
         <SuperAdminDashboardHeader />
-        <main className="flex-1 ml-[280px] relative top-30">
+      <div className="flex min-h-screen bg-gray-50 tracking-[-1]">
+        <SuperadminSidebar />
+        <main className="flex-1 ml-[200px]">
           <div className="p-8">{children}</div>
         </main>
+      </div>
     </SuperAdminProvider>
   );
 }
