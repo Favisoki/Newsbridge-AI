@@ -1,15 +1,14 @@
-import { request } from "@/lib/axios-utils";
-import { ObjectLiteral } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { request } from "@/lib/axios-utils"
+import { useQuery } from "@tanstack/react-query"
 
 const fetchUserData = async () => {
   const response = await request({
     url: "/api/auth/get-token",
     method: "GET",
     withCredentials: true,
-  });
-  return response?.data;
-};
+  })
+  return response?.data
+}
 
 export const useUserData = () => {
   return useQuery({
@@ -17,63 +16,63 @@ export const useUserData = () => {
     queryFn: fetchUserData,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
-  });
-};
+  })
+}
 
 const getAllReports = async (page: number, search?: string) => {
-  const params = new URLSearchParams();
-  params.append('page', page.toString());
+  const params = new URLSearchParams()
+  params.append("page", page.toString())
   if (search && search.trim()) {
-    params.append('search', search.trim());
+    params.append("search", search.trim())
   }
   const response = await request({
     url: `/all_reports/?${params.toString()}`,
     method: `GET`,
     withCredentials: true,
-  });
-  return response?.data;
-};
+  })
+  return response?.data
+}
 
-export const useGetAllReports = (page: number = 1, search: string) => {
+export const useGetAllReports = (page = 1, search: string) => {
   return useQuery({
     queryKey: ["all-reports", page, search], // Include search in queryKey
     queryFn: () => getAllReports(page, search),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
-  });
-};
+  })
+}
 
 const getPreferenceReports = async (page: number, search?: string) => {
-  const params = new URLSearchParams();
-  params.append('page', page.toString());
+  const params = new URLSearchParams()
+  params.append("page", page.toString())
   if (search && search.trim()) {
-    params.append('search', search.trim());
+    params.append("search", search.trim())
   }
   const response = await request({
     url: `/reports/?${params.toString()}`,
     method: `GET`,
     withCredentials: true,
-  });
-  return response?.data;
-};
+  })
+  return response?.data
+}
 
-export const useGetPreferenceReports = (page: number = 1, search: string) => {
+export const useGetPreferenceReports = (page = 1, search: string) => {
   return useQuery({
     queryKey: ["preference-reports", page, search], // Include search in queryKey
     queryFn: () => getPreferenceReports(page, search),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
-  });
-};
+  })
+}
 
 const getUserPreferences = async () => {
   const response = await request({
     url: `/user-preferences/`,
     method: `GET`,
     withCredentials: true,
-  });
-  return response?.data;
-};
+  })
+  return response?.data
+}
 
 export const useGetUserPreferences = () => {
   return useQuery({
@@ -81,17 +80,17 @@ export const useGetUserPreferences = () => {
     queryFn: getUserPreferences,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
-  });
-};
+  })
+}
 
 const getReportDetails = async (id: number) => {
   const response = await request({
     url: `/report/${id}/`,
     method: `GET`,
     withCredentials: true,
-  });
-  return response?.data;
-};
+  })
+  return response?.data
+}
 
 export const useGetReportDetails = (id: number) => {
   return useQuery({
@@ -99,5 +98,28 @@ export const useGetReportDetails = (id: number) => {
     queryFn: () => getReportDetails(id),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
-  });
-};
+  })
+}
+
+const getPendingUsers = async (page: number, search?: string) => {
+  const params = new URLSearchParams()
+  params.append("page", page.toString())
+  if (search && search.trim()) {
+    params.append("search", search.trim())
+  }
+  const response = await request({
+    url: `/pending-users/?${params.toString()}`,
+    method: `GET`,
+    withCredentials: true,
+  })
+  return response?.data
+}
+
+export const usePendingUsers = (page = 1, search = "") => {
+  return useQuery({
+    queryKey: ["pending-users", page, search],
+    queryFn: () => getPendingUsers(page, search),
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  })
+}
