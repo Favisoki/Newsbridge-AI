@@ -1,56 +1,54 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import Image from "next/image"
-import { useJoinWaitlist } from "../api/auth/mutations"
-import useToast from "../hooks/useToast"
-import Logo from "@/components/Common/Logo"
-import CustomInput from "@/components/ui/custom-input"
-import GradientButton from "@/components/ui/gradient-button"
+import { useState } from "react";
+import Image from "next/image";
+import { useJoinWaitlist } from "../api/auth/mutations";
+import useToast from "../hooks/useToast";
+import Logo from "@/components/Common/Logo";
+import CustomInput from "@/components/ui/custom-input";
+import GradientButton from "@/components/ui/gradient-button";
 
 export default function WaitlistPage() {
-  const [email, setEmail] = useState("")
-  const { errorToastHandler } = useToast()
+  const [email, setEmail] = useState("");
+  const { errorToastHandler } = useToast();
   const [message, setMessage] = useState<{
-    type: "success" | "error"
-    text: string
-  } | null>(null)
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
   const { mutate: joinTheWaitlist, isPending: isLoading } = useJoinWaitlist(
     (errMsg) => {
-      errorToastHandler(errMsg || "Failed to join the wait list")
+      errorToastHandler(errMsg || "Failed to join the wait list");
       setMessage({
         type: "error",
         text: "Something went wrong. Please try again.",
-      })
-      setEmail("")
-      setTimeout(() => setMessage(null), 7000)
+      });
+      setEmail("");
+      setTimeout(() => setMessage(null), 7000);
     },
     (_, data) => {
       if (data?.data) {
         setMessage({
           type: "success",
           text: "Thank you for joining! We'll be in touch soon.",
-        })
-        setEmail("")
-        setTimeout(() => setMessage(null), 7000)
+        });
+        setEmail("");
+        setTimeout(() => setMessage(null), 7000);
       }
-    },
-  )
+    }
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!email || !email.includes("@")) {
-      setMessage({ type: "error", text: "Please enter a valid email address" })
-      return
+      setMessage({ type: "error", text: "Please enter a valid email address" });
+      return;
     }
-    joinTheWaitlist({ email })
-  }
+    joinTheWaitlist({ data: email });
+  };
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] tracking-[-1] bg-[url('/waitlist-bg.png')] bg-no-repeat bg-cover relative overflow-hidden">
+    <div className="min-h-screen top-6 bg-[#F5F7FA] tracking-[-1] bg-[url('/waitlist-bg.png')] bg-no-repeat bg-cover relative overflow-hidden">
       {/* Background Bridge Illustrations */}
       <div className="absolute left-0 bottom-0 w-full">
         <Image
@@ -74,9 +72,10 @@ export default function WaitlistPage() {
 
         {/* Description */}
         <p className="text-base md:text-lg text-center text-[#00000099] mb-6 max-w-3xl leading-relaxed">
-          NewsBridge helps journalists uncover verified stories shared by citizens through WhatsApp. Using AI
-          translation and cultural context detection, it transforms raw reports into insights that power inclusive
-          journalism across Africa.
+          NewsBridge helps journalists uncover verified stories shared by
+          citizens through WhatsApp. Using AI translation and cultural context
+          detection, it transforms raw reports into insights that power
+          inclusive journalism across Africa.
         </p>
 
         {/* Email Form */}
@@ -129,5 +128,5 @@ export default function WaitlistPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
