@@ -161,7 +161,29 @@ const inviteJournalist = async (data: ObjectLiteral) => {
 }
 
 const setToken = async (payload: { token: string; user: any; refresh?: string }) => {
-  // Implementation for setToken
+  const response = await fetch("/api/auth/set-token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+    credentials: "include",
+  })
+
+  if (!response.ok) {
+    throw new Error("Failed to set authentication cookies")
+  }
+
+  return response.json()
+}
+
+const mediaJournalistSignup = async (data: ObjectLiteral, encrypted_data: string) => {
+  const response = request({
+    url: `/media-journalist-signup/${encrypted_data}`,
+    method: "POST",
+    data,
+  })
+  return response
 }
 
 export const useCreateIndependentJournalistAccount = (
@@ -404,8 +426,8 @@ export const useMediaJournalistSignup = (
     }: {
       data: ObjectLiteral
       encrypted_data: string
-    }) => MediaHouseJournalistSignup(data, encrypted_data),
-    mutationKey: ["media-journalist-invite-signup"],
+    }) => mediaJournalistSignup(data, encrypted_data),
+    mutationKey: ["media-journalist-signup"],
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.detail
       const data = response
