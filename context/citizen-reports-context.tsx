@@ -24,6 +24,7 @@ export interface ReportFeed {
 interface CitizenReportsContextType {
   // Stories data
   reportFeed: ReportFeed[]
+  filteredReportFeed: ReportFeed[]
   totalCount: number
   isLoading: boolean
   isError: boolean
@@ -43,6 +44,18 @@ interface CitizenReportsContextType {
   selectedFilter: string
   setSelectedFilter: (filter: string) => void
 
+  filterCategory: string
+  setFilterCategory: (category: string) => void
+  filterRegion: string
+  setFilterRegion: (region: string) => void
+  filterLanguage: string
+  setFilterLanguage: (language: string) => void
+  filterStoryType: string
+  setFilterStoryType: (storyType: string) => void
+  hasActiveFilter: boolean
+  isFilterLoading: boolean
+  clearFilters: () => void
+
   // Utility
   itemsPerPage: number
   dashboardHeader: string
@@ -61,6 +74,12 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
   const dataFetchedRef = useRef(false)
   const [currentPage, setCurrentPage] = useState(1)
 
+  const [filterCategory, setFilterCategory] = useState("")
+  const [filterRegion, setFilterRegion] = useState("")
+  const [filterLanguage, setFilterLanguage] = useState("")
+  const [filterStoryType, setFilterStoryType] = useState("")
+  const [isFilterLoading, setIsFilterLoading] = useState(false)
+
   // Pass currentPage to React Query hook
   const { data, isLoading, isError } = useGetAllReports(currentPage, debouncedSearchQuery)
 
@@ -69,6 +88,27 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
   const totalCount = data?.count || 0
   const hasNext = !!data?.next
   const hasPrevious = !!data?.previous
+
+  const hasActiveFilter = !!(filterCategory || filterRegion || filterLanguage || filterStoryType)
+
+  const filteredReportFeed = useMemo(() => {
+    if (!hasActiveFilter) return reportFeed
+
+    return reportFeed.filter((report) => {
+      const matchesCategory = !filterCategory || report.category?.toLowerCase() === filterCategory.toLowerCase()
+      const matchesRegion = !filterRegion || report.location?.toLowerCase().includes(filterRegion.toLowerCase())
+      const matchesLanguage = !filterLanguage || report.language?.toLowerCase() === filterLanguage.toLowerCase()
+      // Story type filter would need a story_type field in the report
+      return matchesCategory && matchesRegion && matchesLanguage
+    })
+  }, [reportFeed, filterCategory, filterRegion, filterLanguage, filterStoryType, hasActiveFilter])
+
+  const clearFilters = () => {
+    setFilterCategory("")
+    setFilterRegion("")
+    setFilterLanguage("")
+    setFilterStoryType("")
+  }
 
   const debouncedSetSearch = useMemo(
     () =>
@@ -116,6 +156,7 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
     () => ({
       // Stories data
       reportFeed,
+      filteredReportFeed,
       totalCount,
       isLoading,
       isError,
@@ -135,6 +176,18 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
       selectedFilter,
       setSelectedFilter,
 
+      filterCategory,
+      setFilterCategory,
+      filterRegion,
+      setFilterRegion,
+      filterLanguage,
+      setFilterLanguage,
+      filterStoryType,
+      setFilterStoryType,
+      hasActiveFilter,
+      isFilterLoading,
+      clearFilters,
+
       // Utility
       itemsPerPage,
       dashboardHeader,
@@ -142,6 +195,7 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
     }),
     [
       reportFeed,
+      filteredReportFeed,
       totalCount,
       isLoading,
       isError,
@@ -151,6 +205,12 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
       hasPrevious,
       searchQuery,
       selectedFilter,
+      filterCategory,
+      filterRegion,
+      filterLanguage,
+      filterStoryType,
+      hasActiveFilter,
+      isFilterLoading,
       itemsPerPage,
       dashboardHeader,
       setDashboardHeader,

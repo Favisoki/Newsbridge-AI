@@ -1,11 +1,18 @@
-"use client";
+"use client"
 
-import ReportUi from "../components/report-ui";
-import { useCitizenReports } from "@/context/citizen-reports-context";
+import ReportUi from "../components/report-ui"
+import { useCitizenReports } from "@/context/citizen-reports-context"
 
 export default function CitizenReports() {
+  const citizenReports = useCitizenReports()
+
+  if (!citizenReports) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+  }
+
   const {
     reportFeed,
+    filteredReportFeed,
     totalCount,
     isLoading,
     currentPage,
@@ -14,21 +21,23 @@ export default function CitizenReports() {
     hasPrevious,
     hasActiveFilter,
     clearFilters,
-    filteredReportFeed,
     setCurrentPage,
     goToNextPage,
     goToPreviousPage,
     isFilterLoading,
     searchQuery,
     setSearchQuery,
-  } = useCitizenReports();
+  } = citizenReports
+
+  // Use filteredReportFeed if available, otherwise fall back to reportFeed
+  const displayReports = filteredReportFeed || reportFeed || []
 
   return (
     <ReportUi
       header={"Citizen Reports"}
       description="Explore stories shared by citizens across regions"
-      reportUi={filteredReportFeed}
-      totalCount={hasActiveFilter ? filteredReportFeed?.length : totalCount}
+      reportUi={displayReports}
+      totalCount={hasActiveFilter ? displayReports.length : totalCount}
       isLoading={isLoading || isFilterLoading}
       currentPage={currentPage}
       totalPages={totalPages}
@@ -39,9 +48,9 @@ export default function CitizenReports() {
       goToPreviousPage={goToPreviousPage}
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
-      story={filteredReportFeed}
+      story={displayReports}
       hasActiveFilter={hasActiveFilter}
       clearFilters={clearFilters}
     />
-  );
+  )
 }
