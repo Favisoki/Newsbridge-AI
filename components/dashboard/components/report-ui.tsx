@@ -62,12 +62,13 @@ export default function ReportUi({
   const superAdminProvider = useSuperAdminDashboard()
   const dashboardProvider = useDashboard()
 
-  // Select the appropriate provider based on pathname
-  const providerValue = pathname.startsWith("/dashboard/citizen-reports")
-    ? citizenReportsProvider
-    : pathname.startsWith("/superadmin/reports")
-      ? superAdminProvider
-      : dashboardProvider
+  // Select the appropriate provider based on pathname, with fallback handling for null
+  const providerValue =
+    pathname.startsWith("/dashboard/citizen-reports") && citizenReportsProvider
+      ? citizenReportsProvider
+      : pathname.startsWith("/superadmin/reports") && superAdminProvider
+        ? superAdminProvider
+        : dashboardProvider
 
   console.log(safeReportUi)
 
