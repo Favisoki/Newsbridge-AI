@@ -13,4 +13,4 @@ This project is live at:
 
 **[https://newsbridgeai.com](https://newsbridgeai.com)**
 
-## How It Worsk
+## How It Works
