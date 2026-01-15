@@ -1,53 +1,31 @@
-import HowItWorks from "@/components/landing-page/HowItWorks";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import Logo from "../Common/Logo";
-import { DottedLine } from "../Common/Svgs";
+import HowItWorks from "@/components/landing-page/HowItWorks"
+import { Button } from "@/components/ui/button"
+import { ArrowRight } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import Logo from "../Common/Logo"
+import { DottedLine } from "../Common/Svgs"
 
 export default function Home() {
-  const featureTags = [
-    "Geolocation tagging",
-    "Cultural Context",
-    "Classification based on preference",
-  ];
+  const featureTags = ["Geolocation tagging", "Cultural Context", "Classification based on preference"]
   return (
     <div className="overflow-hidden tracking-[-1]">
       {/* Hero Section */}
-      <main className="mt-4 h-screen overflow-hidden z-10">
+      <main className="mt-4 min-h-screen h-screen overflow-hidden z-10">
         <div className="absolute inset-0">
-          <Image
-            src="/images/background.png"
-            alt="Hero background"
-            fill
-            className="object-fill"
-            priority
-          />
+          <Image src="/images/background.png" alt="Hero background" fill className="object-fill" priority />
         </div>
 
-        <div className="absolute left-20 top-52 w-48 h-96 scale-190 opacity-40 pointer-events-none">
-          <Image
-            src="/images/africa_left.png"
-            alt="African map"
-            fill
-            className="object-contain"
-            priority
-          />
+        <div className="hidden lg:block absolute left-20 top-52 w-48 h-96 scale-190 opacity-40 pointer-events-none">
+          <Image src="/images/africa_left.png" alt="African map" fill className="object-contain" priority />
         </div>
 
-        <div className="absolute top-40 right-26 scale-180 w-48 h-96 opacity-40 pointer-events-none">
-          <Image
-            src="/images/africa_right.png"
-            alt="African map"
-            fill
-            className="object-contain"
-            priority
-          />
+        <div className="hidden lg:block absolute top-40 right-26 scale-180 w-48 h-96 opacity-40 pointer-events-none">
+          <Image src="/images/africa_right.png" alt="African map" fill className="object-contain" priority />
         </div>
 
-        <div className="relative max-w-5xl mx-auto px-6 pt-20 md:pt-56 text-center">
-          <div className="mb-0 flex justify-center relative h-64">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 md:pt-56 text-center">
+          <div className="mb-0 flex justify-center relative h-40 sm:h-48 md:h-64">
             <div className="absolute inset-0 flex items-center justify-center opacity-100 pointer-events-none">
               <Image
                 src="/images/microphone.png"
@@ -60,37 +38,31 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="-translate-y-24 relative z-10 bg-background opacity-90">
-            {/* Main Headline */}
-            <h1 className="text-5xl md:text-6xl tracking-[-4] font-bold text-gray-900 mb-4 leading-tight relative z-10 ">
+          <div className="-translate-y-16 sm:-translate-y-20 md:-translate-y-24 relative z-10 bg-background opacity-90">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-[-4] font-bold text-gray-900 mb-2 sm:mb-4 leading-tight relative z-10">
               Every Community Has a Story.
             </h1>
 
-            {/* Subheadline */}
-            <h2 className="text-4xl md:text-5xl tracking-[-4] font-bold text-[#3754A3] mb-8 relative z-10">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[-4] font-bold text-[#3754A3] mb-4 sm:mb-8 relative z-10">
               Not Every Voice Is Heard.
             </h2>
 
-            {/* Description */}
-            <p className="text-[#00000099] text-lg tracking-[-0.7] max-w-lg mx-auto mb-12 leading-relaxed relative z-10">
-              NewsBridge connects journalists with underserved African
-              communities through AI-powered multilingual reporting secure,
-              anonymous, and authentic.
+            <p className="text-base sm:text-lg md:text-lg text-[#00000099] tracking-[-0.7] max-w-sm sm:max-w-md md:max-w-lg mx-auto mb-8 sm:mb-12 leading-relaxed relative z-10">
+              NewsBridge connects journalists with underserved African communities through AI-powered multilingual
+              reporting secure, anonymous, and authentic.
             </p>
 
-            {/* CTA Button */}
             <Link href={"/auth/signup"}>
               <Button
-                className="bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] hover:scale-105 w-56 h-11 text-white px-8 py-7 text-base rounded-2xl inline-flex items-center gap-2 relative z-10"
+                className="bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] hover:scale-105 w-full sm:w-56 h-11 text-white px-6 sm:px-8 py-6 sm:py-7 text-sm sm:text-base rounded-2xl inline-flex items-center justify-center gap-2 relative z-10"
                 style={{
-                  borderImageSource:
-                    "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
+                  borderImageSource: "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
                   boxShadow: "0px 0px 0px 1px #8078FF",
                 }}
               >
                 Request Access
                 <div className="outline-2 outline-white rounded-full p-0.5">
-                  <ArrowRight className="w-6 h-6" strokeWidth={3} />
+                  <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={3} />
                 </div>
               </Button>
             </Link>
@@ -99,49 +71,38 @@ export default function Home() {
       </main>
 
       {/* Stories Section */}
-      <section className="relative pt-20 bg-[#F7F7F7] overflow-hidden">
-        <div className="absolute -right-45 min-[1800px]:-right-85 h-full w-9/11 top-0 z-0 overflow-hidden pointer-events-none">
-          <Image
-            src="/background.svg"
-            alt="Background"
-            fill
-            className="object-contain min-[1800px]:object-cover z-0"
-          />
+      <section className="relative pt-12 sm:pt-20 bg-[#F7F7F7] overflow-hidden">
+        <div className="hidden sm:block absolute -right-45 min-[1800px]:-right-85 h-full w-9/11 top-0 z-0 overflow-hidden pointer-events-none">
+          <Image src="/background.svg" alt="Background" fill className="object-contain min-[1800px]:object-cover z-0" />
         </div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <h2 className="text-4xl md:text-4xl tracking-[-2.8] text-center font-semibold text-[#1E1E1E] mb-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl tracking-[-2.8] text-center font-semibold text-[#1E1E1E] mb-4">
             The Stories that Never Get Told
           </h2>
-          <div className="grid sm:flex items-start gap-12 py-20">
+          <div className="flex flex-col md:flex-row items-start gap-8 md:gap-12 py-12 sm:py-20">
             {/* Left Content */}
-            <div className="space-y-6 basis-[55%] tracking-[-1.5]">
-              <div className="text-[#00000099] leading-loose text-lg">
+            <div className="space-y-6 basis-full md:basis-[55%] tracking-[-1.5]">
+              <div className="text-[#00000099] leading-loose text-base sm:text-lg">
                 <p>
-                  A health crisis unfolds in silence, not because it isn't
-                  newsworthy, but because the journalist and the community don't
-                  speak the same language.
+                  A health crisis unfolds in silence, not because it isn't newsworthy, but because the journalist and
+                  the community don't speak the same language.
                 </p>
-                <p>
-                  A whistleblower stays quiet, afraid their story won't be heard
-                  safely.
-                </p>
+                <p>A whistleblower stays quiet, afraid their story won't be heard safely.</p>
                 <p className="mt-6">Across Nigeria, this is the reality.</p>
                 <p>NewsBridge changes it.</p>
                 <p className="mt-6">
-                  Through AI translation across Igbo, Hausa, Yoruba, and
-                  English, NewsBridge creates a direct, secure bridge between
-                  citizens and journalists.
+                  Through AI translation across Igbo, Hausa, Yoruba, and English, NewsBridge creates a direct, secure
+                  bridge between citizens and journalists.
                 </p>
                 <p>No barriers. No middlemen. No voices ignored.</p>
                 <p className="mt-6 z-40!">
-                  Starting in Nigeria — and expanding across Africa — we're
-                  building the future of inclusive journalism.
+                  Starting in Nigeria — and expanding across Africa — we're building the future of inclusive journalism.
                 </p>
               </div>
             </div>
 
             {/* Right - Nigeria Map with Images */}
-            <div className="relative h-96 flex -translate-y-11 items-center justify-center basis-[45%]">
+            <div className="relative h-64 sm:h-80 md:h-96 w-full md:w-auto flex -translate-y-0 md:-translate-y-11 items-center justify-center basis-full md:basis-[45%]">
               {/* Nigeria Map */}
               <div className="relative opacity-90">
                 <Image
@@ -149,7 +110,7 @@ export default function Home() {
                   width={500}
                   height={400}
                   alt="Nigerian map"
-                  className="object-cover"
+                  className="object-cover w-full h-auto"
                 />
               </div>
             </div>
@@ -161,24 +122,22 @@ export default function Home() {
       <HowItWorks />
 
       {/* Features Section */}
-      <section id="features" className="relative py-20 md:py-32 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl tracking-[-2.8] font-bold text-gray-900 mb-4">
+      <section id="features" className="relative py-12 sm:py-20 md:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl tracking-[-2.8] font-bold text-gray-900 mb-4">
               Our Core Features
             </h2>
-            <p className="text-gray-600 text-lg tracking-[-1.2] max-w-2xl mx-auto">
-              Newsbridge was built to close that gap. We connect local voices to
-              journalists and media houses using accessible, language-aware
-              technology.
+            <p className="text-gray-600 text-base sm:text-lg tracking-[-1.2] max-w-2xl mx-auto px-2">
+              Newsbridge was built to close that gap. We connect local voices to journalists and media houses using
+              accessible, language-aware technology.
             </p>
           </div>
 
-          {/* Feature Cards */}
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {/* Feature 1 */}
             <div
-              className="bg-white rounded-2xl p-8"
+              className="bg-white rounded-2xl p-4 sm:p-8"
               style={{
                 boxShadow: "0px 20px 40px 0px #E8EEFF",
                 border: "1px solid #F1F1F1",
@@ -186,17 +145,16 @@ export default function Home() {
             >
               <div className="tracking-[-1.2]">
                 <div>
-                  <h1 className="text-[#1E1E1E] tracking-[-1.6] text-xl font-semibold mb-3">
+                  <h1 className="text-lg sm:text-xl tracking-[-1.6] text-[#1E1E1E] font-semibold mb-3">
                     WhatsApp Reporting
                   </h1>
-                  <p className="text-[#1E1E1E99] text-lg leading-relaxed">
-                    Citizens report stories directly through WhatsApp using
-                    video, audio, or text, making it easy to share real-time
-                    information in the language they are most comfortable with
+                  <p className="text-[#1E1E1E99] text-base sm:text-lg leading-relaxed">
+                    Citizens report stories directly through WhatsApp using video, audio, or text, making it easy to
+                    share real-time information in the language they are most comfortable with
                   </p>
                 </div>
 
-                <div className="mt-6 h-[254px] w-[351px">
+                <div className="mt-6 h-48 sm:h-64 md:h-[254px] w-full md:w-[351px]">
                   <div className="bg-[#F6F6F6] relative inset-0 h-full w-full rounded-lg overflow-hidden">
                     <div className="absolute inset-x-0 translate-y-[30%]">
                       <Image
@@ -208,22 +166,10 @@ export default function Home() {
                       />
                     </div>
                     <div className="absolute inset-0 translate-x-[21%] translate-y-[2%]">
-                      <Image
-                        src="/Frame.png"
-                        alt="Feature "
-                        width={300}
-                        height={300}
-                        className="object-cover z-30"
-                      />
+                      <Image src="/Frame.png" alt="Feature " width={300} height={300} className="object-cover z-30" />
                     </div>
                     <div className="absolute inset-0 translate-x-[13%]">
-                      <Image
-                        src="/Vector-2.png"
-                        alt="Feature "
-                        width={48}
-                        height={40}
-                        className="object-cover z-30"
-                      />
+                      <Image src="/Vector-2.png" alt="Feature " width={48} height={40} className="object-cover z-30" />
                     </div>
                   </div>
                 </div>
@@ -232,14 +178,14 @@ export default function Home() {
 
             {/* Feature 2 */}
             <div
-              className="bg-white p-5 rounded-2xl"
+              className="bg-white p-4 sm:p-5 rounded-2xl"
               style={{
                 boxShadow: "0px 20px 40px 0px #E8EEFF",
                 border: "1px solid #F1F1F1",
               }}
             >
-              <div className="relative bg-[#F6F6F6] w-full h-[266px] rounded-2xl flex justify-center items-center">
-                <div className="absolute inset-0">
+              <div className="relative bg-[#F6F6F6] w-full h-48 sm:h-64 md:h-[266px] rounded-2xl flex justify-center items-center">
+                <div className="hidden sm:block absolute inset-0">
                   <div className="w-1/4 z-0 translate-y-18 translate-x-36 rotate-90">
                     <DottedLine />
                   </div>
@@ -260,50 +206,40 @@ export default function Home() {
                   </div>
                 </div>
                 <div
-                  className="w-[299px] flex flex-col gap-3 z-10 bg-[#FFFFFF] rounded-2xl py-[19px] px-[35px]"
+                  className="w-[85%] sm:w-[299px] flex flex-col gap-2 sm:gap-3 z-10 bg-[#FFFFFF] rounded-2xl py-3 sm:py-[19px] px-3 sm:px-[35px]"
                   style={{ boxShadow: "0px 20px 40px 0px #D4D4D440" }}
                 >
                   <div
-                    className="py-[18px] px-3 rounded-xl bg-white"
+                    className="py-3 sm:py-[18px] px-3 rounded-xl bg-white"
                     style={{ boxShadow: "0px 20px 40px 0px #89878740" }}
                   >
-                    <h1 className="text-sm mb-2">Original (Hausa)</h1>
-                    <p className="text-xs font-normal text-[#00000080]">
-                      "Maji yamekuwa shida kubwa..."
-                    </p>
+                    <h1 className="text-xs sm:text-sm mb-2">Original (Hausa)</h1>
+                    <p className="text-xs font-normal text-[#00000080]">"Maji yamekuwa shida kubwa..."</p>
                   </div>
                   <div
-                    className="py-[18px] px-3 rounded-xl bg-white"
+                    className="py-3 sm:py-[18px] px-3 rounded-xl bg-white"
                     style={{ boxShadow: "0px 20px 40px 0px #89878740" }}
                   >
-                    <h1 className="text-sm mb-2">Translated (English)</h1>
-                    <p className="text-xs font-normal text-[#00000080]">
-                      Our city is flooded
-                    </p>
+                    <h1 className="text-xs sm:text-sm mb-2">Translated (English)</h1>
+                    <p className="text-xs font-normal text-[#00000080]">Our city is flooded</p>
                   </div>
                 </div>
               </div>
-              <div
-                className="w-full mt-4"
-                style={{ border: "1px solid #F1F1F1" }}
-              ></div>
+              <div className="w-full mt-4" style={{ border: "1px solid #F1F1F1" }}></div>
               <div className="mt-6 font-semibold w-full">
-                <h1 className="text-xl tracking-[-1.6] text-[#1E1E1E] mb-2">
-                  AI-Powered Analysis
-                </h1>
-                <p className="text-[#1E1E1E99] tracking-[-1.4] text-lg font-normal">
-                  Automatically transcribes audio and video reports in the
-                  language they were originally spoken, so journalists can read
-                  the exact message as reported.
+                <h1 className="text-lg sm:text-xl tracking-[-1.6] text-[#1E1E1E] mb-2">AI-Powered Analysis</h1>
+                <p className="text-[#1E1E1E99] tracking-[-1.4] text-base sm:text-lg font-normal">
+                  Automatically transcribes audio and video reports in the language they were originally spoken, so
+                  journalists can read the exact message as reported.
                 </p>
-                <div className="flex gap-3 mt-4">
-                {featureTags.map((tag) => {
-                  return (
+                <div className="flex flex-wrap gap-2 sm:gap-3 mt-4">
+                  {featureTags.map((tag) => {
+                    return (
                       <span key={tag} className="text-[#1A1799] font-normal p-2 rounded-lg bg-[#F0F0FA] text-xs">
                         {tag}
                       </span>
-                  );
-                })}
+                    )
+                  })}
                 </div>
               </div>
             </div>
@@ -314,56 +250,108 @@ export default function Home() {
       {/* Who It's For Section */}
       <section
         id="who-its-for"
-        className="relative w-full py-20 md:py-32 text-white bg-no-repeat bg-full"
+        className="relative w-full py-12 sm:py-20 md:py-32 text-white bg-no-repeat bg-full"
         style={{
           background: "url('/background3.png')",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 justify-between gap-4 mx-auto">
-            <div className="text-left mb-16">
-              <h2 className="text-4xl md:text-5xl tracking-[-2.6] font-semibold mb-4">
-                Who it is for
-              </h2>
-              <p className="text-gray-200 tracking-[-1.2] text-lg max-w-2xl mx-auto">
-                Newsbridge helps you get the right report from citizens
-              </p>
-            </div>
+        <div className="min-h-screen md:h-[391px]">
+          {/* Background Image */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute inset-0 bg-linear-to-r from-gray-900 via-transparent to-gray-900" />
+          </div>
 
-            {/* One Option Card */}
-            {/* Independent Journalists */}
-            <div
-              className="rounded-3xl px-8 py-11 bg-[#111E42] max-w-sm translate-x-56"
-              style={{ borderTop: "4px solid #3754A3" }}
-            >
-              {/* <div className="flex items-center gap-3 mb-6"></div> */}
-              <ul className="space-y-3 mb-8 text-lg">
-                <li className="flex items-center gap-3">
-                  <span className="text-white">•</span>
-                  <span>Discover real community stories</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-white">•</span>
-                  <span>Collaborate securely with contributors</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <span className="text-white">•</span>
-                  <span>Stay connected across regions</span>
-                </li>
-              </ul>
-              <Link
-                className="group cursor-pointer z-20 transition-all duration-300"
-                href={"onboarding/independent-journalist"}
-              >
-                <div className="group-hover:scale-105 inline-flex items-center gap-2 tracking-[0] underline underline-offset-3 bg-transparent outline-none! text-white rounded-lg font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
-                  Request Access
-                  <div className="rounded-full border-2 group-hover:translate-x-1 transition-all duration-300 p-0.5 border-white">
-                    <ArrowRight className="w-4 h-4" />
+          <div className="absolute bottom-0 left-0 w-full mx-auto px-4 sm:px-6">
+            <div className="flex justify-center max-w-7xl mx-auto">
+              <div className="flex flex-col md:flex-row gap-6 sm:gap-12 items-center md:items-center w-full">
+                {/* Left - Contact */}
+                <div className="bg-[#F7F9FF33] tracking-[-1.5] bg-opacity-60 backdrop-blur-xl text-center rounded-2xl py-6 sm:py-9 md:translate-y-31 md:translate-x-7 z-10 basis-full md:basis-[43%] border border-gray-300/60 w-full md:w-auto">
+                  <h3 className="text-2xl sm:text-[32px] text-white font-semibold mb-2">Contact us</h3>
+                  <a
+                    href="mailto:info@newsbridge.com"
+                    className="text-xl sm:text-3xl md:text-[48px] tracking-[-4] font-semibold underline inline-block"
+                    style={{
+                      background: "linear-gradient(90deg, #FFFFFF -29.78%, #FDCD20 88.65%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      color: "transparent",
+                      textDecoration: "underline",
+                      textDecorationColor: "#FDCD20",
+                    }}
+                  >
+                    info@newsbridgeai.com
+                  </a>
+                </div>
+
+                {/* Right - CTA */}
+                <div className="relative basis-full md:basis-[52%] w-full">
+                  {/* Background Image */}
+                  <div className="absolute inset-0 opacity-20">
+                    <div className="absolute inset-0 bg-linear-to-r from-gray-900 via-transparent to-gray-900" />
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 w-full mx-auto px-6">
+                    <div className="flex justify-center max-w-7xl mx-auto">
+                      <div className="flex flex-col md:flex-row gap-6 sm:gap-12 items-center md:items-center w-full">
+                        {/* Left - Contact */}
+                        <div className="bg-[#F7F9FF33] tracking-[-1.5] bg-opacity-60 backdrop-blur-xl text-center rounded-2xl py-6 sm:py-9 md:translate-y-31 md:translate-x-7 z-10 basis-full md:basis-[43%] border border-gray-300/60 w-full md:w-auto">
+                          <h3 className="text-2xl sm:text-[32px] text-white font-semibold mb-2">Contact us</h3>
+                          <a
+                            href="mailto:info@newsbridge.com"
+                            className="text-xl sm:text-3xl md:text-[48px] tracking-[-4] font-semibold underline inline-block"
+                            style={{
+                              background: "linear-gradient(90deg, #FFFFFF -29.78%, #FDCD20 88.65%)",
+                              WebkitBackgroundClip: "text",
+                              WebkitTextFillColor: "transparent",
+                              backgroundClip: "text",
+                              color: "transparent",
+                              textDecoration: "underline",
+                              textDecorationColor: "#FDCD20",
+                            }}
+                          >
+                            info@newsbridgeai.com
+                          </a>
+                        </div>
+
+                        {/* Right - CTA */}
+                        <div className="relative basis-full md:basis-[52%] w-full">
+                          {/* Yellow stripes - behind the card */}
+                          <div className="absolute inset-0 z-0">
+                            <div className="absolute -left-[39%] bottom-0 h-40 w-[600px] bg-[#FCC527] -rotate-55" />
+                            <div className="absolute -right-[39%] bottom-0 h-40 w-[600px] bg-[#FCC527] rotate-55" />
+                          </div>
+
+                          {/* Blue card - in front */}
+                          <div className="relative bg-[#3754A3] h-[527px] rounded-b-2xl rounded-t-[50px] p-14 z-10 text-center">
+                            <div className="absolute w-full max-w-2xl mx-auto h-full top-0 left-0 translate-x-8 translate-y-4 -z-10">
+                              <Image src={"/contact-card-bg.png"} alt="" fill className="bg-contain" />
+                            </div>
+                            <h3 className="text-5xl font-semibold tracking-[-3] text-white mb-6 leading-[150%]">
+                              A Future of Inclusive Journalism
+                            </h3>
+                            <p className="text-lg tracking-[-1.3] font-normal mb-8 leading-relaxed">
+                              We believe in an Africa where every citizen — regardless of language, literacy, or
+                              location — can contribute to trustworthy, community-driven news.
+                            </p>
+                            <p className="text-lg font-normal mb-8 ">"When stories connect, societies strengthen"</p>
+                            <Link className="group" href={"/auth/signup"}>
+                              <Button className="inline-flex items-center hover:scale-105 gap-2 bg-[#FCC527] outline-none! text-black rounded-2xl px-6 py-7 font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
+                                Request Access
+                                <div className="rounded-full border-2 p-0.5 border-black">
+                                  <ArrowRight className="w-4 h-4" />
+                                </div>
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -377,9 +365,8 @@ export default function Home() {
               Meet the team behind News Bridge
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Protecting journalists and citizen reporters is our top priority.
-              Our platform meets international standards for sensitive
-              reporting.
+              Protecting journalists and citizen reporters is our top priority. Our platform meets international
+              standards for sensitive reporting.
             </p>
           </div>
 
@@ -417,18 +404,14 @@ export default function Home() {
               >
                 <div className="relative w-full aspect-square bg-[#192c65] rounded-lg mb-4">
                   <Image
-                    src={member.image}
+                    src={member.image || "/placeholder.svg"}
                     alt=""
                     fill
                     className={`object-cover rounded-lg ${member.scale}`}
                   />
                 </div>
-                <h3 className="font-semibold tracking-[-1.2] text-gray-900 mb-1">
-                  {member.name}
-                </h3>
-                <p className="text-gray-600 tracking-[-1.2] text-sm">
-                  {member.role}
-                </p>
+                <h3 className="font-semibold tracking-[-1.2] text-gray-900 mb-1">{member.name}</h3>
+                <p className="text-gray-600 tracking-[-1.2] text-sm">{member.role}</p>
               </div>
             ))}
           </div>
@@ -455,15 +438,12 @@ export default function Home() {
               <div className="flex gap-12 items-center">
                 {/* Left - Contact */}
                 <div className="bg-[#F7F9FF33] tracking-[-1.5] bg-opacity-60 backdrop-blur-xl text-center rounded-2xl py-9 translate-y-31 translate-x-7 z-10 basis-[43%] border border-gray-300/60">
-                  <h3 className="text-[32px] text-white font-semibold mb-2">
-                    Contact us
-                  </h3>
+                  <h3 className="text-[32px] text-white font-semibold mb-2">Contact us</h3>
                   <a
                     href="mailto:info@newsbridge.com"
                     className="text-[48px] tracking-[-4] font-semibold underline"
                     style={{
-                      background:
-                        "linear-gradient(90deg, #FFFFFF -29.78%, #FDCD20 88.65%)",
+                      background: "linear-gradient(90deg, #FFFFFF -29.78%, #FDCD20 88.65%)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       backgroundClip: "text",
@@ -487,24 +467,16 @@ export default function Home() {
                   {/* Blue card - in front */}
                   <div className="relative bg-[#3754A3] h-[527px] rounded-b-2xl rounded-t-[50px] p-14 z-10 text-center">
                     <div className="absolute w-full max-w-2xl mx-auto h-full top-0 left-0 translate-x-8 translate-y-4 -z-10">
-                      <Image
-                        src={"/contact-card-bg.png"}
-                        alt=""
-                        fill
-                        className="bg-contain"
-                      />
+                      <Image src={"/contact-card-bg.png"} alt="" fill className="bg-contain" />
                     </div>
                     <h3 className="text-5xl font-semibold tracking-[-3] text-white mb-6 leading-[150%]">
                       A Future of Inclusive Journalism
                     </h3>
                     <p className="text-lg tracking-[-1.3] font-normal mb-8 leading-relaxed">
-                      We believe in an Africa where every citizen — regardless
-                      of language, literacy, or location — can contribute to
-                      trustworthy, community-driven news.
+                      We believe in an Africa where every citizen — regardless of language, literacy, or location — can
+                      contribute to trustworthy, community-driven news.
                     </p>
-                    <p className="text-lg font-normal mb-8 ">
-                      "When stories connect, societies strengthen"
-                    </p>
+                    <p className="text-lg font-normal mb-8 ">"When stories connect, societies strengthen"</p>
                     <Link className="group" href={"/auth/signup"}>
                       <Button className="inline-flex items-center hover:scale-105 gap-2 bg-[#FCC527] outline-none! text-black rounded-2xl px-6 py-7 font-semibold hover:text-[#FEE00F]transition-all duration-300 text-base">
                         Request Access
@@ -533,9 +505,8 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-gray-600 leading-relaxed max-w-md">
-                Connect with authentic citizen voices from underserved African
-                communities through AI-powered multilingual reporting. Break
-                barriers, tell untold stories, build community trust.
+                Connect with authentic citizen voices from underserved African communities through AI-powered
+                multilingual reporting. Break barriers, tell untold stories, build community trust.
               </p>
             </div>
 
@@ -591,5 +562,5 @@ export default function Home() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

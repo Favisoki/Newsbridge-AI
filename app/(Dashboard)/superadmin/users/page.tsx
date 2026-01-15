@@ -98,27 +98,27 @@ export default function UserManagementPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header - Using semantic tokens */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-          <p className="text-sm text-gray-600 mt-1">Manage access requests and user accounts</p>
+          <h1 className="text-2xl font-bold text-foreground">User Management</h1>
+          <p className="text-sm text-muted-foreground mt-1">Manage access requests and user accounts</p>
         </div>
-        <Button onClick={() => setInviteDialogOpen(true)} className="bg-[#5b7cfa] hover:bg-[#4a6be8]">
+        <Button onClick={() => setInviteDialogOpen(true)} className="bg-primary hover:bg-primary/90">
           Invite Users
         </Button>
       </div>
 
-      {/* Tabs */}
-      <div className="bg-white rounded-lg shadow-sm">
-        <div className="border-b border-gray-200 px-6">
+      {/* Tabs - Using semantic tokens */}
+      <div className="bg-card rounded-lg shadow-sm">
+        <div className="border-b border-border px-6">
           <div className="flex gap-8">
             <button
               onClick={() => setActiveTab("all")}
               className={`py-4 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === "all"
-                  ? "border-gray-900 text-gray-900"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? "border-foreground text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               All Users
@@ -127,30 +127,30 @@ export default function UserManagementPage() {
               onClick={() => setActiveTab("pending")}
               className={`py-4 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${
                 activeTab === "pending"
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               Pending Request
-              <Badge className="bg-blue-600 text-white hover:bg-blue-600">{statusCounts.pending}</Badge>
+              <Badge className="bg-primary text-primary-foreground hover:bg-primary">{statusCounts.pending}</Badge>
             </button>
             <button
               onClick={() => setActiveTab("approved")}
               className={`py-4 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${
                 activeTab === "approved"
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? "border-primary text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               Approved
-              <Badge className="bg-blue-600 text-white hover:bg-blue-600">{statusCounts.approved}</Badge>
+              <Badge className="bg-primary text-primary-foreground hover:bg-primary">{statusCounts.approved}</Badge>
             </button>
             <button
               onClick={() => setActiveTab("rejected")}
               className={`py-4 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === "rejected"
-                  ? "border-gray-900 text-gray-900"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? "border-foreground text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               Rejected
@@ -158,11 +158,11 @@ export default function UserManagementPage() {
           </div>
         </div>
 
-        {/* Search and Filter */}
-        <div className="p-6 border-b border-gray-200">
+        {/* Search and Filter - Using semantic tokens */}
+        <div className="p-6 border-b border-border">
           <div className="flex items-center justify-between gap-4">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
               <Input
                 placeholder="Search users by name, or email address"
                 value={searchQuery}
@@ -183,49 +183,51 @@ export default function UserManagementPage() {
           </div>
         </div>
 
-        {/* Table */}
+        {/* Table - Using semantic tokens */}
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-muted border-b border-border">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   User Type
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Email
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Country
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Date Submitted
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-card divide-y divide-border">
               {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{user.userType}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{user.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{user.country}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{user.dateSubmitted}</td>
+                <tr key={user.id} className="hover:bg-muted/50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">{user.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">{user.userType}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">{user.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">{user.country}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">{user.dateSubmitted}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <Badge
                       variant="secondary"
                       className={
                         user.status === "pending"
-                          ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                          ? "bg-chart-4/20 text-chart-4 hover:bg-chart-4/20"
                           : user.status === "approved"
-                            ? "bg-green-100 text-green-800 hover:bg-green-100"
-                            : "bg-red-100 text-red-800 hover:bg-red-100"
+                            ? "bg-chart-3/20 text-chart-3 hover:bg-chart-3/20"
+                            : "bg-destructive/20 text-destructive hover:bg-destructive/20"
                       }
                     >
                       {user.status.charAt(0).toUpperCase() + user.status.slice(1)}
@@ -256,7 +258,10 @@ export default function UserManagementPage() {
                           </>
                         )}
                         {user.status === "approved" && (
-                          <DropdownMenuItem className="gap-2 text-red-600" onClick={() => handleRevokeAccess(user.id)}>
+                          <DropdownMenuItem
+                            className="gap-2 text-destructive"
+                            onClick={() => handleRevokeAccess(user.id)}
+                          >
                             <Ban className="w-4 h-4" />
                             Revoke Access
                           </DropdownMenuItem>
@@ -270,8 +275,8 @@ export default function UserManagementPage() {
           </table>
         </div>
 
-        {/* Pagination */}
-        <div className="px-6 py-4 border-t border-gray-200">
+        {/* Pagination - Using semantic tokens */}
+        <div className="px-6 py-4 border-t border-border">
           <div className="flex items-center justify-between">
             <Button variant="outline" size="sm" disabled={currentPage === 1}>
               ← Previous
@@ -315,7 +320,7 @@ export default function UserManagementPage() {
             <Button variant="outline" onClick={() => setInviteDialogOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={handleInviteUsers} className="bg-[#5b7cfa] hover:bg-[#4a6be8]">
+            <Button onClick={handleInviteUsers} className="bg-primary hover:bg-primary/90">
               Send Invites
             </Button>
           </DialogFooter>

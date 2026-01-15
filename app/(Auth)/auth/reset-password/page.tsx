@@ -20,25 +20,25 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="w-full max-w-md">
-      {/* Logo */}
+      {/* Logo - Using semantic tokens */}
       <div className="flex justify-center mb-8">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-            <span className="text-white text-sm font-bold">NB</span>
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+            <span className="text-primary-foreground text-sm font-bold">NB</span>
           </div>
-          <span className="text-lg font-semibold text-gray-900">Newbridge</span>
+          <span className="text-lg font-semibold text-foreground">Newbridge</span>
         </div>
       </div>
 
-      {/* Card */}
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center">Reset Password</h1>
-        <p className="text-gray-600 text-center mb-8 text-sm">Please enter a password you can remember</p>
+      {/* Card - Using semantic tokens */}
+      <div className="bg-card rounded-lg shadow-lg p-8">
+        <h1 className="text-2xl font-bold text-foreground mb-2 text-center">Reset Password</h1>
+        <p className="text-muted-foreground text-center mb-8 text-sm">Please enter a password you can remember</p>
 
         <form className="space-y-6">
           {/* New Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">New Password</label>
+            <label className="block text-sm font-medium text-foreground mb-2">New Password</label>
             <div className="relative">
               <Input
                 type={showPassword ? "text" : "password"}
@@ -50,22 +50,22 @@ export default function ResetPasswordPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
           </div>
 
-          {/* Password Criteria */}
+          {/* Password Criteria - Using semantic tokens */}
           <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-900">Password Criteria</p>
+            <p className="text-sm font-medium text-foreground">Password Criteria</p>
             {criteria.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
+              <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
                 <div
-                  className={`w-5 h-5 rounded-full flex items-center justify-center ${item.met ? "bg-green-100" : "bg-gray-100"}`}
+                  className={`w-5 h-5 rounded-full flex items-center justify-center ${item.met ? "bg-chart-3/20" : "bg-muted"}`}
                 >
-                  {item.met && <Check className="w-3 h-3 text-green-600" />}
+                  {item.met && <Check className="w-3 h-3 text-chart-3" />}
                 </div>
                 <span>{item.label}</span>
               </div>
@@ -74,7 +74,7 @@ export default function ResetPasswordPage() {
 
           {/* Repeat Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-900 mb-2">Repeat Password</label>
+            <label className="block text-sm font-medium text-foreground mb-2">Repeat Password</label>
             <div className="relative">
               <Input
                 type={showConfirm ? "text" : "password"}
@@ -84,32 +84,32 @@ export default function ResetPasswordPage() {
               <button
                 type="button"
                 onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
               >
                 {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
           </div>
 
-          {/* Submit Button */}
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2">Reset</Button>
+          {/* Submit Button - Using semantic tokens */}
+          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-2">Reset</Button>
         </form>
 
-        {/* Back to Login */}
+        {/* Back to Login - Using semantic tokens */}
         <div className="text-center mt-6">
           <Link
             href="/auth/login"
-            className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center justify-center gap-1"
+            className="text-primary hover:text-primary/80 text-sm font-medium flex items-center justify-center gap-1"
           >
             ← Back to Login
           </Link>
         </div>
       </div>
 
-      {/* Support Link */}
-      <div className="text-center mt-6 text-sm text-gray-600">
+      {/* Support Link - Using semantic tokens */}
+      <div className="text-center mt-6 text-sm text-muted-foreground">
         Need help?{" "}
-        <a href="#" className="text-blue-600 hover:text-blue-700">
+        <a href="#" className="text-primary hover:text-primary/80">
           Contact support
         </a>
       </div>
