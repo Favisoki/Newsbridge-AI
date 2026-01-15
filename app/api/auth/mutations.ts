@@ -103,12 +103,20 @@ const mediaSignup = async (data: ObjectLiteral) => {
 }
 
 const joinWaitlist = async (data: ObjectLiteral) => {
-  const response = request({
-    url: "/wait/",
-    method: "POST",
-    data,
-  })
-  return response
+  console.log("[v0] Joining waitlist with data:", data)
+
+  try {
+    console.log("[v0] Making POST request to /wait/ endpoint")
+    const response = request({
+      url: "/wait/",
+      method: "POST",
+      data,
+    })
+    return response
+  } catch (error) {
+    console.error("[v0] Waitlist request failed:", error)
+    throw error
+  }
 }
 
 const login = async (data: ObjectLiteral) => {
@@ -403,12 +411,14 @@ export const useJoinWaitlist = (
     mutationFn: joinWaitlist,
     mutationKey: ["join-waitlist"],
     onSuccess(response: AxiosResponse) {
-      const message = response?.data?.message
+      console.log("[v0] Waitlist request successful:", response.data)
+      const message = response?.data?.message || "Successfully joined the waitlist"
       const data = response
 
       cb(message, data)
     },
     onError(error: AxiosError<ErrorResponse>) {
+      console.error("[v0] Waitlist request error:", error.response?.data)
       const message = extractErrorMessage(error)
       errorCb?.(message)
     },

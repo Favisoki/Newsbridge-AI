@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://newsbridgeai-nbyx.onrender.com"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://cldbknd.newsbridgeai.com"
 
 export interface ApiResponse<T = any> {
   success: boolean
@@ -262,9 +262,9 @@ class ApiClient {
   async submitWaitlist(email: string) {
     return this.request("/invite-onboard/", {
       method: "POST",
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         email,
-        source: "waitlist" 
+        source: "waitlist",
       }),
     })
   }
