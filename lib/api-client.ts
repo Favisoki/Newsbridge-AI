@@ -75,7 +75,7 @@ class ApiClient {
 
   constructor(baseUrl: string = API_BASE_URL) {
     this.baseUrl = baseUrl
-    console.log("[v0] API Client initialized with base URL:", this.baseUrl)
+    console.log("API Client initialized with base URL:", this.baseUrl)
   }
 
   public async request<T = any>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
@@ -90,11 +90,11 @@ class ApiClient {
       headers["Authorization"] = `Bearer ${token}`
     }
 
-    console.log("[v0] Making API request to:", url)
-    console.log("[v0] Request method:", options.method || "GET")
-    console.log("[v0] Request headers:", headers)
+    console.log("Making API request to:", url)
+    console.log("Request method:", options.method || "GET")
+    console.log("Request headers:", headers)
     if (options.body) {
-      console.log("[v0] Request body:", options.body)
+      console.log("Request body:", options.body)
     }
 
     try {
@@ -105,11 +105,11 @@ class ApiClient {
         credentials: "omit", // Don't send cookies for CORS
       })
 
-      console.log("[v0] Response status:", response.status)
-      console.log("[v0] Response headers:", Object.fromEntries(response.headers.entries()))
+      console.log("Response status:", response.status)
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()))
 
       const data = await response.json()
-      console.log("[v0] Response data:", data)
+      console.log("Response data:", data)
 
       if (!response.ok) {
         return {
@@ -125,7 +125,7 @@ class ApiClient {
         message: data.message,
       }
     } catch (error) {
-      console.error("[v0] API request failed:", error)
+      console.error("API request failed:", error)
       return {
         success: false,
         error: error instanceof Error ? error.message : "Network error",

@@ -49,7 +49,7 @@ const logout = async (data: ObjectLiteral) => {
 
 const journalistSignup = async (data: ObjectLiteral) => {
   const response = request({
-    url: "/signup/",
+    url: "/journalistSignup/",
     method: "POST",
     data,
   })
@@ -187,7 +187,7 @@ const setToken = async (payload: { token: string; user: any; refresh?: string })
 
 const mediaJournalistSignup = async (data: ObjectLiteral, encrypted_data: string) => {
   const response = request({
-    url: `/media-journalist-signup/${encrypted_data}`,
+    url: `/MediaHouseJournalistSignup/${encrypted_data}`,
     method: "POST",
     data,
   })

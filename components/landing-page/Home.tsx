@@ -79,7 +79,7 @@ export default function Home() {
             </p>
 
             {/* CTA Button */}
-            <Link href={"/auth/signup"}>
+            <Link href={"/waitlist"}>
               <Button
                 className="bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] hover:scale-105 w-56 h-11 text-white px-8 py-7 text-base rounded-2xl inline-flex items-center gap-2 relative z-10"
                 style={{
@@ -417,7 +417,7 @@ export default function Home() {
               >
                 <div className="relative w-full aspect-square bg-[#192c65] rounded-lg mb-4">
                   <Image
-                    src={member.image}
+                    src={member.image || "/placeholder.svg"}
                     alt=""
                     fill
                     className={`object-cover rounded-lg ${member.scale}`}
