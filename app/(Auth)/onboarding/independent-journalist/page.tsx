@@ -1,10 +1,15 @@
 "use client";
 
+import type React from "react";
+
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import useToast from "@/app/hooks/useToast";
 import { useCreateIndependentJournalistAccount } from "@/app/api/auth/mutations";
-import { PhoneCallIcon, User2 } from "lucide-react";
+import { CheckCircle2, PhoneCallIcon, User2 } from "lucide-react";
 import { saveSignupData } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import Modal from "@/components/ui/modal";
@@ -299,7 +304,7 @@ export default function TellUsAboutYourself() {
           <GradientButton
             type="submit"
             disabled={isPending}
-            classes="md:w-[208px]"
+            classes="w-[208px]"
             btnText={isPending ? "Submitting..." : "Submit request"}
           />
         </form>

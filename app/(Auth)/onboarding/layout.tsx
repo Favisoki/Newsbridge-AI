@@ -7,7 +7,7 @@ export default function OnboardingLayout({
 }) {
   return (
     <div
-      className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 flex items-center justify-center sm:px-14 p-4"
+      className="flex items-center justify-center"
       style={{
         backgroundImage: "url('/onboarding-bg.png')",
         backgroundSize: "contain",

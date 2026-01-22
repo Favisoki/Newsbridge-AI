@@ -247,7 +247,7 @@ export default function Preferences({
           onClick={handleSave}
           disabled={isSaving}
           btnText={isSaving ? "Saving..." : "Save Changes"}
-          classes="md:w-[200px] w-full"
+          classes="w-[200px]"
         />
       </CardContent>
     </Card>

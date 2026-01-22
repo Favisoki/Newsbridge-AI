@@ -5,9 +5,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Eye, EyeOff, Check } from "lucide-react"
-import { Label } from "@/components/ui/label"
-import GoBack from "@/components/Common/go-back"
-import AuthWrapper from "@/components/Layouts/auth-wrapper"
 
 export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -23,12 +20,18 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="w-full max-w-md">
-      <GoBack className="mb-8" />
-      <AuthWrapper>
-
+      {/* Logo - Using semantic tokens */}
+      <div className="flex justify-center mb-8">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+            <span className="text-primary-foreground text-sm font-bold">NB</span>
+          </div>
+          <span className="text-lg font-semibold text-foreground">Newbridge</span>
+        </div>
+      </div>
 
       {/* Card - Using semantic tokens */}
-      <div className="p-4">
+      <div className="bg-card rounded-lg shadow-lg p-8">
         <h1 className="text-2xl font-bold text-foreground mb-2 text-center">Reset Password</h1>
         <p className="text-muted-foreground text-center mb-8 text-sm">Please enter a password you can remember</p>
 
@@ -71,18 +74,18 @@ export default function ResetPasswordPage() {
 
           {/* Repeat Password */}
           <div>
-            <Label className="block text-sm font-medium text-foreground mb-2">Repeat Password</Label>
+            <label className="block text-sm font-medium text-foreground mb-2">Repeat Password</label>
             <div className="relative">
               <Input
                 type={showConfirm ? "text" : "password"}
                 placeholder="Enter your password"
                 className="w-full pr-10"
-                />
+              />
               <button
                 type="button"
                 onClick={() => setShowConfirm(!showConfirm)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
+              >
                 {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
@@ -92,18 +95,24 @@ export default function ResetPasswordPage() {
           <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-2">Reset</Button>
         </form>
 
-        Back to Login - Using semantic tokens
+        {/* Back to Login - Using semantic tokens */}
         <div className="text-center mt-6">
           <Link
             href="/auth/login"
             className="text-primary hover:text-primary/80 text-sm font-medium flex items-center justify-center gap-1"
-            >
+          >
             ← Back to Login
           </Link>
         </div>
       </div>
 
-            </AuthWrapper>
+      {/* Support Link - Using semantic tokens */}
+      <div className="text-center mt-6 text-sm text-muted-foreground">
+        Need help?{" "}
+        <a href="#" className="text-primary hover:text-primary/80">
+          Contact support
+        </a>
+      </div>
     </div>
   )
 }

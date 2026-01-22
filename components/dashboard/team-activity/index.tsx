@@ -30,24 +30,24 @@ export default function TeamActivityPage() {
   return (
     <div className="flex-1 flex flex-col">
       {/* Header */}
-      <div className="border-b border-gray-200 bg-white sm:py-8 sm:px-8 px-4 pt-8 pb-6">
-        <div className="flex max-[428px]:flex-wrap gap-5 items-center justify-between">
+      <div className="border-b border-gray-200 bg-white px-8 py-6">
+        <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Team Activity</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Team Activity</h1>
             <p className="text-gray-600 mt-1">Manage your newsroom team</p>
           </div>
           <GradientButton
             onClick={() => setIsInviteOpen(true)}
             btnText={"Invite Team Members"}
-            classes="sm:w-[208px] w-[125px] !text-xs sm:!text-base sm:!py-8 !py-5 rounded-lg"
+            classes="w-[208px] rounded-lg"
           />
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex-1 bg-gray-50 sm:py-8 sm:px-8 px-4 py-8">
+      <div className="flex-1 bg-gray-50 px-8 py-6">
         {/* Search and Filter */}
-        <div className="flex max-[500px]:flex-col max-[500px]:items-start items-center gap-4 mb-6">
+        <div className="flex items-center gap-4 mb-6">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
@@ -73,22 +73,22 @@ export default function TeamActivityPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50">
-                  <th className="sm:px-6 px-4 py-4 text-left sm:text-sm text-xs font-semibold text-gray-900">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
                     Team Member
                   </th>
-                  <th className="sm:px-6 px-4 py-4 text-left sm:text-sm text-xs font-semibold text-gray-900">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
                     Location
                   </th>
-                  <th className="sm:px-6 px-4 py-4 text-left sm:text-sm text-xs font-semibold text-gray-900">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
                     Role
                   </th>
-                  <th className="sm:px-6 px-4 py-4 text-left sm:text-sm text-xs font-semibold text-gray-900">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
                     Language Reported
                   </th>
-                  <th className="sm:px-6 px-4 py-4 text-left sm:text-sm text-xs font-semibold text-gray-900">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
                     Coverage Area
                   </th>
-                  <th className="sm:px-6 px-4 py-4 text-center sm:text-sm text-xs font-semibold text-gray-900">
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
                     Action
                   </th>
                 </tr>
@@ -154,7 +154,7 @@ export default function TeamActivityPage() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} className="sm:px-6 py-12">
+                    <td colSpan={6} className="px-6 py-12">
                       <div className="flex justify-center items-center">
                         <EmptyState
                           feedback="You haven't invited any team members to your media house."

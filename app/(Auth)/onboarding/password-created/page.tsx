@@ -16,7 +16,7 @@ function PasswordCreatedContent() {
       : "/onboarding/journalist-profile";
 
   return (
-    <div className="min-h-screen w-full max-w-lg place-content-center">
+    <div className="min-h-screen w-full max-w-lg place-content-center place- p-4">
       <AuthWrapper>
         {/* Success Icon */}
         <div className="flex justify-center mb-6">
