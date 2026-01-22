@@ -1,9 +1,7 @@
-import Home from '@/components/landing-page/Home'
+import Home from "@/components/landing-page/Home";
 
 const page = () => {
-  return (
-    <Home />
-  )
-}
+  return <Home />;
+};
 
-export default page
+export default page;

@@ -38,7 +38,7 @@ const UpdatePassword = () => {
             onTogglePassword={() => setShowPassword(!showPassword)}
             error={undefined}
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
            <CustomInput
             name="newPassword"
             type="password"
@@ -69,7 +69,7 @@ const UpdatePassword = () => {
             />
             </div>
 
-          <GradientButton btnText={"Save Changes"} classes="mt-8 w-[166px]" />
+          <GradientButton btnText={"Save Changes"} classes="mt-8 w-full md:w-[166px]" />
         </CardContent>
       </Card>
   )

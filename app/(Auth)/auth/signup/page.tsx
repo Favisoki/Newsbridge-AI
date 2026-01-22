@@ -44,11 +44,11 @@ const signUpDetails: {
 
 export default function SignupPage() {
   return (
-    <div className="w-full max-w-4xl">
+    <div className="w-full max-w-4xl sm:mt-0 mt-12">
       {/* Back Link */}
       <div className="flex items-center flex-col gap-6">
         <GoBack />
-        <Logo textSize="text-3xl" height={40} width={40} />
+        <Logo textSize="sm:text-3xl text-2xl" height={40} width={40} />
       </div>
 
       <div className="bg-transparent pt-4 px-6">
