@@ -34,6 +34,8 @@ interface SuperAdminContextType {
   itemsPerPage: number
   superAdminHeader: string
   setSuperAdminHeader: React.Dispatch<React.SetStateAction<string>>
+  isMobileMenuOpen: boolean,
+  setIsMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const SuperAdminContext = createContext<SuperAdminContextType | undefined>(undefined)
@@ -52,6 +54,7 @@ function SuperAdminProviderContent({ children }: { children: ReactNode }) {
   const [selectedFilter, setSelectedFilter] = useState("all")
   const [dashboardHeader, setDashboardHeader] = useState("Report Feed")
   const dataFetchedRef = useRef(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false)
 
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -159,6 +162,8 @@ function SuperAdminProviderContent({ children }: { children: ReactNode }) {
       itemsPerPage,
       superAdminHeader,
       setSuperAdminHeader,
+      isMobileMenuOpen,
+      setIsMobileMenuOpen
     }),
     [
       // Stories data
@@ -184,6 +189,8 @@ function SuperAdminProviderContent({ children }: { children: ReactNode }) {
       itemsPerPage,
       setSuperAdminHeader,
       superAdminHeader,
+      isMobileMenuOpen,
+      setIsMobileMenuOpen
     ],
   )
 
@@ -201,5 +208,12 @@ export function SuperAdminProvider({ children }: { children: ReactNode }) {
 
 export function useSuperAdminDashboard() {
   const context = useContext(SuperAdminContext)
+
+  if (!context) {
+    throw new Error(
+      "useSuperAdminDashboard must be used within a SuperAdminProvider"
+    )
+  }
+  
   return context
 }

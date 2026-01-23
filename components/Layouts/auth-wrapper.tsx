@@ -5,11 +5,11 @@ const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <div className="flex justify-center mb-8">
-        <Logo textSize="text-3xl" height={40} width={40} />
+        <Logo textSize="sm:text-3xl text-2l" height={40} width={40} />
       </div>
 
       <div
-        className="relative bg-white rounded-2xl p-9"
+        className="relative bg-white rounded-2xl sm:p-9 py-9 px-6"
         style={{ boxShadow: "0px 17px 23px 0px #C3C3C340" }}
       >
         {children}

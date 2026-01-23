@@ -26,7 +26,7 @@ export default function SettingsPage() {
   const { user, isLoading, setIsLogoutModal } = useAuth();
   const fullName = user?.first_name + " " + user?.last_name;
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  
+
   const { data: preferencesData, isLoading: isLoadingPreferences } = useGetUserPreferences();
   const { successToastHandler, errorToastHandler } = useToast();
   const queryClient = useQueryClient();
@@ -47,8 +47,8 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex justify-between items-center gap-4">
+    <div className="sm:py-8 sm:px-8 px-4 py-4 space-y-6">
+      <div className="flex flex-wrap justify-between items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
           <p className="text-sm text-gray-600 mt-1">
@@ -62,7 +62,7 @@ export default function SettingsPage() {
       </div>
 
       <div className="space-y-6 max-w-4xl">
-        {isLoading ? <UserCardSkeleton /> : <Card className="w-1/2 mb-2 bg-white">
+        {isLoading ? <UserCardSkeleton /> : <Card className="sm:w-1/2 mb-2 bg-white">
           <CardContent className="space-y-6">
             <div className="flex items-center gap-3">
               <div className="w-20 h-20 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white">

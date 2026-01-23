@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export function UserCardSkeleton() {
   return (
-    <Card className="w-1/2 mb-2 bg-white">
+    <Card className="sm:w-1/2 mb-2 bg-white">
       <CardContent className="space-y-6">
         <div className="flex items-center gap-3">
           {/* Avatar skeleton */}
