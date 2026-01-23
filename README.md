@@ -1,23 +1,17 @@
 # Newbsridge AI
-
-*Automatically synced with your [v0.app](https://v0.app) deployments*
-
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/isaac-adeks-projects/v0-newbridge-website-clone)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/l6drg6oAyaG)
 
 ## Overview
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+Newsbridge AI - African Citizen Journalism Platform.
+**NewsBridge connects journalists with underserved African communities through AI-powered multilingual reporting secure, anonymous, and authentic.**
+
 
 ## Deployment
 
-Your project is live at:
-
-**[https://newsbridgeai.vercel.app](https://newsbridgeai.vercel.app)**
-
-## Build your app
+This project is live at:
+**[https://newsbridgeai.com](https://newsbridgeai.com)**
 
 ## How It Works
 
-1.
+From a single voice note to a verified story here's how Newsbridge connects communities and journalists in three simple steps. [https://newsbridgeai.com/auth/signup](https://newsbridgeai.com/auth/signup)
