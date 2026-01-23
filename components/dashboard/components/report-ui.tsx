@@ -59,10 +59,12 @@ export default function ReportUi({
   const pathname = usePathname()
 
   const citizenReportsProvider = useCitizenReports()
-  const superAdminProvider = useSuperAdminDashboard()
   const dashboardProvider = useDashboard()
+  
+  // Only call useSuperAdminDashboard if we're in a superadmin route
+  const superAdminProvider = pathname.startsWith("/superadmin") ? useSuperAdminDashboard() : null
 
-  // Select the appropriate provider based on pathname, with fallback handling for null
+  // Select the appropriate provider based on pathname
   const providerValue =
     pathname.startsWith("/dashboard/citizen-reports") && citizenReportsProvider
       ? citizenReportsProvider

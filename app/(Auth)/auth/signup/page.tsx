@@ -28,7 +28,7 @@ const signUpDetails: {
     variant: "primary",
     href: "/onboarding/independent-journalist"
   },
-  {
+  /* {
     Icon: "/Frame4.png",
     title: "For Media Houses",
     bulletins: [
@@ -40,6 +40,7 @@ const signUpDetails: {
     variant: "secondary",
     href: "/onboarding/media-house"
   },
+  */
 ];
 
 export default function SignupPage() {
@@ -59,7 +60,8 @@ export default function SignupPage() {
       </div>
 
       <div className="max-w-[880px] mx-auto">
-        <div className="grid md:grid-cols-2 gap-5 pt-8">
+        <div className="flex justify-center pt-8">
+          <div className="w-full md:w-1/2">
           {/* Card */}
           {signUpDetails.map((data) => {
             return (
@@ -101,6 +103,7 @@ export default function SignupPage() {
               </div>
             );
           })}
+          </div>
         </div>
 
         {/* Login Link */}
