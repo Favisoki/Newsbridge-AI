@@ -5,7 +5,7 @@ import type React from "react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
 import Image from "next/image";
-import { X, CheckCircle, User, PhoneCall } from 'lucide-react';
+import { X, CheckCircle, User, PhoneCall, Link as LinkIcon } from 'lucide-react';
 import { getSignupData } from "@/lib/utils";
 import { useUpdateUser } from "@/app/api/auth/mutations";
 import useToast from "@/app/hooks/useToast";
@@ -45,6 +45,7 @@ export default function JournalistProfile() {
     phone: existingData?.phone_number || existingData?.phone || "",
     country: existingData?.country || "Nigeria",
     city: existingData?.city || "Lagos",
+    portfolio: existingData?.portfolio || "",
     coverages: normalizeToArray(existingData?.coverages),
     regions: normalizeToArray(existingData?.regions),
     languages: normalizeToArray(existingData?.languages),
@@ -293,6 +294,23 @@ export default function JournalistProfile() {
               options={cityOptions}
               disabled={isPending}
             />
+          </div>
+
+          {/* Portfolio Link */}
+          <div>
+            <CustomInput
+              Icon={LinkIcon}
+              name="portfolio"
+              type="url"
+              label="Portfolio Link (for review)"
+              placeholder="https://yourportfolio.com"
+              value={formData.portfolio}
+              onChange={handleChange}
+              disabled={isPending}
+            />
+            <p className="text-xs text-[#00000066] mt-2">
+              Share a link to your portfolio or recent work. This helps us verify your experience and approve your account.
+            </p>
           </div>
 
           <div className="grid grid-cols-2 justify-between gap-4 gap-y-8 my-12 tracking-[-1]">

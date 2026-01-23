@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import useToast from "@/app/hooks/useToast";
 import { useCreateIndependentJournalistAccount } from "@/app/api/auth/mutations";
-import { PhoneCallIcon, User2 } from "lucide-react";
+import { PhoneCallIcon, User2, Link as LinkIcon } from "lucide-react";
 import { saveSignupData } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import Modal from "@/components/ui/modal";
@@ -38,6 +38,7 @@ export default function TellUsAboutYourself() {
     city: "",
     role: "",
     motivation: "",
+    portfolio: "",
     agreeToTerms: false,
   });
 
@@ -140,6 +141,7 @@ export default function TellUsAboutYourself() {
       city: formData.city,
       role: formData.role,
       why_join: formData.motivation,
+      portfolio: formData.portfolio,
       agree_terms: formData.agreeToTerms,
       languages: [{ name: "English" }],
       coverages: [{ name: "General" }],
@@ -264,6 +266,21 @@ export default function TellUsAboutYourself() {
             error={errors.phone}
             disabled={isPending}
           />
+
+          <CustomInput
+            name="portfolio"
+            type="url"
+            Icon={LinkIcon}
+            label="Portfolio Link (for review)"
+            placeholder="https://yourportfolio.com"
+            value={formData?.portfolio}
+            onChange={handleChange}
+            error={errors.portfolio}
+            disabled={isPending}
+          />
+          <p className="text-xs text-[#00000066] -mt-4">
+            Share a link to your portfolio or recent work. This helps us verify your experience and approve your account.
+          </p>
 
           <CustomTextarea
             name="motivation"
