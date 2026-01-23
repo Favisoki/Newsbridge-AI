@@ -89,12 +89,12 @@ export default function ReportUi({
   }, [isClicked])
 
   return (
-    <div className="sm:py-8 sm:px-8 px-4 py-4">
+    <div className="p-8">
       {/* Active Reports Section */}
       <div className="mt-2">
-        <div className="flex flex-wrap gap-14 items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl sm:text-3xl tracking-[-2] font-bold text-gray-900">
+            <h2 className="text-3xl tracking-[-2] font-bold text-gray-900">
               {header} ({totalCount})
             </h2>
             <p className="text-gray-600 mt-1">{description}</p>
@@ -103,7 +103,7 @@ export default function ReportUi({
         </div>
 
         {/* Search and Filter Bar */}
-        <div className="flex min-[500px]:flex-row gap-4 mb-6 flex-col">
+        <div className="flex gap-4 mb-6">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
             <input

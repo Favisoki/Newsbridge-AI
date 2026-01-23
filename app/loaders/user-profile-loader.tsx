@@ -4,7 +4,7 @@ export function UserProfileSkeleton() {
       {/* Avatar skeleton */}
       <div className="w-10.5 h-10.5 bg-gray-200 rounded-full animate-pulse"></div>
       
-      <div className="space-y-2 hidden lg:block">
+      <div className="space-y-2">
         {/* Name skeleton */}
         <div className="h-4 w-28 bg-gray-200 rounded animate-pulse"></div>
         {/* Role skeleton */}

@@ -15,7 +15,7 @@ export default function ResetSuccessPage() {
         {/* Success Icon */}
         <div className="flex justify-center mb-6">
           <div className=" relative w-22 h-22 rounded-full flex items-center justify-center">
-            <Image src={"/success-check.png"} alt="success" fill priority/>
+            <Image src={"/success-check.png"} alt="success" fill/>
           </div>
         </div>
 
