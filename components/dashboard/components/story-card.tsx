@@ -41,10 +41,10 @@ export function StoryCard({ story }: StoryCardProps) {
 
       <div className="flex gap-2 mb-3 items-center">
         {getMediaIcon(story)}
-        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium">
+        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-small">
           {story?.category || "General"}
         </span>
-        <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full font-medium">
+        <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full font-small">
           Reported in {story?.language || "Unknown"}
         </span>
       </div>

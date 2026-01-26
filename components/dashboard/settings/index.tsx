@@ -31,6 +31,10 @@ export default function SettingsPage() {
   const { successToastHandler, errorToastHandler } = useToast();
   const queryClient = useQueryClient();
 
+  // Get languages and topics from signup data or preferences API
+  const languages = preferencesData?.languages || user?.languages || [];
+  const topics = preferencesData?.topics || user?.coverages || [];
+
   const { mutate: updatePreferences, isPending: isSavingPreferences } = useUpdateUserPreferences(
     (error) => {
       errorToastHandler(error);
@@ -83,8 +87,8 @@ export default function SettingsPage() {
         <UpdatePassword />
 
         <Preferences 
-          initialLanguages={preferencesData?.languages || []}
-          initialTopics={preferencesData?.topics || []}
+          initialLanguages={languages.map((lang: any) => typeof lang === 'string' ? lang : lang.name)}
+          initialTopics={topics.map((topic: any) => typeof topic === 'string' ? topic : topic.name)}
           onSave={handleSavePreferences}
           isLoading={isLoadingPreferences}
           isSaving={isSavingPreferences}
