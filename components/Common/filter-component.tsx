@@ -72,7 +72,7 @@ const FilterModal = ({
     { value: "", label: "Select" },
     { value: "article", label: "Article" },
     { value: "video", label: "Video" },
-    { value: "podcast", label: "Podcast" },
+    { value: "audio", label: "Audio" },
   ]
 
   useEffect(() => {
