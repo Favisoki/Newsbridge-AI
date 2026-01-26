@@ -10,7 +10,7 @@ import { CircleCheck } from "lucide-react"
 export const metadata: Metadata = {
   title: "Newsbridge - African Journalism Platform",
   description: "Connect with authentic citizen voices from underserved African communities",
-  generator: "v0.app",
+  generator: "Newsbridge Team",
   metadataBase: new URL("https://cldbknd.newsbridgeai.com"),
   icons: {
     icon: "/images/logo.png",
