@@ -39,7 +39,14 @@ const FilterModal = ({
     { value: "General", label: "General" },
     { value: "climate", label: "Climate" },
     { value: "technology", label: "Technology" },
-    { value: "politics", label: "Politics" }
+    { value: "politics", label: "Politics" },
+    { value: "business", label: "Business" },
+    { value: "metro", label: "Metro" },
+    { value: "education", label: "Education" },
+    { value: "economy", label: "Economy" },
+    { value: "health", label: "Health" },
+    { value: "entertainment", label: "Entertainment" },
+    { value: "others", label: "Others" }
   ]
 
   const regionOptions = [
