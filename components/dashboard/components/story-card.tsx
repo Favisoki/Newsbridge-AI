@@ -29,7 +29,7 @@ export function StoryCard({ story }: StoryCardProps) {
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition relative">
-      <div className="absolute top-6 right-6">
+      <div className="absolute top-12 right-6">
         <Button
           onClick={() => setIsOpen(true)}
           variant="outline"
