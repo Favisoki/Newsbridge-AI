@@ -251,8 +251,10 @@ export default function ReportDetailModal({ id, onClose }: ReportDetailModalProp
                   <span className="text-sm text-gray-600">
                     Confidence Score:
                   </span>
-                  <span className="text-sm font-bold text-[#2B4E4C] bg-[#E5FFFE] py-1 px-3">
-                    {report?.confidenceScore || "75"}%
+                  <span className="text-sm font-bold text-[#2B4E4C] bg-[#E5FFFE] py-1 px-3 rounded">
+                    {report?.confidence_score 
+                      ? `${Math.min(Math.round((report.confidence_score / 100) % 100), 100)}%`
+                      : "N/A"}
                   </span>
                 </div>
               </div>
