@@ -29,11 +29,11 @@ export function StoryCard({ story }: StoryCardProps) {
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition relative">
-      <div className="absolute top-6 right-6">
+      <div className="absolute top-12 right-6">
         <Button
           onClick={() => setIsOpen(true)}
           variant="outline"
-          className="border-blue-600 text-blue-600 rounded-3xl hover:bg-blue-50 whitespace-nowrap bg-transparent"
+          className="border-blue-600 text-blue-600 rounded-2xl hover:bg-blue-50 whitespace-nowrap bg-transparent"
         >
           View Details
         </Button>
@@ -41,10 +41,10 @@ export function StoryCard({ story }: StoryCardProps) {
 
       <div className="flex gap-2 mb-3 items-center">
         {getMediaIcon(story)}
-        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-medium">
+        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-small">
           {story?.category || "General"}
         </span>
-        <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full font-medium">
+        <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full font-small">
           Reported in {story?.language || "Unknown"}
         </span>
       </div>

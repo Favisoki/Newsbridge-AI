@@ -39,16 +39,24 @@ const FilterModal = ({
     { value: "General", label: "General" },
     { value: "climate", label: "Climate" },
     { value: "technology", label: "Technology" },
+    { value: "politics", label: "Politics" },
+    { value: "business", label: "Business" },
+    { value: "metro", label: "Metro" },
+    { value: "education", label: "Education" },
+    { value: "economy", label: "Economy" },
+    { value: "health", label: "Health" },
+    { value: "entertainment", label: "Entertainment" },
+    { value: "others", label: "Others" }
   ]
 
   const regionOptions = [
     { value: "", label: "Select" },
-    { value: "south-west", label: "South West" },
-    { value: "south-east", label: "South East" },
-    { value: "south-south", label: "South South" },
-    { value: "north-east", label: "North East" },
-    { value: "north-west", label: "North West" },
-    { value: "north-central", label: "North Central" },
+    { value: "South-West", label: "South West" },
+    { value: "South-East", label: "South East" },
+    { value: "South-South", label: "South South" },
+    { value: "North-East", label: "North East" },
+    { value: "North-West", label: "North West" },
+    { value: "North-Central", label: "North Central" },
   ]
 
   const languageOptions = [
@@ -64,7 +72,7 @@ const FilterModal = ({
     { value: "", label: "Select" },
     { value: "article", label: "Article" },
     { value: "video", label: "Video" },
-    { value: "podcast", label: "Podcast" },
+    { value: "audio", label: "Audio" },
   ]
 
   useEffect(() => {
