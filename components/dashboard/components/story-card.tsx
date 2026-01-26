@@ -33,7 +33,7 @@ export function StoryCard({ story }: StoryCardProps) {
         <Button
           onClick={() => setIsOpen(true)}
           variant="outline"
-          className="border-blue-600 text-blue-600 rounded-3xl hover:bg-blue-50 whitespace-nowrap bg-transparent"
+          className="border-blue-600 text-blue-600 rounded-2xl hover:bg-blue-50 whitespace-nowrap bg-transparent"
         >
           View Details
         </Button>
