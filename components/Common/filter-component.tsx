@@ -39,6 +39,7 @@ const FilterModal = ({
     { value: "General", label: "General" },
     { value: "climate", label: "Climate" },
     { value: "technology", label: "Technology" },
+    { value: "politics", label: "Politics" }
   ]
 
   const regionOptions = [
