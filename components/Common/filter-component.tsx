@@ -51,12 +51,12 @@ const FilterModal = ({
 
   const regionOptions = [
     { value: "", label: "Select" },
-    { value: "south-west", label: "South West" },
-    { value: "south-east", label: "South East" },
-    { value: "south-south", label: "South South" },
-    { value: "north-east", label: "North East" },
-    { value: "north-west", label: "North West" },
-    { value: "north-central", label: "North Central" },
+    { value: "South-West", label: "South West" },
+    { value: "South-East", label: "South East" },
+    { value: "South-South", label: "South South" },
+    { value: "North-East", label: "North East" },
+    { value: "North-West", label: "North West" },
+    { value: "North-Central", label: "North Central" },
   ]
 
   const languageOptions = [
