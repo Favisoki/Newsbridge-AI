@@ -178,6 +178,8 @@ export default function JournalistProfile() {
     { value: "Abuja", label: "Abuja" },
     { value: "Lagos", label: "Lagos" },
     { value: "Accra", label: "Accra" },
+    { value: "Ghana", label: "Ghana" },
+    { value: "Kenya", label: "Kenya" }
   ];
 
   const getPrefferedStyles = (formData: any[], data: string) => {
