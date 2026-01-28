@@ -123,8 +123,12 @@ export const getMediaIcon = (story: any) => {
     return <FileText className="w-4 h-4 text-gray-600" />;
   };
 
-export const getCategoryIcon = (category: string | null | undefined) => {
-    const categoryLower = category?.toLowerCase() || '';
+export const getCategoryIcon = (category: any) => {
+    if (!category || typeof category !== 'string') {
+      return <Radio className="w-4 h-4" />;
+    }
+    
+    const categoryLower = category.toLowerCase();
     
     if (categoryLower.includes('breaking')) return <Zap className="w-4 h-4" />;
     if (categoryLower.includes('alert') || categoryLower.includes('warning')) return <AlertCircle className="w-4 h-4" />;
