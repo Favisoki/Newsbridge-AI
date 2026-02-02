@@ -21,7 +21,12 @@ export function proxy(req: NextRequest) {
   const specialRoutes = [
     "/onboarding/password-created",
     "/onboarding/journalist-profile",
-    "/onboarding/setup-mediahouse-profile"
+    "/onboarding/setup-mediahouse-profile",
+    "/onboarding/media-house",
+    "/onboarding/create-password",
+    "/onboarding/independent-journalist",
+    "/onboarding/media-house/setup",
+    "/onboarding/media-house/success"
   ];
 
   const matchesRoute = (routes: string[]) =>
