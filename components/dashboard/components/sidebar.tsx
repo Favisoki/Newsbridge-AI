@@ -7,7 +7,6 @@ import {
   Settings,
   Menu,
   X,
-  Home,
 } from "lucide-react";
 import { useDashboard } from "@/context/dashboard-context";
 import { Logout } from "@/components/Common/Svgs";
@@ -24,7 +23,6 @@ export function Sidebar() {
   const { user, setIsLogoutModal } = useAuth();
   const userType = user?.user_type;
   const menuItems = [
-    { href: "/", label: "Home", icon: Home },
     { href: "/dashboard", label: "Report Feed", icon: LayoutDashboard },
     ...(userType === "mediaHouse"
       ? [{ href: "/dashboard/team", label: "Team Activity", icon: Users }]
