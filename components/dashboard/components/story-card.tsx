@@ -1,7 +1,7 @@
 import ReportDetailModal from "@/components/modal-components/report-details-modal";
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
-import { formatDate, getExcerpt, getHeadline, getMediaIcon } from "@/lib/utils";
+import { formatDate, getExcerpt, getHeadline, getMediaIcon, getCategoryIcon } from "@/lib/utils";
 import {
   Calendar,
   MapPin,
@@ -39,14 +39,15 @@ export function StoryCard({ story }: StoryCardProps) {
         </Button>
       </div>
 
-      <div className="flex gap-2 mb-3 items-center">
-        {getMediaIcon(story)}
-        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-small">
-          {story?.category || "General"}
-        </span>
-        <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full font-small">
-          Reported in {story?.language || "Unknown"}
-        </span>
+      <div className="flex flex-wrap gap-2 mb-3 items-center">
+        <div className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full font-small">
+          {getCategoryIcon(story?.category)}
+          <span>{story?.category || "General"}</span>
+        </div>
+        <div className="flex items-center gap-1 px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full font-small">
+          {getMediaIcon(story)}
+          <span>Reported in {story?.language || "Unknown"}</span>
+        </div>
       </div>
 
       {/* Date */}

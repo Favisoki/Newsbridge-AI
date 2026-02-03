@@ -1,5 +1,5 @@
 import { clsx, type ClassValue } from 'clsx'
-import { AudioLines, FileText, Video } from 'lucide-react';
+import { AudioLines, FileText, Video, Zap, AlertCircle, Radio, TrendingUp, Lightbulb } from 'lucide-react';
 import { twMerge } from 'tailwind-merge'
 import Cookies from 'js-cookie';
 
@@ -121,6 +121,22 @@ export const getMediaIcon = (story: any) => {
     if (story.video) return <Video className="w-4 h-4 text-gray-600" />;
     if (story.audio) return <AudioLines className="w-4 h-4 text-gray-600" />;
     return <FileText className="w-4 h-4 text-gray-600" />;
+  };
+
+export const getCategoryIcon = (category: any) => {
+    if (!category || typeof category !== 'string') {
+      return <Radio className="w-4 h-4" />;
+    }
+    
+    const categoryLower = category.toLowerCase();
+    
+    if (categoryLower.includes('breaking')) return <Zap className="w-4 h-4" />;
+    if (categoryLower.includes('alert') || categoryLower.includes('warning')) return <AlertCircle className="w-4 h-4" />;
+    if (categoryLower.includes('news') || categoryLower.includes('report')) return <Radio className="w-4 h-4" />;
+    if (categoryLower.includes('trend') || categoryLower.includes('trending')) return <TrendingUp className="w-4 h-4" />;
+    if (categoryLower.includes('insight') || categoryLower.includes('analysis')) return <Lightbulb className="w-4 h-4" />;
+    
+    return <Radio className="w-4 h-4" />;
   };
 
   // Format date
