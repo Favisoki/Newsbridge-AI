@@ -47,7 +47,23 @@ export default function SettingsPage() {
   );
 
   const handleSavePreferences = async (data: { languages: string[]; topics: string[] }) => {
-    updatePreferences(data);
+    if (!user?.id) {
+      errorToastHandler("User ID not found");
+      return;
+    }
+
+    // Format the data for the API endpoint
+    // The endpoint expects: regions, languages, and coverages
+    const updatePayload = {
+      languages: data.languages,
+      coverages: data.topics,
+      regions: user?.regions || [], // Keep existing regions if not modifying
+    };
+
+    updatePreferences({
+      data: updatePayload,
+      id: user.id,
+    });
   };
 
   return (
