@@ -273,17 +273,18 @@ export const useUpdateUser = (errorCb: (err: string) => void, cb: (message: stri
 }
 
 export const useUpdateUserPreferences = (
-  errorCb: (err: string) => void,
-  cb: (message: string, data?: ObjectLiteral) => void,
+  errorCb?: (err: string) => void,
+  cb?: (message: string, data?: ObjectLiteral) => void,
 ) => {
   return useMutation({
-    mutationFn: updateUserPreferences,
+    mutationFn: ({ data, id }: { data: ObjectLiteral; id: number }) =>
+      updateUser(data, id),
     mutationKey: ["update-user-preferences"],
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.message || "Preferences updated successfully"
       const data = response
 
-      cb(message, data)
+      cb?.(message, data)
     },
     onError(error: AxiosError<ErrorResponse>) {
       const message = extractErrorMessage(error)
