@@ -66,12 +66,31 @@ export const useGetPreferenceReports = (page = 1, search: string) => {
 }
 
 const getUserPreferences = async () => {
-  const response = await request({
-    url: `/user-preferences/`,
-    method: `GET`,
-    withCredentials: true,
-  })
-  return response?.data
+  try {
+    // Fetch journalist info which includes coverages
+    const response = await request({
+      url: `/retieveJournalistInfo/`,
+      method: `GET`,
+      withCredentials: true,
+    })
+    
+    if (response?.data) {
+      // Map coverages to topics and languages from the response
+      const coverages = response.data.coverages || []
+      const languages = response.data.languages || []
+      
+      return {
+        topics: coverages.map((coverage: any) => typeof coverage === 'string' ? coverage : coverage.name),
+        languages: languages.map((lang: any) => typeof lang === 'string' ? lang : lang.name),
+        coverages: coverages,
+      }
+    }
+    
+    return { topics: [], languages: [], coverages: [] }
+  } catch (error) {
+    console.error("Error fetching user preferences:", error)
+    return { topics: [], languages: [], coverages: [] }
+  }
 }
 
 export const useGetUserPreferences = () => {

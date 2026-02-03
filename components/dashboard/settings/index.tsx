@@ -31,9 +31,9 @@ export default function SettingsPage() {
   const { successToastHandler, errorToastHandler } = useToast();
   const queryClient = useQueryClient();
 
-  // Get languages and topics from signup data or preferences API
+  // Get languages and topics from preferences API (which fetches coverages)
   const languages = preferencesData?.languages || user?.languages || [];
-  const topics = preferencesData?.topics || user?.coverages || [];
+  const topics = preferencesData?.topics || preferencesData?.coverages || user?.coverages || [];
 
   const { mutate: updatePreferences, isPending: isSavingPreferences } = useUpdateUserPreferences(
     (error) => {
