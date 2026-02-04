@@ -38,7 +38,7 @@ export default function CitizenReports() {
       description="Explore stories shared by citizens across regions"
       reportUi={displayReports}
       totalCount={hasActiveFilter ? displayReports.length : totalCount}
-      isLoading={isLoading || isFilterLoading}
+      isLoading={isLoading}
       currentPage={currentPage}
       totalPages={totalPages}
       hasNext={hasNext}
