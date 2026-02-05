@@ -36,7 +36,7 @@ export default function MediaHouseSetup() {
     "Independent Publisher",
     "News Aggregator",
   ]
-  const countries = ["Nigeria", "Kenya", "Ghana", "Uganda", "South Africa", "Ethiopia"]
+  const countries = ["Nigeria"]
   const cities: Record<string, string[]> = {
     Nigeria: ["Lagos", "Abuja", "Kano", "Port Harcourt"],
     Kenya: ["Nairobi", "Mombasa", "Kisumu"],
