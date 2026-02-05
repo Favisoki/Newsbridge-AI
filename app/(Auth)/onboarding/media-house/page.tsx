@@ -106,16 +106,9 @@ export default function MediaHouseOnboarding() {
   ];
   const countries = [
     "Nigeria",
-    "Kenya",
-    "Ghana",
-    "Uganda",
-    "South Africa",
-    "Ethiopia",
   ];
   const cities: Record<string, string[]> = {
     Nigeria: ["Lagos", "Abuja", "Kano", "Port Harcourt"],
-    Kenya: ["Nairobi", "Mombasa", "Kisumu"],
-    Ghana: ["Accra", "Kumasi", "Takoradi"],
   };
 
   const handleChange = (
