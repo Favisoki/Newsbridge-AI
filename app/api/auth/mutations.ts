@@ -3,7 +3,7 @@ import type { ObjectLiteral } from "@/lib/utils"
 import { useMutation } from "@tanstack/react-query"
 import type { AxiosError, AxiosResponse } from "axios"
 
-interface ErrorResponse {
+export interface ErrorResponse {
   errors?: string[]
   message?: string
   messages?: { message: string | string[] }
@@ -11,7 +11,7 @@ interface ErrorResponse {
   non_field_errors?: string[]
 }
 
-function extractErrorMessage(error: AxiosError<ErrorResponse>): string {
+export function extractErrorMessage(error: AxiosError<ErrorResponse>): string {
   const errorData = error.response?.data
 
   // Priority: detail > errors > message
@@ -50,6 +50,15 @@ const logout = async (data: ObjectLiteral) => {
 const journalistSignup = async (data: ObjectLiteral) => {
   const response = request({
     url: "/journalistSignup/",
+    method: "POST",
+    data,
+  })
+  return response
+}
+
+export const refreshToken = async (data: ObjectLiteral) => {
+  const response = request({
+    url: "/refresh-token/",
     method: "POST",
     data,
   })
@@ -391,6 +400,26 @@ export const useResendResetEmail = (
   return useMutation({
     mutationFn: resendResetEmail,
     mutationKey: ["resend-reset-email"],
+    onSuccess(response: AxiosResponse) {
+      const message = response?.data?.message
+      const data = response
+
+      cb(message, data)
+    },
+    onError(error: AxiosError<ErrorResponse>) {
+      const message = extractErrorMessage(error)
+      errorCb?.(message)
+    },
+  })
+}
+
+export const useRefreshToken = (
+  errorCb: (err: string) => void,
+  cb: (message: string, data?: ObjectLiteral) => void,
+) => {
+  return useMutation({
+    mutationFn: refreshToken,
+    mutationKey: ["refresh-token"],
     onSuccess(response: AxiosResponse) {
       const message = response?.data?.message
       const data = response

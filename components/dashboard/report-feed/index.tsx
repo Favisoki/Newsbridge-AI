@@ -29,7 +29,7 @@ export default function DashboardPage() {
       description={"Showing reports that match your newsroom's focus areas"}
       reportUi={filteredReportFeed}
       totalCount={hasActiveFilter ? filteredReportFeed?.length : totalCount}
-      isLoading={isLoading || isFilterLoading}
+      isLoading={isLoading}
       currentPage={currentPage}
       totalPages={totalPages}
       hasNext={hasNext}
