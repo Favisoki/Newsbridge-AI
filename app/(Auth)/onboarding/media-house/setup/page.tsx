@@ -39,8 +39,6 @@ export default function MediaHouseSetup() {
   const countries = ["Nigeria"]
   const cities: Record<string, string[]> = {
     Nigeria: ["Lagos", "Abuja", "Kano", "Port Harcourt"],
-    Kenya: ["Nairobi", "Mombasa", "Kisumu"],
-    Ghana: ["Accra", "Kumasi", "Takoradi"],
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
