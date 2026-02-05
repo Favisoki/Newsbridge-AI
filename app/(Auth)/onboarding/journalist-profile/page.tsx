@@ -170,16 +170,11 @@ export default function JournalistProfile() {
   // Dropdown options
   const countryOptions: SelectOption[] = [
     { value: "Nigeria", label: "Nigeria" },
-    { value: "Ghana", label: "Ghana" },
-    { value: "Kenya", label: "Kenya" },
   ];
 
   const cityOptions: SelectOption[] = [
     { value: "Abuja", label: "Abuja" },
     { value: "Lagos", label: "Lagos" },
-    { value: "Accra", label: "Accra" },
-    { value: "Ghana", label: "Ghana" },
-    { value: "Kenya", label: "Kenya" }
   ];
 
   const getPrefferedStyles = (formData: any[], data: string) => {
