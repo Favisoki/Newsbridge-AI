@@ -273,8 +273,6 @@ export default function TellUsAboutYourselfNow() {
               >
                 <option value="">Select Country</option>
                 <option value="Nigeria">Nigeria</option>
-                <option value="Ghana">Ghana</option>
-                <option value="Kenya">Kenya</option>
               </select>
               {errors.country && (
                 <p className="text-red-500 text-xs mt-1">{errors.country}</p>
