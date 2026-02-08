@@ -57,7 +57,21 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
+<<<<<<< HEAD
       maxAge: 60 * 15,
+=======
+      maxAge: 60 * 60 * 24,
+    });
+
+    res.cookies.set({
+      name: "access_token_header",
+      value: newAccessToken,
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24,
+>>>>>>> main
     });
 
     if (newRefreshToken) {
