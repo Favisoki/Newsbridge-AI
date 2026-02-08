@@ -1,4 +1,3 @@
-// client.ts
 import axios, { type AxiosRequestConfig } from "axios";
 import { logout } from "./utils";
 
@@ -12,38 +11,28 @@ client.interceptors.response.use(
   (response) => response,
   async (error) => {
     const status = error.response?.status;
-    const errorMessage = error.response?.data?.error;
+    const errorMessage = error.response?.data?.detail;
 
-    console.log("❌ Request failed:", {
-      status,
-      errorMessage,
-      url: error.config?.url,
-      cookies: document.cookie, // See what cookies exist
-    });
-
-    console.log(error.response)
+    // console.log("❌ Request failed:", {
+    //   status,
+    //   errorMessage,
+    //   url: error.config?.url,
+    //   cookies: document.cookie,
+    // });
 
     // Only logout on specific session expiry errors
-     if (status === 401) {
-      // Check if it's a real auth failure (not a network/server error)
+    if (status === 401) {
       if (
-        errorMessage === "Session expired" ||
+        errorMessage === "session_expired" ||
         errorMessage === "Unauthorized"
       ) {
         console.warn("Session expired, logging out");
-        // logout();
+        logout("session-expired");
       }
-     }
-    
-        if (status === 500 || !status) {
-      console.warn("Network/server error, not logging out:", {
-        status,
-        error: errorMessage || error.message,
-      });
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export const request = async (options: AxiosRequestConfig) => {

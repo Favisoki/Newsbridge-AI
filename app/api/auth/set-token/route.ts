@@ -22,18 +22,7 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24,
-    });
-
-    // Non-httpOnly cookie for Authorization header (needed for Django)
-    res.cookies.set({
-      name: "access_token_header",
-      value: token,
-      httpOnly: false,  // JS can read this
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 15,
     });
 
     if (refresh) {
@@ -56,7 +45,7 @@ export async function POST(req: NextRequest) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 15,
     });
 
     if (user) {
@@ -67,7 +56,7 @@ export async function POST(req: NextRequest) {
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         path: "/",
-        maxAge: 60 * 60 * 24,
+        maxAge: 60 * 15,
       });
     }
 

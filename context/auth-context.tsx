@@ -85,7 +85,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const cookiesToRemove = [
         "user",
         "access",
-        "access_token_header",
         "blockSpecialRoutes",
       ];
       cookiesToRemove.forEach((name) => {

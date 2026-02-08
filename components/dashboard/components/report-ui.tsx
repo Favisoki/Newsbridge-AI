@@ -72,7 +72,7 @@ export default function ReportUi({
         ? superAdminProvider
         : dashboardProvider
 
-  console.log(safeReportUi)
+  // console.log(safeReportUi)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

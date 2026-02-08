@@ -174,8 +174,7 @@ export const getExcerpt = (story: any) => {
     );
 };
   
-export const logout = async () => {
-
+export const logout = async (msg = "success") => {
     try {
       const response = await fetch("/api/auth/logout", {
         method: "POST",
@@ -190,7 +189,7 @@ export const logout = async () => {
       // Continue with cleanup even if server call fails
     } finally {
       // Clear cookies
-      const cookiesToRemove = ["user", "access", "access_token_header", "blockSpecialRoutes"];
+      const cookiesToRemove = ["user", "access", "blockSpecialRoutes"];
       cookiesToRemove.forEach((name) => {
         Cookies.remove(name, { path: "/" });
       });
@@ -201,9 +200,7 @@ export const logout = async () => {
       localStorage.removeItem("media-house-setup-draft");
       sessionStorage.clear();
 
-      // Reset state
-
       // Redirect with success message
-      window.location.href = "/auth/login?logout=success";
+      window.location.href = `/auth/login?logout=${msg}`;
     }
   };

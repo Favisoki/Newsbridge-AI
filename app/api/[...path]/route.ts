@@ -5,7 +5,10 @@ export const dynamic = "force-dynamic";
 
 const BASE_URL = "https://cldbknd.newsbridgeai.com";
 
-// Routes that DO NOT need auth
+// ──────────────────────────────────────────────────────────────
+// ─── Routes that DO NOT need auth ───
+// ──────────────────────────────────────────────────────────────
+
 const PUBLIC_ROUTES = [
   "login",
   "logout",
@@ -26,7 +29,10 @@ function isPublicRoute(path: string[]) {
   return PUBLIC_ROUTES.some((r) => joined.startsWith(r));
 }
 
-/* ---------------- SAFE JSON PARSER ---------------- */
+// ──────────────────────────────────────────────────────────────
+// ─── SAFE JSON PARSER ───
+// ──────────────────────────────────────────────────────────────
+
 async function safeJson(res: Response) {
   try {
     return await res.json();
@@ -35,7 +41,10 @@ async function safeJson(res: Response) {
   }
 }
 
-/* ---------------- SET AUTH COOKIES ---------------- */
+// ──────────────────────────────────────────────────────────────
+// ─── Set Auth Cookies ───
+// ──────────────────────────────────────────────────────────────
+
 function setAuthCookies(
   res: NextResponse,
   data: { access: string; refresh?: string; user?: any },
@@ -47,7 +56,7 @@ function setAuthCookies(
     secure: isProd,
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24,
+    maxAge: 60 * 15
   });
 
   res.cookies.set("access", "true", {
@@ -55,7 +64,7 @@ function setAuthCookies(
     secure: isProd,
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24,
+    maxAge: 60 * 15
   });
 
   if (data.refresh) {
@@ -74,12 +83,15 @@ function setAuthCookies(
       secure: isProd,
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 15
     });
   }
 }
 
-/* ---------------- SINGLE REFRESH LOCK ---------------- */
+// ──────────────────────────────────────────────────────────────
+// ─── SINGLE REFRESH LOCK ───
+// ──────────────────────────────────────────────────────────────
+
 let refreshPromise: Promise<{
   access: string;
   refresh?: string;
@@ -89,12 +101,17 @@ async function refreshToken(): Promise<{
   access: string;
   refresh?: string;
 } | null> {
-  if (refreshPromise) return refreshPromise;
+  // console.log("Initial refresh promise: ", refreshPromise);
+  if (refreshPromise) {
+    // console.log("Returned Promise: ", refreshPromise);
+    return refreshPromise;
+  }
 
   refreshPromise = (async () => {
     try {
       const cookieStore = await cookies();
       const refresh = cookieStore.get("refresh_secure")?.value;
+      // console.log("refresh token from cookie: ", refresh);
       if (!refresh) return null;
 
       const res = await fetch(`${BASE_URL}/refresh-token/`, {
@@ -102,27 +119,43 @@ async function refreshToken(): Promise<{
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          // credentials: "include"
         },
         body: JSON.stringify({ refresh }),
       });
 
-      if (!res.ok) return null;
+      if (!res.ok) {
+        // console.log("I am loading 1.....");
+        const errorRefresh = await safeJson(res);
+        // console.log(
+        //   "Error occured during getting new access token with refresh token ",
+        //   errorRefresh,
+        // );
+        return null;
+      }
 
+      // console.log("I am loading 2.....");
       const data = await safeJson(res);
+      // console.log("token response object: ", data);
       if (!data.access) return null;
 
       return { access: data.access, refresh: data.refresh };
-    } catch {
+    } catch (err) {
+      // console.log("couldnt get token: ", err);
       return null;
     } finally {
       refreshPromise = null;
     }
   })();
 
+  // console.log("This is the returned promise: ", refreshPromise);
+
   return refreshPromise;
 }
 
-/* ---------------- MAIN HANDLER ---------------- */
+// ──────────────────────────────────────────────────────────────
+// MAIN HANDLER
+// ──────────────────────────────────────────────────────────────
 async function handleRequest(req: NextRequest, path: string[], method: string) {
   try {
     let backendPath = path.join("/");
@@ -139,7 +172,9 @@ async function handleRequest(req: NextRequest, path: string[], method: string) {
       }
     }
 
-    /* ---------- PUBLIC ROUTES ---------- */
+    // ──────────────────────────────────────────────────────────────
+    // ─── PUBLIC ROUTES ───
+    // ──────────────────────────────────────────────────────────────
     if (isPublicRoute(path)) {
       const res = await fetch(backendUrl, {
         method,
@@ -164,15 +199,21 @@ async function handleRequest(req: NextRequest, path: string[], method: string) {
       return nextRes;
     }
 
-    /* ---------- PROTECTED ROUTES ---------- */
+    // ──────────────────────────────────────────────────────────────
+    // ─── PROTECTED ROUTES ───
+    // ──────────────────────────────────────────────────────────────
     const cookieStore = await cookies();
     let accessToken = cookieStore.get("access_secure")?.value;
+    // console.log("access token for making requests: ", accessToken);
 
     if (!accessToken) {
       return NextResponse.json({ detail: "Unauthorized" }, { status: 401 });
     }
 
-    // FIRST ATTEMPT
+    // ──────────────────────────────────────────────────────────────
+    // ─── FIRST ATTEMPT ───
+    // ──────────────────────────────────────────────────────────────
+
     let backendRes = await fetch(backendUrl, {
       method,
       headers: {
@@ -183,16 +224,38 @@ async function handleRequest(req: NextRequest, path: string[], method: string) {
       body,
     });
 
-    // TOKEN EXPIRED → REFRESH
+    // ──────────────────────────────────────────────────────────────
+    // ─── TOKEN EXPIRED → REFRESH ───
+    // ──────────────────────────────────────────────────────────────
+
+    // console.log(
+    //   "Response object from fetch made from backend api: ",
+    //   backendRes,
+    // );
     if (backendRes.status === 401) {
       const refreshResult = await refreshToken();
       if (!refreshResult) {
-        const errData = await safeJson(backendRes);
-        return NextResponse.json(errData, { status: 401 });
+        const res = NextResponse.json(
+          { detail: "session_expired" },
+          { status: 401 },
+        );
+
+        res.cookies.set("access_secure", "", { path: "/", maxAge: 0 });
+        res.cookies.set("refresh_secure", "", { path: "/", maxAge: 0 });
+        res.cookies.set("access", "", { path: "/", maxAge: 0 });
+        res.cookies.set("user", "", { path: "/", maxAge: 0 });
+        res.cookies.set("blockSpecialRoutes", "", { path: "/", maxAge: 0 });
+        // console.log("no refresh result. new access token didn't come");
+        return res;
       }
 
-      // 🔥 IMPORTANT: update token IN MEMORY
+      // ──────────────────────────────────────────────────────────────
+      // ─── IMPORTANT: update token IN MEMORY ───
+      // ──────────────────────────────────────────────────────────────
+
+      // console.log("new access token object: ", refreshResult);
       accessToken = refreshResult.access;
+      // console.log("access token value: ", accessToken);
 
       backendRes = await fetch(backendUrl, {
         method,
@@ -205,17 +268,28 @@ async function handleRequest(req: NextRequest, path: string[], method: string) {
       });
 
       const retryData = await safeJson(backendRes);
+      // console.log("the retried backend fetch: ", retryData);
       const nextRes = NextResponse.json(retryData, {
         status: backendRes.status,
       });
+
+      // console.log("retried fetch object response: ", nextRes);
 
       setAuthCookies(nextRes, refreshResult);
       return nextRes;
     }
 
     const data = await safeJson(backendRes);
+    // console.log(
+    //   "the first request did not fail, i.e access token did not expire: ",
+    //   data,
+    // );
     return NextResponse.json(data, { status: backendRes.status });
   } catch (err) {
+    // console.log(
+    //   "all attempts to make request failed, i.e couldn't get access token when making a request: ",
+    //   err,
+    // );
     return NextResponse.json(
       {
         error: "Proxy server error",
@@ -226,7 +300,9 @@ async function handleRequest(req: NextRequest, path: string[], method: string) {
   }
 }
 
-/* ---------------- EXPORT METHODS ---------------- */
+// ──────────────────────────────────────────────────────────────
+// ─── EXPORT METHODS ───
+// ──────────────────────────────────────────────────────────────
 export const GET = async (
   req: NextRequest,
   { params }: { params: Promise<{ path: string[] }> },

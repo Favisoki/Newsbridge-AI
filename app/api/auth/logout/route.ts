@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     })
 
     // Clear all auth cookies
-    const cookiesToClear = ["access_secure", "refresh_secure", "access", "access_token_header", "user", "csrftoken"]
+    const cookiesToClear = ["access_secure", "refresh_secure", "access", "user", "csrftoken"]
 
     cookiesToClear.forEach((cookieName) => {
       res.cookies.delete(cookieName)
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     const res = NextResponse.json({ success: false, message: "Logout completed with errors" }, { status: 500 })
 
     // Clear cookies even on error
-    const cookiesToClear = ["access_secure", "refresh_secure", "access", "access_token_header", "user", "csrftoken"]
+    const cookiesToClear = ["access_secure", "refresh_secure", "access", "user", "csrftoken"]
 
     cookiesToClear.forEach((cookieName) => {
       res.cookies.delete(cookieName)
