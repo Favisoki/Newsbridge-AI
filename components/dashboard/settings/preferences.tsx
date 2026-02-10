@@ -14,6 +14,7 @@ interface PreferencesProps {
   initialLanguages?: string[];
   initialTopics?: string[];
   onSave?: (data: { languages: string[]; topics: string[] }) => void;
+  onRemovePreference?: (type: 'language' | 'topic', value: string) => Promise<void>;
   isLoading?: boolean;
   isSaving?: boolean;
 }
@@ -44,6 +45,7 @@ export default function Preferences({
   initialLanguages = [],
   initialTopics = [],
   onSave,
+  onRemovePreference,
   isLoading = false,
   isSaving = false,
 }: PreferencesProps) {
@@ -51,6 +53,7 @@ export default function Preferences({
   const [selectedTopics, setSelectedTopics] = useState<string[]>(initialTopics);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showTopicDropdown, setShowTopicDropdown] = useState(false);
+  const [removingPreference, setRemovingPreference] = useState<string | null>(null);
 
   useEffect(() => {
     setSelectedLanguages(initialLanguages);
@@ -82,6 +85,40 @@ export default function Preferences({
 
   const removeTopic = (topic: string) => {
     setSelectedTopics(selectedTopics.filter((t) => t !== topic));
+  };
+
+  const handleRemoveLanguage = async (language: string) => {
+    if (!onRemovePreference) {
+      removeLanguage(language);
+      return;
+    }
+
+    setRemovingPreference(language);
+    try {
+      await onRemovePreference('language', language);
+      removeLanguage(language);
+    } catch (error) {
+      console.error("Failed to remove language preference:", error);
+    } finally {
+      setRemovingPreference(null);
+    }
+  };
+
+  const handleRemoveTopic = async (topic: string) => {
+    if (!onRemovePreference) {
+      removeTopic(topic);
+      return;
+    }
+
+    setRemovingPreference(topic);
+    try {
+      await onRemovePreference('topic', topic);
+      removeTopic(topic);
+    } catch (error) {
+      console.error("Failed to remove topic preference:", error);
+    } finally {
+      setRemovingPreference(null);
+    }
   };
 
   const handleSave = async () => {
@@ -138,8 +175,9 @@ export default function Preferences({
                 <span className="text-gray-700">{language}</span>
                 <button
                   type="button"
-                  onClick={() => removeLanguage(language)}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  onClick={() => handleRemoveLanguage(language)}
+                  disabled={removingPreference === language}
+                  className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <X size={16} />
                 </button>
@@ -198,8 +236,9 @@ export default function Preferences({
                 <span className="text-gray-700">{topic}</span>
                 <button
                   type="button"
-                  onClick={() => removeTopic(topic)}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  onClick={() => handleRemoveTopic(topic)}
+                  disabled={removingPreference === topic}
+                  className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <X size={16} />
                 </button>
