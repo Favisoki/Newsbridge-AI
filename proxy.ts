@@ -66,8 +66,8 @@ export function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  // Redirect authenticated users away from public routes
-  if (token && isPublic && pathname !== "/waitlist") {
+  // Redirect authenticated users away from public routes (except home page and waitlist)
+  if (token && isPublic && pathname !== "/waitlist" && pathname !== "/") {
     if (userCookie) {
       try {
         const user = JSON.parse(userCookie);
