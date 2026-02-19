@@ -85,6 +85,8 @@ export default function SettingsPage() {
       );
     });
   };
+
+  const handleSavePreferences = (data: { languages: string[]; topics: string[] }) => {
     if (!user?.id) {
       errorToastHandler("User ID not found");
       return;
