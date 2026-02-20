@@ -89,7 +89,6 @@ export default function TellUsAboutYourself() {
     },
     (_, data) => {
       if (data) {
-        console.log(data?.data);
         saveSignupData(data?.data as Partial<unknown>);
         setSignupData(data?.data as Partial<unknown>);
         setIsModalOpen(true);

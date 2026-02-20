@@ -62,24 +62,22 @@ function LoginContent() {
         setUser(data?.data.user)
 
         // Set the token in cookies via API route
-        setToken(
-          {
-            token: data?.data.access,
-            refresh: data?.data.refresh,
-            user: data?.data.user,
-          },
-          {
-            onSuccess: () => {
-              console.log(" Cookies set successfully")
-              router.refresh()
-              router.replace("/dashboard?msg=login-success")
+          setToken(
+            {
+              token: data?.data.access,
+              refresh: data?.data.refresh,
+              user: data?.data.user,
             },
-            onError: (error) => {
-              console.error("Failed to set cookies:", error)
-              errorToastHandler("Authentication setup failed. Please try logging in again.")
+            {
+              onSuccess: () => {
+                router.refresh()
+                router.replace("/dashboard?msg=login-success")
+              },
+              onError: (error) => {
+                errorToastHandler("Authentication setup failed. Please try logging in again.")
+              },
             },
-          },
-        )
+          )
       }
     },
   )

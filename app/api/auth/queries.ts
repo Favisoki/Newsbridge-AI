@@ -69,7 +69,7 @@ const getUserPreferences = async () => {
   try {
     // Fetch journalist info which includes coverages
     const response = await request({
-      url: `/retieveJournalistInfo/`,
+      url: `/retrieveJournalistInfo/`,
       method: `GET`,
       withCredentials: true,
     })
@@ -88,7 +88,6 @@ const getUserPreferences = async () => {
     
     return { topics: [], languages: [], coverages: [] }
   } catch (error) {
-    console.error("Error fetching user preferences:", error)
     return { topics: [], languages: [], coverages: [] }
   }
 }
