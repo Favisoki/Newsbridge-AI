@@ -95,10 +95,14 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
     if (!hasActiveFilter) return reportFeed
 
     return reportFeed.filter((report) => {
-      const matchesCategory = !filterCategory || report.category?.toLowerCase() === filterCategory.toLowerCase()
-      const matchesRegion = !filterRegion || report.location?.toLowerCase().includes(filterRegion.toLowerCase())
-      const matchesLanguage = !filterLanguage || report.language?.toLowerCase() === filterLanguage.toLowerCase()
-      // Story type filter would need a story_type field in the report
+      const category = typeof report.category === 'string' ? report.category : report.category?.name || '';
+      const location = typeof report.location === 'string' ? report.location : report.location?.name || '';
+      const language = typeof report.language === 'string' ? report.language : report.language?.name || '';
+      
+      const matchesCategory = !filterCategory || category.toLowerCase() === filterCategory.toLowerCase()
+      const matchesRegion = !filterRegion || location.toLowerCase().includes(filterRegion.toLowerCase())
+      const matchesLanguage = !filterLanguage || language.toLowerCase() === filterLanguage.toLowerCase()
+      
       return matchesCategory && matchesRegion && matchesLanguage
     })
   }, [reportFeed, filterCategory, filterRegion, filterLanguage, filterStoryType, hasActiveFilter])

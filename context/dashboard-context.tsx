@@ -127,23 +127,27 @@ function DashboardProviderContent({ children }: { children: ReactNode }) {
     // Filter by category
     if (filterCategory) {
       filtered = filtered.filter(
-        (report) =>
-          report.category?.toLowerCase() === filterCategory.toLowerCase()
+        (report) => {
+          const category = typeof report.category === 'string' ? report.category : report.category?.name || '';
+          return category.toLowerCase() === filterCategory.toLowerCase();
+        }
       );
     }
 
     // Filter by region/location
     if (filterRegion) {
       filtered = filtered.filter((report) =>
-        report.location?.toLowerCase().includes(filterRegion.toLowerCase())
+        (typeof report.location === 'string' ? report.location : report.location?.name || '').toLowerCase().includes(filterRegion.toLowerCase())
       );
     }
 
     // Filter by language
     if (filterLanguage) {
       filtered = filtered.filter(
-        (report) =>
-          report.language?.toLowerCase() === filterLanguage.toLowerCase()
+        (report) => {
+          const language = typeof report.language === 'string' ? report.language : report.language?.name || '';
+          return language.toLowerCase() === filterLanguage.toLowerCase();
+        }
       );
     }
 

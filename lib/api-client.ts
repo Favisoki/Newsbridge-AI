@@ -75,7 +75,6 @@ class ApiClient {
 
   constructor(baseUrl: string = API_BASE_URL) {
     this.baseUrl = baseUrl
-    console.log("API Client initialized with base URL:", this.baseUrl)
   }
 
   public async request<T = any>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
@@ -90,26 +89,15 @@ class ApiClient {
       headers["Authorization"] = `Bearer ${token}`
     }
 
-    console.log("Making API request to:", url)
-    console.log("Request method:", options.method || "GET")
-    console.log("Request headers:", headers)
-    if (options.body) {
-      console.log("Request body:", options.body)
-    }
-
     try {
       const response = await fetch(url, {
         ...options,
         headers,
-        mode: "cors", // Explicitly set CORS mode
-        credentials: "omit", // Don't send cookies for CORS
+        mode: "cors",
+        credentials: "omit",
       })
 
-      console.log("Response status:", response.status)
-      console.log("Response headers:", Object.fromEntries(response.headers.entries()))
-
       const data = await response.json()
-      console.log("Response data:", data)
 
       if (!response.ok) {
         return {
@@ -125,7 +113,6 @@ class ApiClient {
         message: data.message,
       }
     } catch (error) {
-      console.error("API request failed:", error)
       return {
         success: false,
         error: error instanceof Error ? error.message : "Network error",
@@ -231,7 +218,7 @@ class ApiClient {
   }
 
   async retrieveJournalistInfo() {
-    return this.request("/retieveJournalistInfo/", {
+    return this.request("/retrieveJournalistInfo/", {
       method: "GET",
     })
   }

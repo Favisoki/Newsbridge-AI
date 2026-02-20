@@ -43,7 +43,6 @@ export default function TellUsAboutYourselfNow() {
     },
     (_, data) => {
       if (data) {
-        console.log(data?.data);
         saveSignupData(data?.data as Partial<unknown>);
         setSignupData(data?.data as Partial<unknown>);
         router.push("/onboarding/create-password");

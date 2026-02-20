@@ -43,7 +43,7 @@ export function Sidebar() {
   }, [pathname, setDashboardHeader]);
 
   const handleLogout = () => {
-    console.log("Logout clicked");
+    setIsLogoutModal(true);
   };
 
   return (

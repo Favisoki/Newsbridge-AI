@@ -46,7 +46,47 @@ export default function SettingsPage() {
     }
   );
 
-  const handleSavePreferences = async (data: { languages: string[]; topics: string[] }) => {
+  const handleRemovePreference = async (type: 'language' | 'topic', value: string) => {
+    if (!user?.id) {
+      errorToastHandler("User ID not found");
+      throw new Error("User ID not found");
+    }
+
+    // Get current preferences
+    const currentLanguages = languages.map((lang: any) => typeof lang === 'string' ? lang : lang.name);
+    const currentTopics = topics.map((topic: any) => typeof topic === 'string' ? topic : topic.name);
+
+    // Remove the preference
+    const newLanguages = type === 'language' 
+      ? currentLanguages.filter((l: string) => l !== value)
+      : currentLanguages;
+    
+    const newTopics = type === 'topic'
+      ? currentTopics.filter((t: string) => t !== value)
+      : currentTopics;
+
+    // Update via API
+    const updatePayload = {
+      languages: newLanguages,
+      coverages: newTopics,
+      regions: user?.regions || [],
+    };
+
+    return new Promise((resolve, reject) => {
+      updatePreferences(
+        {
+          data: updatePayload,
+          id: user.id,
+        },
+        {
+          onSuccess: () => resolve(undefined),
+          onError: (error: any) => reject(error),
+        }
+      );
+    });
+  };
+
+  const handleSavePreferences = (data: { languages: string[]; topics: string[] }) => {
     if (!user?.id) {
       errorToastHandler("User ID not found");
       return;
@@ -106,6 +146,7 @@ export default function SettingsPage() {
           initialLanguages={languages.map((lang: any) => typeof lang === 'string' ? lang : lang.name)}
           initialTopics={topics.map((topic: any) => typeof topic === 'string' ? topic : topic.name)}
           onSave={handleSavePreferences}
+          onRemovePreference={handleRemovePreference}
           isLoading={isLoadingPreferences}
           isSaving={isSavingPreferences}
         />

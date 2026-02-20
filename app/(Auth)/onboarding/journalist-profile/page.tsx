@@ -61,12 +61,6 @@ export default function JournalistProfile() {
     key: "journalist-profile-draft",
     initialData: initialData.current,
     enabled: true,
-    onSave: (data) => {
-      console.log("Draft saved successfully:", data);
-    },
-    onLoad: (data) => {
-      console.log("Draft loaded successfully:", data);
-    },
   });
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -163,7 +157,6 @@ export default function JournalistProfile() {
       );
     }
 
-    console.log("Submitting changed fields:", changedFields);
     updateUser({ data: changedFields, id: existingData?.id });
   };
 
