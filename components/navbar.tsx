@@ -7,11 +7,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Logo from "./Common/Logo";
 import { Menu, X } from "lucide-react";
+import { useAuth } from "@/context/auth-context";
 
 export function Navbar() {
   const pathname = usePathname();
   const [activeHash, setActiveHash] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
     // Helper: updates hash from current URL
@@ -91,26 +93,45 @@ export function Navbar() {
 
             {/* Auth Buttons */}
             <div className="hidden lg:flex items-center font-medium gap-3 text-base">
-              <Link href="/auth/login">
-                <Button
-                  variant="outline"
-                  className="text-[#3754A3] border-none rounded-2xl hover:scale-105 bg-[#E8EEFF] h-14 w-36"
-                >
-                  Sign in
-                </Button>
-              </Link>
-              <Link href="/auth/signup">
-                <Button
-                  className="bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] text-white h-14 w-36 hover:scale-105 rounded-2xl"
-                  style={{
-                    borderImageSource:
-                      "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
-                    boxShadow: "0px 0px 0px 1px #8078FF",
-                  }}
-                >
-                  Request Access
-                </Button>
-              </Link>
+              {!isLoading && (
+                isAuthenticated ? (
+                  <Link href="/dashboard">
+                    <Button
+                      className="bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] text-white h-14 w-44 hover:scale-105 rounded-2xl"
+                      style={{
+                        borderImageSource:
+                          "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
+                        boxShadow: "0px 0px 0px 1px #8078FF",
+                      }}
+                    >
+                      Go to Dashboard
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/auth/login">
+                      <Button
+                        variant="outline"
+                        className="text-[#3754A3] border-none rounded-2xl hover:scale-105 bg-[#E8EEFF] h-14 w-36"
+                      >
+                        Sign in
+                      </Button>
+                    </Link>
+                    <Link href="/auth/signup">
+                      <Button
+                        className="bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] text-white h-14 w-36 hover:scale-105 rounded-2xl"
+                        style={{
+                          borderImageSource:
+                            "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
+                          boxShadow: "0px 0px 0px 1px #8078FF",
+                        }}
+                      >
+                        Request Access
+                      </Button>
+                    </Link>
+                  </>
+                )
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -172,26 +193,45 @@ export function Navbar() {
 
                 {/* Mobile Auth Buttons */}
                 <div className="flex flex-col gap-3 pt-6 border-t border-[#E1E1E1] mt-auto">
-                  <Link href="/auth/login" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button
-                      variant="outline"
-                      className="w-full text-[#3754A3] border-none rounded-2xl bg-[#E8EEFF] h-14 text-base font-medium"
-                    >
-                      Sign in
-                    </Button>
-                  </Link>
-                  <Link href="/auth/signup" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Button
-                      className="w-full bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] text-white h-14 rounded-2xl text-base font-medium"
-                      style={{
-                        borderImageSource:
-                          "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
-                        boxShadow: "0px 0px 0px 1px #8078FF",
-                      }}
-                    >
-                      Request Access
-                    </Button>
-                  </Link>
+                  {!isLoading && (
+                    isAuthenticated ? (
+                      <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Button
+                          className="w-full bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] text-white h-14 rounded-2xl text-base font-medium"
+                          style={{
+                            borderImageSource:
+                              "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
+                            boxShadow: "0px 0px 0px 1px #8078FF",
+                          }}
+                        >
+                          Go to Dashboard
+                        </Button>
+                      </Link>
+                    ) : (
+                      <>
+                        <Link href="/auth/login" onClick={() => setIsMobileMenuOpen(false)}>
+                          <Button
+                            variant="outline"
+                            className="w-full text-[#3754A3] border-none rounded-2xl bg-[#E8EEFF] h-14 text-base font-medium"
+                          >
+                            Sign in
+                          </Button>
+                        </Link>
+                        <Link href="/auth/signup" onClick={() => setIsMobileMenuOpen(false)}>
+                          <Button
+                            className="w-full bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] text-white h-14 rounded-2xl text-base font-medium"
+                            style={{
+                              borderImageSource:
+                                "linear-gradient(180deg, #FFFFFF -20.83%, rgba(255, 255, 255, 0) 15.62%)",
+                              boxShadow: "0px 0px 0px 1px #8078FF",
+                            }}
+                          >
+                            Request Access
+                          </Button>
+                        </Link>
+                      </>
+                    )
+                  )}
                 </div>
               </div>
             </div>
