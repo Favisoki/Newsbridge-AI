@@ -19,11 +19,27 @@ export const useUserData = () => {
   })
 }
 
-const getAllReports = async (page: number, search?: string) => {
+interface AllReportsFilters {
+  search?: string
+  category?: string
+  region?: string
+  language?: string
+}
+
+const getAllReports = async (page: number, filters: AllReportsFilters = {}) => {
   const params = new URLSearchParams()
   params.append("page", page.toString())
-  if (search && search.trim()) {
-    params.append("search", search.trim())
+  if (filters.search && filters.search.trim()) {
+    params.append("search", filters.search.trim())
+  }
+  if (filters.category && filters.category.trim()) {
+    params.append("category", filters.category.trim().toLowerCase())
+  }
+  if (filters.region && filters.region.trim()) {
+    params.append("region", filters.region.trim())
+  }
+  if (filters.language && filters.language.trim()) {
+    params.append("language", filters.language.trim().toLowerCase())
   }
   const response = await request({
     url: `/all_reports/?${params.toString()}`,
@@ -33,10 +49,10 @@ const getAllReports = async (page: number, search?: string) => {
   return response?.data
 }
 
-export const useGetAllReports = (page = 1, search: string) => {
+export const useGetAllReports = (page = 1, search: string, filters?: Omit<AllReportsFilters, "search">) => {
   return useQuery({
-    queryKey: ["all-reports", page, search], // Include search in queryKey
-    queryFn: () => getAllReports(page, search),
+    queryKey: ["all-reports", page, search, filters?.category, filters?.region, filters?.language],
+    queryFn: () => getAllReports(page, { search, ...filters }),
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   })

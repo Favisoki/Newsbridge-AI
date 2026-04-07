@@ -80,8 +80,14 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
   const [filterStoryType, setFilterStoryType] = useState("")
   const [isFilterLoading, setIsFilterLoading] = useState(false)
 
-  // Pass currentPage to React Query hook
-  const { data, isLoading, isError } = useGetAllReports(currentPage, debouncedSearchQuery)
+  const hasActiveFilter = !!(filterCategory || filterRegion || filterLanguage || filterStoryType)
+
+  // Pass currentPage, search, and filters to React Query hook so the API does the filtering
+  const { data, isLoading, isError } = useGetAllReports(currentPage, debouncedSearchQuery, {
+    category: filterCategory,
+    region: filterRegion,
+    language: filterLanguage,
+  })
 
   // Extract data from API response
   const reportFeed: ReportFeed[] = data?.results || []
@@ -89,23 +95,8 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
   const hasNext = !!data?.next
   const hasPrevious = !!data?.previous
 
-  const hasActiveFilter = !!(filterCategory || filterRegion || filterLanguage || filterStoryType)
-
-  const filteredReportFeed = useMemo(() => {
-    if (!hasActiveFilter) return reportFeed
-
-    return reportFeed.filter((report) => {
-      const category = typeof report.category === 'string' ? report.category : report.category?.name || '';
-      const location = typeof report.location === 'string' ? report.location : report.location?.name || '';
-      const language = typeof report.language === 'string' ? report.language : report.language?.name || '';
-      
-      const matchesCategory = !filterCategory || category.toLowerCase() === filterCategory.toLowerCase()
-      const matchesRegion = !filterRegion || location.toLowerCase().includes(filterRegion.toLowerCase())
-      const matchesLanguage = !filterLanguage || language.toLowerCase() === filterLanguage.toLowerCase()
-      
-      return matchesCategory && matchesRegion && matchesLanguage
-    })
-  }, [reportFeed, filterCategory, filterRegion, filterLanguage, filterStoryType, hasActiveFilter])
+  // filteredReportFeed is now just reportFeed since filtering is done server-side
+  const filteredReportFeed = reportFeed
 
   const clearFilters = () => {
     setFilterCategory("")
@@ -125,6 +116,10 @@ function CitizenReportsProviderContent({ children }: { children: ReactNode }) {
   useEffect(() => {
     setCurrentPage(1)
   }, [debouncedSearchQuery])
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [filterCategory, filterRegion, filterLanguage, filterStoryType])
 
   useEffect(() => {
     debouncedSetSearch(searchQuery)
