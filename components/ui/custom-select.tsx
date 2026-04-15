@@ -1,4 +1,4 @@
-import { Check, ChevronDown, CircleX } from "lucide-react";
+import { Check, ChevronDown, CircleX, Search } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 export interface SelectOption {
@@ -16,6 +16,7 @@ interface CustomSelectProps {
   error?: string;
   disabled?: boolean;
   required?: boolean;
+  searchable?: boolean;
 }
 
 const CustomSelect = ({
@@ -28,13 +29,30 @@ const CustomSelect = ({
   error,
   disabled = false,
   required = false,
+  searchable = false,
 }: CustomSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // Get selected option label
   const selectedOption = options.find((opt) => opt.value === value);
   const displayText = selectedOption?.label || placeholder;
+
+  // Filter options based on search term
+  const filteredOptions = searchable
+    ? options.filter((opt) =>
+        opt.label.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : options;
+
+  // Focus search input when dropdown opens
+  useEffect(() => {
+    if (isOpen && searchable && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isOpen, searchable]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -125,12 +143,27 @@ const CustomSelect = ({
             role="listbox"
             className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200"
           >
-            {options.length === 0 ? (
+            {searchable && (
+              <div className="sticky top-0 px-4 py-2 bg-white border-b border-gray-100">
+                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
+                  <Search className="w-4 h-4 text-gray-400" />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="flex-1 bg-gray-50 text-sm outline-none text-gray-700"
+                  />
+                </div>
+              </div>
+            )}
+            {filteredOptions.length === 0 ? (
               <div className="px-4 py-3 text-sm text-gray-500 text-center">
-                No options available
+                {searchTerm ? "No matching options" : "No options available"}
               </div>
             ) : (
-              options.map((option) => {
+              filteredOptions.map((option) => {
                 const isSelected = option.value === value;
                 return (
                   <button
@@ -138,7 +171,10 @@ const CustomSelect = ({
                     type="button"
                     role="option"
                     aria-selected={isSelected}
-                    onClick={() => handleSelect(option.value)}
+                    onClick={() => {
+                      handleSelect(option.value);
+                      setSearchTerm("");
+                    }}
                     className={`
                       w-full px-4 py-3 text-left text-base
                       flex items-center justify-between

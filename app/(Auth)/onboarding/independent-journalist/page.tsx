@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import useToast from "@/app/hooks/useToast";
 import { useCreateIndependentJournalistAccount } from "@/app/api/auth/mutations";
-import { PhoneCallIcon, User2, Link as LinkIcon } from "lucide-react";
+import { PhoneCallIcon, User2, Link as LinkIcon, Briefcase } from "lucide-react";
 import { saveSignupData } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import Modal from "@/components/ui/modal";
@@ -21,6 +21,8 @@ const countryOptions: SelectOption[] = [
 ];
 
 const cityOptions: SelectOption[] = [
+  { value: "FCT", label: "FCT (Abuja)" },
+  { value: "Lagos", label: "Lagos" },
   { value: "Abia", label: "Abia" },
   { value: "Adamawa", label: "Adamawa" },
   { value: "Akwa Ibom", label: "Akwa Ibom" },
@@ -35,7 +37,6 @@ const cityOptions: SelectOption[] = [
   { value: "Edo", label: "Edo" },
   { value: "Ekiti", label: "Ekiti" },
   { value: "Enugu", label: "Enugu" },
-  { value: "FCT", label: "FCT (Abuja)" },
   { value: "Gombe", label: "Gombe" },
   { value: "Imo", label: "Imo" },
   { value: "Jigawa", label: "Jigawa" },
@@ -45,7 +46,6 @@ const cityOptions: SelectOption[] = [
   { value: "Kebbi", label: "Kebbi" },
   { value: "Kogi", label: "Kogi" },
   { value: "Kwara", label: "Kwara" },
-  { value: "Lagos", label: "Lagos" },
   { value: "Nasarawa", label: "Nasarawa" },
   { value: "Niger", label: "Niger" },
   { value: "Ogun", label: "Ogun" },
@@ -88,7 +88,7 @@ export default function TellUsAboutYourself() {
     lastName: "",
     email: "",
     phone: "",
-    country: "",
+    country: "Nigeria",
     city: "",
     role: "",
     motivation: "",
@@ -315,12 +315,13 @@ export default function TellUsAboutYourself() {
               }}
               options={countryOptions}
               error={errors.country}
+              disabled={true}
             />
 
             <CustomSelect
               name="city"
               label="City"
-              placeholder="Select City"
+              placeholder="Search City"
               value={formData.city}
               onChange={(value: string) => {
                 setFormData((prev) => ({ ...prev, city: value }));
@@ -334,12 +335,14 @@ export default function TellUsAboutYourself() {
               }}
               options={cityOptions}
               error={errors.city}
+              searchable={true}
             />
           </div>
 
           <CustomInput
             name="role"
             type="text"
+            Icon={Briefcase}
             label="Role"
             placeholder="e.g. Reporter, Photographer, Editor"
             value={formData?.role}
