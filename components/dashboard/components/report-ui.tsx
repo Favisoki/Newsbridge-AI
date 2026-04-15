@@ -72,8 +72,6 @@ export default function ReportUi({
         ? superAdminProvider
         : dashboardProvider
 
-  console.log(safeReportUi)
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
