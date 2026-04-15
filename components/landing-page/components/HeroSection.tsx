@@ -69,7 +69,7 @@ const HeroSection = () => {
           </p>
 
           {/* CTA Button */}
-          <Link href={"/waitlist"}>
+          <Link href={"/auth/signup"}>
             <Button
               variant={"default"}
               className="bg-linear-to-b from-[#3754A3]/70 via-[#3754A3]/90 to-[#3754A3] hover:scale-105 sm:w-56 w-42 h-11 text-white sm:px-8 sm:py-7 px-4 py-6 text-base rounded-2xl inline-flex items-center gap-2 relative z-10"
