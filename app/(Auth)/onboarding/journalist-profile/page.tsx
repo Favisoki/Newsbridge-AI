@@ -366,12 +366,12 @@ export default function JournalistProfile() {
               </label>
               <div className="flex flex-wrap gap-2">
                 {[
-                  "South South",
-                  "South West",
-                  "South East",
-                  "North West",
-                  "North Central",
-                  "North East",
+                  "South-South",
+                  "South-West",
+                  "South-East",
+                  "North-West",
+                  "North-Central",
+                  "North-East",
                 ].map((region) => (
                   <button
                     key={region}
