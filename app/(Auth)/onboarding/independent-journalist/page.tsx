@@ -60,6 +60,28 @@ const cityOptions: SelectOption[] = [
   { value: "Zamfara", label: "Zamfara" },
 ];
 
+const languageOptions: SelectOption[] = [
+  { value: "English", label: "English" },
+  { value: "Hausa", label: "Hausa" },
+  { value: "Igbo", label: "Igbo" },
+  { value: "Yoruba", label: "Yoruba" },
+  { value: "Pidgin", label: "Pidgin" },
+  { value: "French", label: "French" },
+];
+
+const coverageOptions: SelectOption[] = [
+  { value: "Climate", label: "Climate" },
+  { value: "Metro", label: "Metro" },
+  { value: "Trafficking", label: "Trafficking" },
+  { value: "Politics", label: "Politics" },
+  { value: "Economics", label: "Economics" },
+  { value: "Health", label: "Health" },
+  { value: "Education", label: "Education" },
+  { value: "Technology", label: "Technology" },
+  { value: "Sports", label: "Sports" },
+  { value: "Entertainment", label: "Entertainment" },
+];
+
 export default function TellUsAboutYourself() {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -71,6 +93,8 @@ export default function TellUsAboutYourself() {
     role: "",
     motivation: "",
     portfolio: "",
+    languages: [] as string[],
+    coverages: [] as string[],
     agreeToTerms: false,
   });
 
@@ -118,6 +142,24 @@ export default function TellUsAboutYourself() {
     }
   };
 
+  const toggleLanguage = (language: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      languages: prev.languages.includes(language)
+        ? prev.languages.filter((l) => l !== language)
+        : [...prev.languages, language],
+    }));
+  };
+
+  const toggleCoverage = (coverage: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      coverages: prev.coverages.includes(coverage)
+        ? prev.coverages.filter((c) => c !== coverage)
+        : [...prev.coverages, coverage],
+    }));
+  };
+
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
@@ -141,6 +183,14 @@ export default function TellUsAboutYourself() {
 
     if (!formData.city) {
       newErrors.city = "City is required";
+    }
+
+    if (formData.languages.length === 0) {
+      newErrors.languages = "Select at least one language";
+    }
+
+    if (formData.coverages.length === 0) {
+      newErrors.coverages = "Select at least one coverage area";
     }
 
     if (!formData.agreeToTerms) {
@@ -174,8 +224,8 @@ export default function TellUsAboutYourself() {
       why_join: formData.motivation,
       portfolio: formData.portfolio,
       agree_terms: formData.agreeToTerms,
-      languages: [{ name: "English" }],
-      coverages: [{ name: "General" }],
+      languages: formData.languages.map((lang) => ({ name: lang })),
+      coverages: formData.coverages.map((coverage) => ({ name: coverage })),
     });
   };
 
@@ -312,6 +362,62 @@ export default function TellUsAboutYourself() {
           <p className="text-xs text-[#00000066] -mt-4">
             Share a link to your portfolio or recent work. This helps us verify your experience and approve your account.
           </p>
+
+          {/* Languages Section */}
+          <div className="space-y-3">
+            <div>
+              <label className="text-sm font-medium text-[#27272A]">Languages</label>
+              <p className="text-xs text-[#00000066] mt-1">Select languages you report in</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {languageOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => toggleLanguage(option.value)}
+                  disabled={isPending}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    formData.languages.includes(option.value)
+                      ? "bg-[#3754A3] text-white"
+                      : "bg-gray-100 text-[#27272A] hover:bg-gray-200"
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            {errors.languages && (
+              <p className="text-red-500 text-xs">{errors.languages}</p>
+            )}
+          </div>
+
+          {/* Coverage Areas Section */}
+          <div className="space-y-3">
+            <div>
+              <label className="text-sm font-medium text-[#27272A]">Coverage Areas</label>
+              <p className="text-xs text-[#00000066] mt-1">Select topics you cover</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {coverageOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => toggleCoverage(option.value)}
+                  disabled={isPending}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    formData.coverages.includes(option.value)
+                      ? "bg-[#3754A3] text-white"
+                      : "bg-gray-100 text-[#27272A] hover:bg-gray-200"
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            {errors.coverages && (
+              <p className="text-red-500 text-xs">{errors.coverages}</p>
+            )}
+          </div>
 
           <CustomTextarea
             name="motivation"
