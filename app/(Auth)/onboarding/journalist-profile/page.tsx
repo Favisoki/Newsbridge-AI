@@ -206,11 +206,10 @@ export default function JournalistProfile() {
   ];
 
   const getPrefferedStyles = (formData: any[], data: string) => {
-    return `px-4 py-2 rounded-lg border transition-colors ${
-      (formData || []).includes(data)
+    return `px-4 py-2 rounded-lg border transition-colors ${(formData || []).includes(data)
         ? "border-[#3754A3]/50 bg-[#3754A3]/5 text-[#3754A3]"
         : "border-[#e5e7eb] text-gray-600 hover:border-[#3754A3]/30"
-    } disabled:opacity-50 disabled:cursor-not-allowed`;
+      } disabled:opacity-50 disabled:cursor-not-allowed`;
   };
 
   if (isDraftLoading) {
@@ -366,12 +365,12 @@ export default function JournalistProfile() {
               </label>
               <div className="flex flex-wrap gap-2">
                 {[
-                  "South South",
-                  "South West",
-                  "South East",
-                  "North West",
-                  "North Central",
-                  "North East",
+                  "South-South",
+                  "South-West",
+                  "South-East",
+                  "North-West",
+                  "North-Central",
+                  "North-East",
                 ].map((region) => (
                   <button
                     key={region}

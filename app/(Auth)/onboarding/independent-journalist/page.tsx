@@ -379,11 +379,10 @@ export default function TellUsAboutYourself() {
                   type="button"
                   onClick={() => toggleLanguage(option.value)}
                   disabled={isPending}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    formData.languages.includes(option.value)
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${formData.languages.includes(option.value)
                       ? "bg-[#3754A3] text-white"
                       : "bg-gray-100 text-[#27272A] hover:bg-gray-200"
-                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   {option.label}
                 </button>
@@ -391,34 +390,6 @@ export default function TellUsAboutYourself() {
             </div>
             {errors.languages && (
               <p className="text-red-500 text-xs">{errors.languages}</p>
-            )}
-          </div>
-
-          {/* Coverage Areas Section */}
-          <div className="space-y-3">
-            <div>
-              <label className="text-sm font-medium text-[#27272A]">Coverage Areas</label>
-              <p className="text-xs text-[#00000066] mt-1">Select topics you cover</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {coverageOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => toggleCoverage(option.value)}
-                  disabled={isPending}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    formData.coverages.includes(option.value)
-                      ? "bg-[#3754A3] text-white"
-                      : "bg-gray-100 text-[#27272A] hover:bg-gray-200"
-                  } disabled:opacity-50 disabled:cursor-not-allowed`}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-            {errors.coverages && (
-              <p className="text-red-500 text-xs">{errors.coverages}</p>
             )}
           </div>
 
