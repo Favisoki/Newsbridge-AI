@@ -366,33 +366,6 @@ export default function TellUsAboutYourself() {
             Share a link to your portfolio or recent work. This helps us verify your experience and approve your account.
           </p>
 
-          {/* Languages Section */}
-          <div className="space-y-3">
-            <div>
-              <label className="text-sm font-medium text-[#27272A]">Languages</label>
-              <p className="text-xs text-[#00000066] mt-1">Select languages you report in</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {languageOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => toggleLanguage(option.value)}
-                  disabled={isPending}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${formData.languages.includes(option.value)
-                      ? "bg-[#3754A3] text-white"
-                      : "bg-gray-100 text-[#27272A] hover:bg-gray-200"
-                    } disabled:opacity-50 disabled:cursor-not-allowed`}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-            {errors.languages && (
-              <p className="text-red-500 text-xs">{errors.languages}</p>
-            )}
-          </div>
-
           <CustomTextarea
             name="motivation"
             label="Why you want to join NewsBridge"
