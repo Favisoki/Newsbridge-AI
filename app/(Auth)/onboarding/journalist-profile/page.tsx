@@ -14,6 +14,7 @@ import { useAuth } from "@/context/auth-context";
 import { useDraft } from "@/app/hooks/useSaveDraft";
 import CustomInput from "@/components/ui/custom-input";
 import CustomSelect, { SelectOption } from "@/components/ui/custom-select";
+import CustomMultiSelect from "@/components/ui/custom-multi-select";
 import AuthWrapper from "@/components/Layouts/auth-wrapper";
 import GoBack from "@/components/Common/go-back";
 import GradientButton from "@/components/ui/gradient-button";
@@ -98,33 +99,6 @@ export default function JournalistProfile() {
     }));
   };
 
-  const toggleCoverage = (coverage: string) => {
-    setFormData((prev: typeof formData) => ({
-      ...prev,
-      coverages: (prev.coverages || []).includes(coverage)
-        ? (prev.coverages || []).filter((c: string) => c !== coverage)
-        : [...(prev.coverages || []), coverage],
-    }));
-  };
-
-  const toggleRegion = (region: string) => {
-    setFormData((prev: typeof formData) => ({
-      ...prev,
-      regions: (prev.regions || []).includes(region)
-        ? (prev.regions || []).filter((r: string) => r !== region)
-        : [...(prev.regions || []), region],
-    }));
-  };
-
-  const toggleLanguage = (language: string) => {
-    setFormData((prev: typeof formData) => ({
-      ...prev,
-      languages: (prev.languages || []).includes(language)
-        ? (prev.languages || []).filter((l: string) => l !== language)
-        : [...(prev.languages || []), language],
-    }));
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -205,12 +179,37 @@ export default function JournalistProfile() {
     { value: "Zamfara", label: "Zamfara" },
   ];
 
-  const getPrefferedStyles = (formData: any[], data: string) => {
-    return `px-4 py-2 rounded-lg border transition-colors ${(formData || []).includes(data)
-        ? "border-[#3754A3]/50 bg-[#3754A3]/5 text-[#3754A3]"
-        : "border-[#e5e7eb] text-gray-600 hover:border-[#3754A3]/30"
-      } disabled:opacity-50 disabled:cursor-not-allowed`;
-  };
+  const topicOptions: SelectOption[] = [
+    { value: "General", label: "General" },
+    { value: "Politics", label: "Politics" },
+    { value: "Government", label: "Government" },
+    { value: "Economics", label: "Economics" },
+    { value: "Health", label: "Health" },
+    { value: "Education", label: "Education" },
+    { value: "Technology", label: "Technology" },
+    { value: "Sports", label: "Sports" },
+    { value: "Entertainment", label: "Entertainment" },
+    { value: "Climate", label: "Climate" },
+    { value: "Security", label: "Security" },
+  ];
+
+  const regionOptions: SelectOption[] = [
+    { value: "South-South", label: "South-South" },
+    { value: "South-West", label: "South-West" },
+    { value: "South-East", label: "South-East" },
+    { value: "North-West", label: "North-West" },
+    { value: "North-Central", label: "North-Central" },
+    { value: "North-East", label: "North-East" },
+  ];
+
+  const languageOptions: SelectOption[] = [
+    { value: "English", label: "English" },
+    { value: "Hausa", label: "Hausa" },
+    { value: "Yoruba", label: "Yoruba" },
+    { value: "Igbo", label: "Igbo" },
+    { value: "Pidgin", label: "Pidgin" },
+    { value: "French", label: "French" },
+  ];
 
   if (isDraftLoading) {
     return (
@@ -337,73 +336,54 @@ export default function JournalistProfile() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 justify-between gap-4 gap-y-8 my-12 tracking-[-1]">
-            {/* Preferred coverages */}
-            <div>
-              <label className="block text-base font-medium text-[#27272A] mb-3">
-                Preferred coverages
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {["General", "Politics", "Economics"].map((coverage) => (
-                  <button
-                    key={coverage}
-                    type="button"
-                    onClick={() => toggleCoverage(coverage)}
-                    disabled={isPending}
-                    className={getPrefferedStyles(formData.coverages, coverage)}
-                  >
-                    {coverage}
-                  </button>
-                ))}
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+            {/* Topic of Interest */}
+            <CustomMultiSelect
+              name="coverages"
+              label="Topic of Interest"
+              placeholder="Select topics"
+              value={formData.coverages || []}
+              onChange={(values) =>
+                setFormData((prev: typeof formData) => ({
+                  ...prev,
+                  coverages: values,
+                }))
+              }
+              options={topicOptions}
+              disabled={isPending}
+            />
 
             {/* Preferred reporting region */}
-            <div>
-              <label className="block text-base font-medium text-[#27272A] mb-3">
-                Preferred reporting region
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  "South-South",
-                  "South-West",
-                  "South-East",
-                  "North-West",
-                  "North-Central",
-                  "North-East",
-                ].map((region) => (
-                  <button
-                    key={region}
-                    type="button"
-                    onClick={() => toggleRegion(region)}
-                    disabled={isPending}
-                    className={getPrefferedStyles(formData.regions, region)}
-                  >
-                    {region}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <CustomMultiSelect
+              name="regions"
+              label="Preferred reporting region"
+              placeholder="Select regions"
+              value={formData.regions || []}
+              onChange={(values) =>
+                setFormData((prev: typeof formData) => ({
+                  ...prev,
+                  regions: values,
+                }))
+              }
+              options={regionOptions}
+              disabled={isPending}
+            />
 
             {/* Preferred reporting language */}
-            <div>
-              <label className="block text-base font-medium text-[#27272A] mb-3">
-                Preferred reporting language
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {["English", "Hausa", "Yoruba"].map((language) => (
-                  <button
-                    key={language}
-                    type="button"
-                    onClick={() => toggleLanguage(language)}
-                    disabled={isPending}
-                    className={getPrefferedStyles(formData.languages, language)}
-                  >
-                    {language}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <CustomMultiSelect
+              name="languages"
+              label="Preferred reporting language"
+              placeholder="Select languages"
+              value={formData.languages || []}
+              onChange={(values) =>
+                setFormData((prev: typeof formData) => ({
+                  ...prev,
+                  languages: values,
+                }))
+              }
+              options={languageOptions}
+              disabled={isPending}
+            />
           </div>
 
           <GradientButton
