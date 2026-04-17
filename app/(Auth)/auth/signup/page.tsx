@@ -28,7 +28,7 @@ const signUpDetails: {
     variant: "primary",
     href: "/onboarding/independent-journalist"
   },
-  /* {
+  {
     Icon: "/Frame4.png",
     title: "For Media Houses",
     bulletins: [
@@ -40,7 +40,6 @@ const signUpDetails: {
     variant: "secondary",
     href: "/onboarding/media-house"
   },
-  */
 ];
 
 export default function SignupPage() {
@@ -60,14 +59,13 @@ export default function SignupPage() {
       </div>
 
       <div className="max-w-[880px] mx-auto">
-        <div className="flex justify-center pt-8">
-          <div className="w-full md:w-1/2">
-          {/* Card */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8">
+          {/* Cards */}
           {signUpDetails.map((data) => {
             return (
               <div
                 key={data.title}
-                className=" rounded-3xl p-8 tracking-[-1] leading-[180%] transition-colors bg-[#FFFFFF]"
+                className="rounded-3xl p-8 tracking-[-1] leading-[180%] transition-colors bg-[#FFFFFF]"
                 style={{ boxShadow: "0px 7px 23px 0px #C3C3C340" }}
               >
                 <div className="flex items-center gap-2 mb-6">
@@ -103,7 +101,6 @@ export default function SignupPage() {
               </div>
             );
           })}
-          </div>
         </div>
 
         {/* Login Link */}
