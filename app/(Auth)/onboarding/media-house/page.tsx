@@ -17,13 +17,7 @@ import GradientButton from "@/components/ui/gradient-button";
 import Modal from "@/components/ui/modal";
 import RequestSuccess from "@/components/modal-components/request-success";
 import { Input } from "@/components/ui/input";
-import {
-  Building2,
-  Mail,
-  Globe,
-  Briefcase,
-  LayoutGrid,
-} from "lucide-react";
+import { Building2, Mail, Globe } from "lucide-react";
 
 const countryOptions: SelectOption[] = [
   { value: "Nigeria", label: "Nigeria" },
@@ -190,7 +184,7 @@ export default function MediaHouseOnboarding() {
   return (
     <>
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <RequestSuccess onClose={handleCloseModal} />
+        <RequestSuccess name={formData.organizationName || "Organization"} />
       </Modal>
 
       <div className="w-full max-w-3xl mt-24">
