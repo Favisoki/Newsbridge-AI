@@ -3,73 +3,93 @@
 import type React from "react";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useToast from "@/app/hooks/useToast";
 import { useMediaSignup } from "@/app/api/auth/mutations";
 import { saveSignupData } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
-import Logo from "@/components/Common/Logo";
-import GoBack from "@/components/Common/go-back";
 import AuthWrapper from "@/components/Layouts/auth-wrapper";
+import GoBack from "@/components/Common/go-back";
+import CustomInput from "@/components/ui/custom-input";
+import CustomSelect, { SelectOption } from "@/components/ui/custom-select";
+import CustomTextarea from "@/components/ui/custom-textarea";
+import GradientButton from "@/components/ui/gradient-button";
+import Modal from "@/components/ui/modal";
+import RequestSuccess from "@/components/modal-components/request-success";
+import { Input } from "@/components/ui/input";
+import { Building2, Mail, Globe } from "lucide-react";
 
-interface SuccessModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  name: string;
-}
+const countryOptions: SelectOption[] = [
+  { value: "Nigeria", label: "Nigeria" },
+];
 
-function SuccessModal({ name, isOpen, onClose }: SuccessModalProps) {
-  if (!isOpen) return null;
+const stateOptions: SelectOption[] = [
+  { value: "FCT", label: "FCT (Abuja)" },
+  { value: "Lagos", label: "Lagos" },
+  { value: "Abia", label: "Abia" },
+  { value: "Adamawa", label: "Adamawa" },
+  { value: "Akwa Ibom", label: "Akwa Ibom" },
+  { value: "Anambra", label: "Anambra" },
+  { value: "Bauchi", label: "Bauchi" },
+  { value: "Bayelsa", label: "Bayelsa" },
+  { value: "Benue", label: "Benue" },
+  { value: "Borno", label: "Borno" },
+  { value: "Cross River", label: "Cross River" },
+  { value: "Delta", label: "Delta" },
+  { value: "Ebonyi", label: "Ebonyi" },
+  { value: "Edo", label: "Edo" },
+  { value: "Ekiti", label: "Ekiti" },
+  { value: "Enugu", label: "Enugu" },
+  { value: "Gombe", label: "Gombe" },
+  { value: "Imo", label: "Imo" },
+  { value: "Jigawa", label: "Jigawa" },
+  { value: "Kaduna", label: "Kaduna" },
+  { value: "Kano", label: "Kano" },
+  { value: "Katsina", label: "Katsina" },
+  { value: "Kebbi", label: "Kebbi" },
+  { value: "Kogi", label: "Kogi" },
+  { value: "Kwara", label: "Kwara" },
+  { value: "Nasarawa", label: "Nasarawa" },
+  { value: "Niger", label: "Niger" },
+  { value: "Ogun", label: "Ogun" },
+  { value: "Ondo", label: "Ondo" },
+  { value: "Osun", label: "Osun" },
+  { value: "Oyo", label: "Oyo" },
+  { value: "Plateau", label: "Plateau" },
+  { value: "Rivers", label: "Rivers" },
+  { value: "Sokoto", label: "Sokoto" },
+  { value: "Taraba", label: "Taraba" },
+  { value: "Yobe", label: "Yobe" },
+  { value: "Zamfara", label: "Zamfara" },
+];
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-4">
-        <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-            <svg
-              className="w-8 h-8 text-green-600"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-        </div>
-        <h2 className="text-2xl font-bold text-center text-foreground mb-2">
-          Thank you {name}
-        </h2>
-        <p className="text-center text-muted-foreground mb-6">
-          Your request has been submitted for review. You'll receive an email
-          once your access is approved.
-        </p>
-        <button
-          onClick={onClose}
-          className="w-full px-4 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/90 transition-colors"
-        >
-          Back to Homepage
-        </button>
-      </div>
-    </div>
-  );
-}
+const focusAreaOptions: SelectOption[] = [
+  { value: "Investigative Journalism", label: "Investigative Journalism" },
+  { value: "Breaking News", label: "Breaking News" },
+  { value: "Community Reports", label: "Community Reports" },
+  { value: "Feature Stories", label: "Feature Stories" },
+  { value: "Opinion/Analysis", label: "Opinion/Analysis" },
+];
+
+const organizationTypeOptions: SelectOption[] = [
+  { value: "Traditional Media House", label: "Traditional Media House" },
+  { value: "Online News Platform", label: "Online News Platform" },
+  { value: "Broadcast Station", label: "Broadcast Station" },
+  { value: "Independent Publisher", label: "Independent Publisher" },
+  { value: "News Aggregator", label: "News Aggregator" },
+];
 
 export default function MediaHouseOnboarding() {
   const { setSignupData } = useAuth();
   const router = useRouter();
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     organizationName: "",
     workEmail: "",
     focusArea: "",
     organizationType: "",
     focusArea2: "",
-    country: "",
+    country: "Nigeria",
     city: "",
     website: "",
     termsAccepted: false,
@@ -82,37 +102,15 @@ export default function MediaHouseOnboarding() {
     (errMsg) => errorToastHandler(errMsg),
     (success, data) => {
       if (data) {
-        console.log(data?.data);
         saveSignupData(data?.data as Partial<unknown>);
         setSignupData(data?.data as Partial<unknown>);
-        setShowSuccessModal(true);
+        setIsModalOpen(true);
       }
     }
   );
 
-  const focusAreaOptions = [
-    { id: 1, name: "Investigative Journalism" },
-    { id: 2, name: "Breaking News" },
-    { id: 3, name: "Community Reports" },
-    { id: 4, name: "Feature Stories" },
-    { id: 5, name: "Opinion/Analysis" },
-  ];
-  const organizationTypeOptions = [
-    "Traditional Media House",
-    "Online News Platform",
-    "Broadcast Station",
-    "Independent Publisher",
-    "News Aggregator",
-  ];
-  const countries = [
-    "Nigeria",
-  ];
-  const cities: Record<string, string[]> = {
-    Nigeria: ["Lagos", "Abuja", "Kano", "Port Harcourt"],
-  };
-
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
     if (type === "checkbox") {
@@ -124,7 +122,11 @@ export default function MediaHouseOnboarding() {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
     }
   };
 
@@ -135,364 +137,245 @@ export default function MediaHouseOnboarding() {
     if (!formData.workEmail.trim())
       newErrors.workEmail = "Work email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.workEmail))
-      newErrors.workEmail = "Invalid email";
-    if (!formData.focusArea) newErrors.focusArea = "Focus area is required";
+      newErrors.workEmail = "Invalid email format";
+    if (!formData.focusArea)
+      newErrors.focusArea = "Focus area is required";
     if (!formData.organizationType)
       newErrors.organizationType = "Organization type is required";
-    if (!formData.country) newErrors.country = "Country is required";
-    if (!formData.city) newErrors.city = "City is required";
+    if (!formData.city)
+      newErrors.city = "State is required";
     if (!formData.termsAccepted)
       newErrors.termsAccepted = "You must accept the terms";
     if (!formData.authorizationAccepted)
-      newErrors.authorizationAccepted =
-        "Authorization confirmation is required";
+      newErrors.authorizationAccepted = "Authorization confirmation is required";
     return newErrors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors = validateForm();
-    if (Object.keys(newErrors).length === 0) {
-      setSubmitError("");
-
-      const coverages = [];
-
-      const selectedFocusArea = focusAreaOptions.find(
-        (option) => option.id === Number(formData.focusArea)
-      );
-
-      if (selectedFocusArea) {
-        coverages.push({ name: selectedFocusArea.name });
-      }
-
-      if (formData.focusArea2) {
-        const selectedFocusArea2 = focusAreaOptions.find(
-          (option) => option.id === Number(formData.focusArea2)
-        );
-        if (selectedFocusArea2) {
-          coverages.push({ name: selectedFocusArea2.name });
-        }
-      }
-      // Generate dynamic IDs: [1, 2, 3, ...]
-      // const coverageIds = coverages.map((_, index) => index + 1);
-
-      mediaSignup({
-        organisation_name: formData.organizationName,
-        email: formData.workEmail,
-        coverages,
-        // coverageIds,
-        organisation_type: formData.organizationType,
-        country: formData.country,
-        city: formData.city,
-        website: formData.website,
-        agree_terms: formData.termsAccepted,
-        agree_request_access: formData.authorizationAccepted,
-      });
-    } else {
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      return;
     }
+
+    const coverages: { name: string }[] = [];
+    if (formData.focusArea) coverages.push({ name: formData.focusArea });
+    if (formData.focusArea2) coverages.push({ name: formData.focusArea2 });
+
+    mediaSignup({
+      organisation_name: formData.organizationName,
+      email: formData.workEmail,
+      coverages,
+      organisation_type: formData.organizationType,
+      country: formData.country,
+      city: formData.city,
+      website: formData.website,
+      agree_terms: formData.termsAccepted,
+      agree_request_access: formData.authorizationAccepted,
+    });
   };
 
   const handleCloseModal = () => {
-    setShowSuccessModal(false);
+    setIsModalOpen(false);
     router.push("/");
   };
 
   return (
     <>
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <RequestSuccess name={formData.organizationName || "Organization"} />
+      </Modal>
+
       <div className="w-full max-w-3xl mt-24">
-        {/* Back Link */}
-        <div className="mb-8 ">
+        <div className="mb-8">
           <GoBack iconSize={18} to="/" />
         </div>
 
         <AuthWrapper>
-          <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-              Tell us about Yourself
-            </h1>
-            <p className="text-muted-foreground text-lg">
-              We need some basic information to get started
-            </p>
-          </div>
+          <h1 className="text-[28px] md:text-[32px] font-bold text-[#1B1B1B] tracking-[-1.3] text-left">
+            Tell us about your Organisation
+          </h1>
+          <p className="text-[#00000099] font-normal tracking-[-1.3] text-left mb-8">
+            We need some basic information to get started
+          </p>
+          <div className="absolute left-1 w-[99%] mx-auto border-b border-[#F1F1F1]" />
 
-          {submitError && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
-              {submitError}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Organization Info Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
               {/* Organization Name */}
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Media House Name
-                </label>
-                <input
-                  type="text"
-                  name="organizationName"
-                  value={formData.organizationName}
-                  onChange={handleChange}
-                  placeholder="Your organization name"
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none ${
-                    errors.organizationName
-                      ? "border-destructive bg-red-50"
-                      : "border-input bg-background hover:border-primary/50 focus:border-primary"
-                  }`}
-                  disabled={loading}
-                />
-                {errors.organizationName && (
-                  <p className="text-destructive text-xs mt-1">
-                    {errors.organizationName}
-                  </p>
-                )}
-              </div>
+              <CustomInput
+                name="organizationName"
+                Icon={Building2}
+                type="text"
+                label="Media House Name"
+                placeholder="Your organization name"
+                value={formData.organizationName}
+                onChange={handleChange}
+                error={errors.organizationName}
+                disabled={loading}
+              />
 
               {/* Work Email */}
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Work Email
-                </label>
-                <input
-                  type="email"
-                  name="workEmail"
-                  value={formData.workEmail}
-                  onChange={handleChange}
-                  placeholder="editor@dailytrust.com"
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none ${
-                    errors.workEmail
-                      ? "border-destructive bg-red-50"
-                      : "border-input bg-background hover:border-primary/50 focus:border-primary"
-                  }`}
-                  disabled={loading}
-                />
-                {errors.workEmail && (
-                  <p className="text-destructive text-xs mt-1">
-                    {errors.workEmail}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Focus Area and Type */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Focus Area / Coverage Type
-                </label>
-                <select
-                  name="focusArea"
-                  value={formData.focusArea}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none ${
-                    errors.focusArea
-                      ? "border-destructive bg-red-50"
-                      : "border-input bg-background hover:border-primary/50 focus:border-primary"
-                  }`}
-                  disabled={loading}
-                >
-                  <option value="">Select</option>
-                  {focusAreaOptions.map((option) => (
-                    <option key={option.id} value={option.id}>
-                      {option.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.focusArea && (
-                  <p className="text-destructive text-xs mt-1">
-                    {errors.focusArea}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Organization Type
-                </label>
-                <select
-                  name="organizationType"
-                  value={formData.organizationType}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none ${
-                    errors.organizationType
-                      ? "border-destructive bg-red-50"
-                      : "border-input bg-background hover:border-primary/50 focus:border-primary"
-                  }`}
-                  disabled={loading}
-                >
-                  <option value="">Select</option>
-                  {organizationTypeOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-                {errors.organizationType && (
-                  <p className="text-destructive text-xs mt-1">
-                    {errors.organizationType}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Second Focus Area */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Focus Area / Coverage Type
-              </label>
-              <select
-                name="focusArea2"
-                value={formData.focusArea2}
+              <CustomInput
+                name="workEmail"
+                Icon={Mail}
+                type="email"
+                label="Work Email"
+                placeholder="editor@dailytrust.com"
+                value={formData.workEmail}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg border-2 border-input bg-background hover:border-primary/50 focus:border-primary transition-colors focus:outline-none disabled:opacity-50"
+                error={errors.workEmail}
                 disabled={loading}
-              >
-                <option value="">Select</option>
-                {focusAreaOptions.map((option) => (
-                  <option key={option.id} value={option.id}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+              />
 
-            {/* Location */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Country
-                </label>
-                <select
-                  name="country"
-                  value={formData.country}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none ${
-                    errors.country
-                      ? "border-destructive bg-red-50"
-                      : "border-input bg-background hover:border-primary/50 focus:border-primary"
-                  }`}
-                  disabled={loading}
-                >
-                  <option value="">Select</option>
-                  {countries.map((country) => (
-                    <option key={country} value={country}>
-                      {country}
-                    </option>
-                  ))}
-                </select>
-                {errors.country && (
-                  <p className="text-destructive text-xs mt-1">
-                    {errors.country}
-                  </p>
-                )}
-              </div>
+              {/* Focus Area */}
+              <CustomSelect
+                name="focusArea"
+                label="Focus Area / Coverage Type"
+                placeholder="Select focus area"
+                value={formData.focusArea}
+                onChange={(value) => {
+                  setFormData((prev) => ({ ...prev, focusArea: value }));
+                  if (errors.focusArea)
+                    setErrors((prev) => { const n = { ...prev }; delete n.focusArea; return n; });
+                }}
+                options={focusAreaOptions}
+                error={errors.focusArea}
+                disabled={loading}
+              />
 
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  City
-                </label>
-                <select
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none ${
-                    errors.city
-                      ? "border-destructive bg-red-50"
-                      : "border-input bg-background hover:border-primary/50 focus:border-primary"
-                  }`}
-                  disabled={loading}
-                >
-                  <option value="">Select</option>
-                  {formData.country &&
-                    cities[formData.country as keyof typeof cities]?.map(
-                      (city) => (
-                        <option key={city} value={city}>
-                          {city}
-                        </option>
-                      )
-                    )}
-                </select>
-                {errors.city && (
-                  <p className="text-destructive text-xs mt-1">{errors.city}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Website */}
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Website (Optional)
-              </label>
-              <input
-                type="url"
-                name="website"
-                value={formData.website}
-                onChange={handleChange}
-                placeholder="https://yourwebsite.com"
-                className="w-full px-4 py-3 rounded-lg border-2 border-input bg-background hover:border-primary/50 focus:border-primary transition-colors focus:outline-none disabled:opacity-50"
+              {/* Organization Type */}
+              <CustomSelect
+                name="organizationType"
+                label="Organization Type"
+                placeholder="Select type"
+                value={formData.organizationType}
+                onChange={(value) => {
+                  setFormData((prev) => ({ ...prev, organizationType: value }));
+                  if (errors.organizationType)
+                    setErrors((prev) => { const n = { ...prev }; delete n.organizationType; return n; });
+                }}
+                options={organizationTypeOptions}
+                error={errors.organizationType}
                 disabled={loading}
               />
             </div>
 
-            {/* Checkboxes */}
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  name="termsAccepted"
-                  id="terms"
-                  checked={formData.termsAccepted}
-                  onChange={handleChange}
-                  className="mt-1 w-4 h-4 accent-primary"
-                  disabled={loading}
-                />
-                <label htmlFor="terms" className="text-sm text-foreground">
-                  I agree to NewsBridge's Terms of Use and Privacy Policy
-                </label>
-              </div>
-              {errors.termsAccepted && (
-                <p className="text-destructive text-xs">
-                  {errors.termsAccepted}
-                </p>
-              )}
+            {/* Second Focus Area */}
+            <CustomSelect
+              name="focusArea2"
+              label="Secondary Focus Area (Optional)"
+              placeholder="Select secondary focus area"
+              value={formData.focusArea2}
+              onChange={(value) =>
+                setFormData((prev) => ({ ...prev, focusArea2: value }))
+              }
+              options={focusAreaOptions}
+              disabled={loading}
+            />
 
-              <div className="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  name="authorizationAccepted"
-                  id="authorization"
-                  checked={formData.authorizationAccepted}
-                  onChange={handleChange}
-                  className="mt-1 w-4 h-4 accent-primary"
-                  disabled={loading}
-                />
-                <label
-                  htmlFor="authorization"
-                  className="text-sm text-foreground"
-                >
-                  I confirm that I am authorized to request access on behalf of
-                  this media organization
-                </label>
-              </div>
-              {errors.authorizationAccepted && (
-                <p className="text-destructive text-xs">
-                  {errors.authorizationAccepted}
-                </p>
-              )}
-            </div>
+            {/* Country + State */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <CustomSelect
+                name="country"
+                label="Country"
+                placeholder="Select Country"
+                value={formData.country}
+                onChange={(value) =>
+                  setFormData((prev) => ({ ...prev, country: value }))
+                }
+                options={countryOptions}
+                disabled={true}
+              />
 
-            {/* Submit Button */}
-            <div className="flex justify-center pt-4">
-              <button
-                type="submit"
+              <CustomSelect
+                name="city"
+                label="State"
+                placeholder="Search State"
+                value={formData.city}
+                onChange={(value) => {
+                  setFormData((prev) => ({ ...prev, city: value }));
+                  if (errors.city)
+                    setErrors((prev) => { const n = { ...prev }; delete n.city; return n; });
+                }}
+                options={stateOptions}
+                error={errors.city}
+                searchable={true}
                 disabled={loading}
-                className="px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? "Submitting..." : "Submit request"}
-              </button>
+              />
             </div>
+
+            {/* Website */}
+            <CustomInput
+              name="website"
+              Icon={Globe}
+              type="text"
+              label="Website (Optional)"
+              placeholder="https://yourwebsite.com"
+              value={formData.website}
+              onChange={handleChange}
+              disabled={loading}
+            />
+
+            {/* Checkboxes */}
+            <div className="space-y-4 mb-9">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="checkbox"
+                    name="termsAccepted"
+                    id="terms"
+                    checked={formData.termsAccepted}
+                    onChange={handleChange}
+                    className="w-4 h-4 rounded border-gray-300"
+                    disabled={loading}
+                  />
+                  <label
+                    htmlFor="terms"
+                    className="text-sm text-[#00000099] font-normal tracking-[-0.5]"
+                  >
+                    I agree to NewsBridge&apos;s Terms of Use and Privacy Policy
+                  </label>
+                </div>
+                {errors.termsAccepted && (
+                  <p className="text-red-500 text-xs mt-1">{errors.termsAccepted}</p>
+                )}
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="checkbox"
+                    name="authorizationAccepted"
+                    id="authorization"
+                    checked={formData.authorizationAccepted}
+                    onChange={handleChange}
+                    className="w-4 h-4 rounded border-gray-300"
+                    disabled={loading}
+                  />
+                  <label
+                    htmlFor="authorization"
+                    className="text-sm text-[#00000099] font-normal tracking-[-0.5]"
+                  >
+                    I confirm that I am authorized to request access on behalf of
+                    this media organization
+                  </label>
+                </div>
+                {errors.authorizationAccepted && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.authorizationAccepted}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <GradientButton
+              type="submit"
+              disabled={loading}
+              btnText={loading ? "Submitting..." : "Submit request"}
+              variant="primary"
+            />
           </form>
         </AuthWrapper>
       </div>
