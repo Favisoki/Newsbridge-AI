@@ -85,6 +85,22 @@ const HeroSection = () => {
               </div>
             </Button>
           </Link>
+
+          {/* Featured on Section */}
+          <div className="mt-16 sm:mt-20 pt-8 sm:pt-12 border-t border-gray-300/30 relative z-10">
+            <p className="text-sm font-medium text-gray-600 mb-6">Featured on</p>
+            <div className="flex justify-center items-center gap-4">
+              <div className="w-16 h-16 bg-[#6B1B2A] rounded-full flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center">
+                  <span className="text-white font-bold text-2xl">AI</span>
+                </div>
+              </div>
+              <div className="text-left">
+                <p className="font-semibold text-gray-900">AI Reports Africa</p>
+                <p className="text-sm text-gray-600">Shaping Africa's AI Narrative</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
