@@ -1,4 +1,4 @@
-import { Check, ChevronDown, CircleX, Search } from "lucide-react";
+import { Check, ChevronDown, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 export interface SelectOption {
@@ -6,22 +6,21 @@ export interface SelectOption {
   label: string;
 }
 
-interface CustomSelectProps {
+interface CustomMultiSelectProps {
   name: string;
-  value: string;
-  onChange: (value: string) => void;
+  value: string[];
+  onChange: (value: string[]) => void;
   label: string;
   placeholder?: string;
   options: SelectOption[];
   error?: string;
   disabled?: boolean;
   required?: boolean;
-  searchable?: boolean;
 }
 
-const CustomSelect = ({
+const CustomMultiSelect = ({
   name,
-  value,
+  value = [],
   onChange,
   label,
   placeholder = "Select",
@@ -29,30 +28,9 @@ const CustomSelect = ({
   error,
   disabled = false,
   required = false,
-  searchable = false,
-}: CustomSelectProps) => {
+}: CustomMultiSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
-  // Get selected option label
-  const selectedOption = options.find((opt) => opt.value === value);
-  const displayText = selectedOption?.label || placeholder;
-
-  // Filter options based on search term
-  const filteredOptions = searchable
-    ? options.filter((opt) =>
-        opt.label.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : options;
-
-  // Focus search input when dropdown opens
-  useEffect(() => {
-    if (isOpen && searchable && searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  }, [isOpen, searchable]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -69,27 +47,24 @@ const CustomSelect = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle keyboard navigation
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled) return;
-
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      setIsOpen(!isOpen);
-    } else if (e.key === "Escape") {
-      setIsOpen(false);
-    } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-      e.preventDefault();
-      if (!isOpen) {
-        setIsOpen(true);
-      }
+  // Handle option toggle
+  const handleToggle = (optionValue: string) => {
+    if (value.includes(optionValue)) {
+      onChange(value.filter((v) => v !== optionValue));
+    } else {
+      onChange([...value, optionValue]);
     }
   };
 
-  // Handle option selection
-  const handleSelect = (optionValue: string) => {
-    onChange(optionValue);
-    setIsOpen(false);
+  // Handle removing a selected item
+  const handleRemove = (e: React.MouseEvent, optionValue: string) => {
+    e.stopPropagation();
+    onChange(value.filter((v) => v !== optionValue));
+  };
+
+  // Get label for a value
+  const getLabel = (val: string) => {
+    return options.find((opt) => opt.value === val)?.label || val;
   };
 
   // Determine border and ring colors based on error state
@@ -112,26 +87,45 @@ const CustomSelect = ({
         <button
           type="button"
           onClick={() => !disabled && setIsOpen(!isOpen)}
-          onKeyDown={handleKeyDown}
           disabled={disabled}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
           aria-labelledby={label}
           className={`
-            w-full px-4 py-3 rounded-2xl
+            w-full min-h-[52px] px-3 py-2 rounded-2xl
             border transition-all duration-300
             font-[poppins] text-base text-left
-            flex items-center tracking-[-1] justify-between
+            flex items-center tracking-[-1] justify-between gap-2
             focus:outline-none
             disabled:opacity-50 disabled:cursor-not-allowed
             ${getBorderClasses()}
-            ${!value ? "text-[#ADADAD]/70" : "text-[#27272A]"}
             ${disabled ? "" : "cursor-pointer hover:border-[#3754A3]/30"}
           `}
         >
-          <span className="truncate">{displayText}</span>
+          <div className="flex-1 flex flex-wrap gap-1.5 items-center">
+            {value.length === 0 ? (
+              <span className="text-[#ADADAD]/70 py-1">{placeholder}</span>
+            ) : (
+              value.map((val) => (
+                <span
+                  key={val}
+                  className="inline-flex items-center gap-1 bg-gray-100 text-[#27272A] px-3 py-1 rounded-full text-sm"
+                >
+                  {getLabel(val)}
+                  <button
+                    type="button"
+                    onClick={(e) => handleRemove(e, val)}
+                    className="hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                    disabled={disabled}
+                  >
+                    <X className="w-3.5 h-3.5 text-gray-500" />
+                  </button>
+                </span>
+              ))
+            )}
+          </div>
           <ChevronDown
-            className={`w-5 h-5 text-gray-400 transition-transform duration-200 flex-shrink-0 ml-2 ${
+            className={`w-5 h-5 text-gray-400 transition-transform duration-200 flex-shrink-0 ${
               isOpen ? "rotate-180" : ""
             }`}
           />
@@ -143,38 +137,20 @@ const CustomSelect = ({
             role="listbox"
             className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200"
           >
-            {searchable && (
-              <div className="sticky top-0 px-4 py-2 bg-white border-b border-gray-100">
-                <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg">
-                  <Search className="w-4 h-4 text-gray-400" />
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Search..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="flex-1 bg-gray-50 text-sm outline-none text-gray-700"
-                  />
-                </div>
-              </div>
-            )}
-            {filteredOptions.length === 0 ? (
+            {options.length === 0 ? (
               <div className="px-4 py-3 text-sm text-gray-500 text-center">
-                {searchTerm ? "No matching options" : "No options available"}
+                No options available
               </div>
             ) : (
-              filteredOptions.map((option) => {
-                const isSelected = option.value === value;
+              options.map((option) => {
+                const isSelected = value.includes(option.value);
                 return (
                   <button
                     key={option.value}
                     type="button"
                     role="option"
                     aria-selected={isSelected}
-                    onClick={() => {
-                      handleSelect(option.value);
-                      setSearchTerm("");
-                    }}
+                    onClick={() => handleToggle(option.value)}
                     className={`
                       w-full px-4 py-3 text-left text-base
                       flex items-center justify-between
@@ -213,4 +189,4 @@ const CustomSelect = ({
   );
 };
 
-export default CustomSelect;
+export default CustomMultiSelect;

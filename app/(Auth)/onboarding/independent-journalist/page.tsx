@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import useToast from "@/app/hooks/useToast";
 import { useCreateIndependentJournalistAccount } from "@/app/api/auth/mutations";
-import { PhoneCallIcon, User2, Link as LinkIcon } from "lucide-react";
+import { PhoneCallIcon, User2, Link as LinkIcon, Briefcase } from "lucide-react";
 import { saveSignupData } from "@/lib/utils";
 import { useAuth } from "@/context/auth-context";
 import Modal from "@/components/ui/modal";
@@ -21,6 +21,8 @@ const countryOptions: SelectOption[] = [
 ];
 
 const cityOptions: SelectOption[] = [
+  { value: "FCT", label: "FCT (Abuja)" },
+  { value: "Lagos", label: "Lagos" },
   { value: "Abia", label: "Abia" },
   { value: "Adamawa", label: "Adamawa" },
   { value: "Akwa Ibom", label: "Akwa Ibom" },
@@ -35,7 +37,6 @@ const cityOptions: SelectOption[] = [
   { value: "Edo", label: "Edo" },
   { value: "Ekiti", label: "Ekiti" },
   { value: "Enugu", label: "Enugu" },
-  { value: "FCT", label: "FCT (Abuja)" },
   { value: "Gombe", label: "Gombe" },
   { value: "Imo", label: "Imo" },
   { value: "Jigawa", label: "Jigawa" },
@@ -45,7 +46,6 @@ const cityOptions: SelectOption[] = [
   { value: "Kebbi", label: "Kebbi" },
   { value: "Kogi", label: "Kogi" },
   { value: "Kwara", label: "Kwara" },
-  { value: "Lagos", label: "Lagos" },
   { value: "Nasarawa", label: "Nasarawa" },
   { value: "Niger", label: "Niger" },
   { value: "Ogun", label: "Ogun" },
@@ -60,17 +60,41 @@ const cityOptions: SelectOption[] = [
   { value: "Zamfara", label: "Zamfara" },
 ];
 
+const languageOptions: SelectOption[] = [
+  { value: "English", label: "English" },
+  { value: "Hausa", label: "Hausa" },
+  { value: "Igbo", label: "Igbo" },
+  { value: "Yoruba", label: "Yoruba" },
+  { value: "Pidgin", label: "Pidgin" },
+  { value: "French", label: "French" },
+];
+
+const coverageOptions: SelectOption[] = [
+  { value: "Climate", label: "Climate" },
+  { value: "Metro", label: "Metro" },
+  { value: "Trafficking", label: "Trafficking" },
+  { value: "Politics", label: "Politics" },
+  { value: "Economics", label: "Economics" },
+  { value: "Health", label: "Health" },
+  { value: "Education", label: "Education" },
+  { value: "Technology", label: "Technology" },
+  { value: "Sports", label: "Sports" },
+  { value: "Entertainment", label: "Entertainment" },
+];
+
 export default function TellUsAboutYourself() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: "",
-    country: "",
+    country: "Nigeria",
     city: "",
     role: "",
     motivation: "",
     portfolio: "",
+    languages: [] as string[],
+    coverages: [] as string[],
     agreeToTerms: false,
   });
 
@@ -118,6 +142,24 @@ export default function TellUsAboutYourself() {
     }
   };
 
+  const toggleLanguage = (language: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      languages: prev.languages.includes(language)
+        ? prev.languages.filter((l) => l !== language)
+        : [...prev.languages, language],
+    }));
+  };
+
+  const toggleCoverage = (coverage: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      coverages: prev.coverages.includes(coverage)
+        ? prev.coverages.filter((c) => c !== coverage)
+        : [...prev.coverages, coverage],
+    }));
+  };
+
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
@@ -141,6 +183,14 @@ export default function TellUsAboutYourself() {
 
     if (!formData.city) {
       newErrors.city = "City is required";
+    }
+
+    if (formData.languages.length === 0) {
+      newErrors.languages = "Select at least one language";
+    }
+
+    if (formData.coverages.length === 0) {
+      newErrors.coverages = "Select at least one coverage area";
     }
 
     if (!formData.agreeToTerms) {
@@ -174,8 +224,8 @@ export default function TellUsAboutYourself() {
       why_join: formData.motivation,
       portfolio: formData.portfolio,
       agree_terms: formData.agreeToTerms,
-      languages: [{ name: "English" }],
-      coverages: [{ name: "General" }],
+      languages: formData.languages.map((lang) => ({ name: lang })),
+      coverages: formData.coverages.map((coverage) => ({ name: coverage })),
     });
   };
 
@@ -265,12 +315,13 @@ export default function TellUsAboutYourself() {
               }}
               options={countryOptions}
               error={errors.country}
+              disabled={true}
             />
 
             <CustomSelect
               name="city"
               label="City"
-              placeholder="Select City"
+              placeholder="Search City"
               value={formData.city}
               onChange={(value: string) => {
                 setFormData((prev) => ({ ...prev, city: value }));
@@ -284,12 +335,14 @@ export default function TellUsAboutYourself() {
               }}
               options={cityOptions}
               error={errors.city}
+              searchable={true}
             />
           </div>
 
           <CustomInput
             name="role"
             type="text"
+            Icon={Briefcase}
             label="Role"
             placeholder="e.g. Reporter, Photographer, Editor"
             value={formData?.role}
