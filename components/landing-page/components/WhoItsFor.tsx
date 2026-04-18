@@ -5,7 +5,7 @@ const WhoItsFor = () => {
   return (
     <section
             id="who-its-for"
-            className="relative w-full py-16 md:py-32 text-white bg-no-repeat bg-full"
+            className="relative w-full pt-16 md:pt-32 pb-40 md:pb-56 text-white bg-no-repeat bg-full"
             style={{
               background: "url('/background3.png')",
               backgroundRepeat: "no-repeat",
