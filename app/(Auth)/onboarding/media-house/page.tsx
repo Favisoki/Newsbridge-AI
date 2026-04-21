@@ -187,13 +187,13 @@ export default function MediaHouseOnboarding() {
         <RequestSuccess name={formData.organizationName || "Organization"} />
       </Modal>
 
-      <div className="w-full max-w-3xl mt-24">
+      <div className="relative w-full max-w-5xl py-24">
         <div className="mb-8">
           <GoBack iconSize={18} to="/" />
         </div>
 
         <AuthWrapper>
-          <h1 className="text-[28px] md:text-[32px] font-bold text-[#1B1B1B] tracking-[-1.3] text-left">
+          <h1 className="text-2xl font-semibold text-black tracking-[-1.5] my-4 text-left">
             Tell us about your Organisation
           </h1>
           <p className="text-[#00000099] font-normal tracking-[-1.3] text-left mb-8">
@@ -209,7 +209,7 @@ export default function MediaHouseOnboarding() {
                 Icon={Building2}
                 type="text"
                 label="Media House Name"
-                placeholder="Your organization name"
+                placeholder="Your Organization Name"
                 value={formData.organizationName}
                 onChange={handleChange}
                 error={errors.organizationName}
@@ -233,7 +233,7 @@ export default function MediaHouseOnboarding() {
               <CustomSelect
                 name="focusArea"
                 label="Focus Area / Coverage Type"
-                placeholder="Select focus area"
+                placeholder="Select Focus Area"
                 value={formData.focusArea}
                 onChange={(value) => {
                   setFormData((prev) => ({ ...prev, focusArea: value }));
@@ -266,7 +266,7 @@ export default function MediaHouseOnboarding() {
             <CustomSelect
               name="focusArea2"
               label="Secondary Focus Area (Optional)"
-              placeholder="Select secondary focus area"
+              placeholder="Select Secondary Focus Area"
               value={formData.focusArea2}
               onChange={(value) =>
                 setFormData((prev) => ({ ...prev, focusArea2: value }))
@@ -282,10 +282,18 @@ export default function MediaHouseOnboarding() {
                 label="Country"
                 placeholder="Select Country"
                 value={formData.country}
-                onChange={(value) =>
-                  setFormData((prev) => ({ ...prev, country: value }))
-                }
+                onChange={(value: string) => {
+                  setFormData((prev) => ({ ...prev, country: value }));
+                  if (errors.country) {
+                    setErrors((prev) => {
+                      const newErrors = { ...prev };
+                      delete newErrors.country;
+                      return newErrors;
+                    });
+                  }
+                }}
                 options={countryOptions}
+                error={errors.country}
                 disabled={true}
               />
 
@@ -373,8 +381,8 @@ export default function MediaHouseOnboarding() {
             <GradientButton
               type="submit"
               disabled={loading}
+              classes="md:w-[208px]"
               btnText={loading ? "Submitting..." : "Submit request"}
-              variant="primary"
             />
           </form>
         </AuthWrapper>

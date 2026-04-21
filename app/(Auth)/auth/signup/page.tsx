@@ -59,48 +59,50 @@ export default function SignupPage() {
       </div>
 
       <div className="max-w-[880px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8">
-          {/* Cards */}
-          {signUpDetails.map((data) => {
-            return (
-              <div
-                key={data.title}
-                className="rounded-3xl p-8 tracking-[-1] leading-[180%] transition-colors bg-[#FFFFFF]"
-                style={{ boxShadow: "0px 7px 23px 0px #C3C3C340" }}
-              >
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="relative w-16 h-16 rounded-full flex items-center justify-center text-white font-bold">
-                    <Image
-                      src={data.Icon}
-                      fill
-                      alt=""
-                      className="object-cover scale-75"
-                    />
+        <div className="pt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Card */}
+            {signUpDetails.map((data) => {
+              return (
+                <div
+                  key={data.title}
+                  className="rounded-3xl p-8 tracking-[-1] leading-[180%] transition-colors bg-[#FFFFFF]"
+                  style={{ boxShadow: "0px 7px 23px 0px #C3C3C340" }}
+                >
+                  <div className="flex items-center gap-2 mb-6">
+                    <div className="relative w-16 h-16 rounded-full flex items-center justify-center text-white font-bold">
+                      <Image
+                        src={data.Icon}
+                        fill
+                        alt=""
+                        className="object-cover scale-75"
+                      />
+                    </div>
+                    <h2 className="text-[22px] tracking-[-1.7] font-semibold text-black">
+                      {data.title}
+                    </h2>
                   </div>
-                  <h2 className="text-[22px] tracking-[-1.7] font-semibold text-black">
-                    {data.title}
-                  </h2>
+                  <ul className="space-y-3 mb-8 text-[#545454]/90 text-lg">
+                    {data?.bulletins?.map((info) => {
+                      return (
+                        <li key={info} className="flex items-center gap-2">
+                          <span className="text-[#545454]">•</span>
+                          <span>{info}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <Link href={data.href}>
+                    <GradientButton
+                      btnText="Get Started"
+                      variant={data?.variant}
+                      borderColor={data.borderColor}
+                    />
+                  </Link>
                 </div>
-                <ul className="space-y-3 mb-8 text-[#545454]/90 text-lg">
-                  {data?.bulletins?.map((info) => {
-                    return (
-                      <li key={info} className="flex items-center gap-2">
-                        <span className="text-[#545454]">•</span>
-                        <span>{info}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <Link href={data.href}>
-                  <GradientButton
-                    btnText="Get Started"
-                    variant={data?.variant}
-                    borderColor={data.borderColor}
-                  />
-                </Link>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Login Link */}

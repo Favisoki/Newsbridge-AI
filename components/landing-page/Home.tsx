@@ -9,6 +9,7 @@ import HeroSection from "./components/HeroSection";
 import StoriesSection from "./components/StoriesSection";
 import FeaturesSection from "./components/FeaturesSection";
 import WhoItsFor from "./components/WhoItsFor";
+import BeliefSection from "./components/BeliefSection";
 import TeamSection from "./components/TeamSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
@@ -26,6 +27,7 @@ export default function Home() {
       </div>
       <FeaturesSection />
       <WhoItsFor />
+      <BeliefSection />
       <TeamSection />
       <ContactSection />
       <Footer />

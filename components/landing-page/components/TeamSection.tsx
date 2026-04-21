@@ -27,7 +27,7 @@ const TeamSection = () => {
             },
             {
               name: "Gbadegesin Adeyanju",
-              role: "Backend/AI Engineer",
+              role: "Backend & AI Engineer",
               image: "/Frame10.png",
               scale: "",
             },

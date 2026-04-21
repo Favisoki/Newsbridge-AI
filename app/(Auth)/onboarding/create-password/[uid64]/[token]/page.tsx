@@ -66,8 +66,11 @@ export default function CreatePasswordPage() {
           },
           {
             onSuccess: () => {
-              router.refresh();
-              router.push(routeHandler()), 200
+              // Clear blockSpecialRoutes so middleware doesn't redirect us
+              // away from the onboarding/journalist-profile special route
+              document.cookie =
+                "blockSpecialRoutes=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+              router.push(routeHandler());
             },
             onError: (error) => {
               console.error("Failed to set cookies:", error);
